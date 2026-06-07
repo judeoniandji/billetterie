@@ -5,26 +5,32 @@ exports.createOrGetUser = async (req, res) => {
     console.log("Requête reçue:", req.body);
     const { prenom, nom, telephone, ville } = req.body;
 
-    if (!telephone) {
+    // Validation basique des entrées
+    const sanitize = (str) => str ? str.trim().replace(/[^\w\s@.'-]/gi, '') : '';
+    const sPrenom = sanitize(prenom);
+    const sNom = sanitize(nom);
+    const sTelephone = sanitize(telephone);
+    const sVille = sanitize(ville);
+
+    if (!sTelephone) {
       return res.status(400).json({ message: "Le numéro de téléphone est obligatoire !" });
     }
 
-    let user = await Utilisateur.findOne({ telephone });
-    console.log("Utilisateur trouvé:", user);
+    let user = await Utilisateur.findOne({ telephone: sTelephone });
 
     if (user) {
       return res.status(200).json({ message: "Connexion réussie !", utilisateur: user });
     }
 
-    if (!prenom || !nom) {
+    if (!sPrenom || !sNom) {
       return res.status(400).json({ message: "Veuillez vous inscrire d'abord !" });
     }
 
     user = new Utilisateur({
-      prenom,
-      nom,
-      telephone,
-      ville: ville || "Libreville"
+      prenom: sPrenom,
+      nom: sNom,
+      telephone: sTelephone,
+      ville: sVille || "Libreville"
     });
 
     const savedUser = await user.save();
@@ -32,7 +38,7 @@ exports.createOrGetUser = async (req, res) => {
     res.status(201).json({ message: "Inscription réussie !", utilisateur: savedUser });
   } catch (error) {
     console.log("Erreur utilisateurController complète:", error);
-    res.status(500).json({ message: "Erreur serveur: " + error.message, error: error.message });
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
 };
 

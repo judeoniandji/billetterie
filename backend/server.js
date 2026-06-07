@@ -9,8 +9,30 @@ connectDB();
 const startTTLWorker = require("./workers/ttlWorker");
 startTTLWorker(); // Lancement du processus en arrière-plan pour l'expiration des places
 
-app.use(cors());
+// Configuration CORS sécurisée
+const allowedOrigins = [
+  "http://localhost:5000",
+  "https://billetterie.onrender.com" // Remplace par ton URL Render
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  }
+};
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// En-têtes de sécurité de base
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  next();
+});
 
 // Servir les fichiers statiques pour l'interface de test (Dossier Front-End séparé)
 const path = require("path");
