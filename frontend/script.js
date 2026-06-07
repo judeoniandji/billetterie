@@ -203,7 +203,7 @@ function renderEvents(events) {
         const card = document.createElement('div');
         card.className = `event-card${isPassed ? ' passed' : ''}`;
         card.innerHTML = `
-            <img src="${event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80'}" alt="${event.titre}" class="card-image">
+            <img src="${event.image || 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'}" alt="${event.titre}" class="card-image" onerror="this.src='https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80'">
             <div class="card-body">
                 <h3 class="card-title">${event.titre}</h3>
                 <div class="card-price">${event.prix.toLocaleString('fr-FR')} FCFA</div>
