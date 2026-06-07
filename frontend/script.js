@@ -8,8 +8,7 @@ function showToast(message, type = 'info') {
     const container = document.getElementById('toastContainer');
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-    const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
-    toast.innerHTML = `${icons[type]} ${message}`;
+    toast.textContent = message;
     container.appendChild(toast);
     setTimeout(() => {
         toast.style.animation = 'slideOutRight 0.3s ease forwards';
@@ -209,11 +208,11 @@ function renderEvents(events) {
                 <h3 class="card-title">${event.titre}</h3>
                 <div class="card-price">${event.prix.toLocaleString('fr-FR')} FCFA</div>
                 <div class="card-details">
-                    📅 ${new Date(event.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
-                    📍 ${event.lieu}
+                    ${new Date(event.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
+                    ${event.lieu}
                 </div>
                 <div class="card-capacity${isLow ? ' low' : ''}">
-                    🎟️ ${event.places_disponibles} / ${event.capacite_totale} places restantes
+                    ${event.places_disponibles} / ${event.capacite_totale} places restantes
                 </div>
                 <button class="btn btn-primary btn-full" onclick="openBookingModal('${event._id}', '${event.titre.replace(/'/g, "\\'")}')" ${isFull || isPassed ? 'disabled' : ''}>
                     ${isPassed ? 'Événement passé' : isFull ? 'Complet' : 'Réserver'}

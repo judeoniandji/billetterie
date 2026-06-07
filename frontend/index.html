@@ -15,19 +15,17 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <span class="logo-icon">🎫</span>
                     <span class="logo-text">Billetterie Gabonaise</span>
                 </div>
                 <div class="header-actions">
                     <div id="userProfile" class="user-profile" style="display: none;">
-                        <div class="user-avatar">👤</div>
                         <div class="user-info">
                             <span id="userName"></span>
                             <button class="btn-logout" onclick="logout()">Se déconnecter</button>
                         </div>
                     </div>
                     <button id="loginBtn" class="btn btn-primary" onclick="openUserModal()">
-                        <span>👤</span> Se connecter / S'inscrire
+                        Se connecter / S'inscrire
                     </button>
                 </div>
             </div>
@@ -39,13 +37,13 @@
         <div class="container">
             <div class="nav-tabs">
                 <button class="tab-btn active" onclick="switchTab('events')">
-                    <span>🎪</span> Événements
+                    Événements
                 </button>
                 <button class="tab-btn" onclick="switchTab('reservations')">
-                    <span>📋</span> Mes réservations
+                    Mes réservations
                 </button>
                 <button class="tab-btn" onclick="switchTab('dashboard')">
-                    <span>📊</span> Statistiques
+                    Statistiques
                 </button>
             </div>
         </div>
@@ -61,7 +59,7 @@
                     <h2 class="section-title">Trouve ton événement</h2>
                     <div class="filters-grid">
                         <div class="filter-group">
-                            <input type="text" id="searchInput" placeholder="🔍 Rechercher un événement..." oninput="filterEvents()">
+                            <input type="text" id="searchInput" placeholder="Rechercher un événement..." oninput="filterEvents()">
                         </div>
                         <div class="filter-group">
                             <select id="lieuFilter" onchange="filterEvents()">
@@ -77,7 +75,7 @@
                             </select>
                         </div>
                         <div class="filter-group">
-                            <button class="btn btn-secondary" onclick="resetFilters()">🔄 Réinitialiser</button>
+                            <button class="btn btn-secondary" onclick="resetFilters()">Réinitialiser</button>
                         </div>
                     </div>
                 </div>

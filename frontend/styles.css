@@ -64,10 +64,6 @@ body {
     -webkit-text-fill-color: transparent;
 }
 
-.logo-icon {
-    font-size: 32px;
-}
-
 .header-actions {
     display: flex;
     align-items: center;
