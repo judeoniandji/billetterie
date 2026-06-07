@@ -9,21 +9,8 @@ connectDB();
 const startTTLWorker = require("./workers/ttlWorker");
 startTTLWorker(); // Lancement du processus en arrière-plan pour l'expiration des places
 
-// Configuration CORS sécurisée
-const allowedOrigins = [
-  "http://localhost:5000",
-  "https://billetterie.onrender.com" // Remplace par ton URL Render
-];
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  }
-};
-app.use(cors(corsOptions));
+// Configuration CORS permissive temporaire pour le déploiement
+app.use(cors());
 app.use(express.json());
 
 // En-têtes de sécurité de base

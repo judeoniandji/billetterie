@@ -1,4 +1,4 @@
-const API_URL = window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : 'https://billetterie.onrender.com/api';
+const API_URL = `${window.location.protocol}//${window.location.host}/api`;
 let currentUser = null;
 let allEvents = [];
 let myReservations = [];
