@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+		"name": "API Billetterie (Groupe 9)",
+		"description": "Collection de tests pour l'API de billetterie événementielle avec MongoDB.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Événements",
+			"item": [
+				{
+					"name": "1.1 Lister les événements",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/evenements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"evenements"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Agréger les Recettes par Événement",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/evenements/stats/recettes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"evenements",
+								"stats",
+								"recettes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "1.3 Créer un événement",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"titre\": \"Concert Exceptionnel de Ba'ponga\",\n    \"description\": \"Le grand retour au pays !\",\n    \"date\": \"2026-12-25T20:00:00.000Z\",\n    \"lieu\": \"Stade de Nzeng-Ayong, Libreville\",\n    \"prix\": 15000,\n    \"capacite_totale\": 100,\n    \"places_disponibles\": 100\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/evenements",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"evenements"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Réservations (Concurrence & TTL)",
+			"item": [
+				{
+					"name": "2.1 Créer une réservation (En attente)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"utilisateur_id\": \"REMPLACER_PAR_UN_ID_UTILISATEUR\",\n    \"evenement_id\": \"REMPLACER_PAR_UN_ID_EVENEMENT\",\n    \"nombre_places\": 2\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/reservations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"reservations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Confirmer le paiement (Générer Billets)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/reservations/REMPLACER_PAR_ID_RESERVATION/payer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"reservations",
+								"REMPLACER_PAR_ID_RESERVATION",
+								"payer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
