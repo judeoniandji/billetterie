@@ -61,19 +61,18 @@ function closeUserModal() {
 function switchAuthTab(tab) {
     const registerForm = document.getElementById('registerForm');
     const loginForm = document.getElementById('loginForm');
-    const tabBtns = document.querySelectorAll('.tab-btn');
+    const authTabs = document.querySelectorAll('.auth-tab');
 
-    // Reset tab buttons
-    tabBtns.forEach(btn => btn.classList.remove('active'));
+    authTabs.forEach(t => t.classList.remove('active'));
 
     if (tab === 'register') {
         registerForm.style.display = 'block';
         loginForm.style.display = 'none';
-        tabBtns[0].classList.add('active');
+        authTabs[0].classList.add('active');
     } else {
         registerForm.style.display = 'none';
         loginForm.style.display = 'block';
-        tabBtns[1].classList.add('active');
+        authTabs[1].classList.add('active');
     }
 }
 
@@ -89,7 +88,6 @@ async function registerUser() {
     }
 
     try {
-        console.log("Enregistrement:", { prenom, nom, telephone, ville });
         const response = await fetch(`${API_URL}/utilisateurs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -122,7 +120,6 @@ async function loginUser() {
     }
 
     try {
-        console.log("Connexion:", { telephone });
         const response = await fetch(`${API_URL}/utilisateurs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -162,7 +159,7 @@ async function fetchMyReservations() {
 // ==================== TABS & NAVIGATION ====================
 function switchTab(tabId) {
     document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     event.currentTarget.classList.add('active');
     if (tabId === 'dashboard') fetchStats();
@@ -203,25 +200,25 @@ function renderEvents(events) {
         const isPassed = eventDate < today;
         const isLow = event.places_disponibles < 10;
         const isFull = event.places_disponibles === 0;
+
         const card = document.createElement('div');
-        card.className = 'card';
-        if (isPassed) {
-            card.classList.add('passed');
-        }
+        card.className = `event-card${isPassed ? ' passed' : ''}`;
         card.innerHTML = `
             <img src="${event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80'}" alt="${event.titre}" class="card-image">
-            <h3>${event.titre}</h3>
-            <div class="price">${event.prix.toLocaleString('fr-FR')} FCFA</div>
-            <div class="details">
-                📅 ${new Date(event.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
-                📍 ${event.lieu}
+            <div class="card-body">
+                <h3 class="card-title">${event.titre}</h3>
+                <div class="card-price">${event.prix.toLocaleString('fr-FR')} FCFA</div>
+                <div class="card-details">
+                    📅 ${new Date(event.date).toLocaleDateString('fr-FR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br>
+                    📍 ${event.lieu}
+                </div>
+                <div class="card-capacity${isLow ? ' low' : ''}">
+                    🎟️ ${event.places_disponibles} / ${event.capacite_totale} places restantes
+                </div>
+                <button class="btn btn-primary btn-full" onclick="openBookingModal('${event._id}', '${event.titre.replace(/'/g, "\\'")}')" ${isFull || isPassed ? 'disabled' : ''}>
+                    ${isPassed ? 'Événement passé' : isFull ? 'Complet' : 'Réserver'}
+                </button>
             </div>
-            <div class="capacity ${isLow ? 'low' : ''}">
-                🎟️ ${event.places_disponibles} / ${event.capacite_totale} places restantes
-            </div>
-            <button class="btn btn-primary" onclick="openBookingModal('${event._id}', '${event.titre.replace(/'/g, "\\'")}')" ${isFull || isPassed ? 'disabled' : ''}>
-                ${isPassed ? 'Passé' : isFull ? 'Complet' : 'Réserver'}
-            </button>
         `;
         grid.appendChild(card);
     });
@@ -261,7 +258,7 @@ function openBookingModal(eventId, eventTitle) {
         return;
     } else {
         document.getElementById('modalEventId').value = eventId;
-        document.getElementById('modalEventTitle').innerText = eventTitle;
+        document.getElementById('modalEventTitle').textContent = eventTitle;
         document.getElementById('ticketsCount').value = 1;
         document.getElementById('bookingModal').classList.add('active');
     }
@@ -311,27 +308,26 @@ function addReservationToList(reservation) {
 
 function renderReservations() {
     const list = document.getElementById('reservationsList');
-    list.innerHTML = '';
     if (!currentUser) {
-        list.innerHTML = '<p class="loading">Veuillez vous connecter pour voir vos réservations.</p>';
+        list.innerHTML = '<p class="loading">Connectez-vous pour voir vos réservations</p>';
         return;
     }
     if (myReservations.length === 0) {
-        list.innerHTML = '<p class="loading">Aucune réservation trouvée.</p>';
+        list.innerHTML = '<p class="loading">Aucune réservation trouvée</p>';
         return;
     }
+    list.innerHTML = '';
     myReservations.forEach(res => {
         const div = document.createElement('div');
         div.className = 'reservation-item';
         div.innerHTML = `
-            <div>
+            <div class="reservation-info">
                 <h4>Réservation #${res._id.substring(0, 8)}</h4>
-                <p style="color: var(--text-secondary)">Montant: ${res.montant_total.toLocaleString('fr-FR')} FCFA | Places: ${res.nombre_places}</p>
-                <p style="color: var(--danger); font-size: 0.85rem; margin-top: 0.5rem;">⏱️ Expire 10 min après création</p>
+                <p>Montant: ${res.montant_total.toLocaleString('fr-FR')} FCFA • Places: ${res.nombre_places}</p>
             </div>
-            <div style="display: flex; gap: 1rem; align-items: center;">
-                <span class="res-status ${res.statut.toLowerCase()}">${res.statut}</span>
-                ${res.statut === 'EN_ATTENTE' ? `<button class="btn btn-success" style="width: auto" onclick="payReservation('${res._id}')">Payer maintenant</button>` : ''}
+            <div class="reservation-status">
+                <span class="res-status ${res.statut}">${res.statut}</span>
+                ${res.statut === 'EN_ATTENTE' ? `<button class="btn btn-success" onclick="payReservation('${res._id}')">Payer maintenant</button>` : ''}
             </div>
         `;
         list.appendChild(div);
@@ -368,11 +364,11 @@ async function fetchStats() {
         grid.innerHTML = '';
         stats.forEach(stat => {
             const card = document.createElement('div');
-            card.className = 'card stat-card glass';
+            card.className = 'stat-card';
             card.innerHTML = `
                 <h3>${stat.titre}</h3>
-                <div class="amount">${stat.recettes_FCFA.toLocaleString('fr-FR')} FCFA</div>
-                <p style="color: rgba(255,255,255,0.6)">Billets vendus: ${stat.billets_vendus}</p>
+                <div class="stat-amount">${stat.recettes_FCFA.toLocaleString('fr-FR')} FCFA</div>
+                <p>Billets vendus: ${stat.billets_vendus}</p>
             `;
             grid.appendChild(card);
         });
