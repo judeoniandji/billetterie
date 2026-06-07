@@ -196,10 +196,18 @@ function renderEvents(events) {
     }
     grid.innerHTML = '';
     events.forEach(event => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const eventDate = new Date(event.date);
+        eventDate.setHours(0, 0, 0, 0);
+        const isPassed = eventDate < today;
         const isLow = event.places_disponibles < 10;
         const isFull = event.places_disponibles === 0;
         const card = document.createElement('div');
         card.className = 'card';
+        if (isPassed) {
+            card.classList.add('passed');
+        }
         card.innerHTML = `
             <img src="${event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80'}" alt="${event.titre}" class="card-image">
             <h3>${event.titre}</h3>
@@ -211,8 +219,8 @@ function renderEvents(events) {
             <div class="capacity ${isLow ? 'low' : ''}">
                 🎟️ ${event.places_disponibles} / ${event.capacite_totale} places restantes
             </div>
-            <button class="btn btn-primary" onclick="openBookingModal('${event._id}', '${event.titre.replace(/'/g, "\\'")}')" ${isFull ? 'disabled' : ''}>
-                ${isFull ? 'Complet' : 'Réserver'}
+            <button class="btn btn-primary" onclick="openBookingModal('${event._id}', '${event.titre.replace(/'/g, "\\'")}')" ${isFull || isPassed ? 'disabled' : ''}>
+                ${isPassed ? 'Passé' : isFull ? 'Complet' : 'Réserver'}
             </button>
         `;
         grid.appendChild(card);

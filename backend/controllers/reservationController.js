@@ -31,6 +31,17 @@ exports.creerReservation = async (req, res) => {
       return res.status(404).json({ message: "Événement non trouvé" });
     }
 
+    // Vérifier que la date de l'événement n'est pas déjà passée
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // On ignore l'heure pour comparer la date seule
+    const eventDate = new Date(event.date);
+    eventDate.setHours(0, 0, 0, 0);
+    if (eventDate < today) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(400).json({ message: "Cet événement est déjà passé, impossible de réserver." });
+    }
+
     // Décrémentation atomique sous verrouillage optimiste dans la session
     const updateResult = await Evenement.updateOne(
       { 
