@@ -6,11 +6,11 @@ exports.createOrGetUser = async (req, res) => {
     const { prenom, nom, telephone, ville } = req.body;
 
     // Validation basique des entrées
-    const sanitize = (str) => str ? str.trim().replace(/[^\w\s@.'-]/gi, '') : '';
-    const sPrenom = sanitize(prenom);
-    const sNom = sanitize(nom);
-    const sTelephone = sanitize(telephone);
-    const sVille = sanitize(ville);
+    const trimSanitize = (str) => str ? str.trim() : '';
+    const sPrenom = trimSanitize(prenom);
+    const sNom = trimSanitize(nom);
+    const sTelephone = trimSanitize(telephone);
+    const sVille = trimSanitize(ville);
 
     if (!sTelephone) {
       return res.status(400).json({ message: "Le numéro de téléphone est obligatoire !" });
