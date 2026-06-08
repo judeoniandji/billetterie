@@ -2,7 +2,7 @@
    EVENTPASS - DESIGN SYSTEM
    ======================================== */
 
-/* ---------- COULEURS ---------- */
+/* ---------- COLORS ---------- */
 :root {
   --primary: #1e3a8a;
   --primary-dark: #1e40af;
@@ -44,8 +44,8 @@
   --bg-light: #0f172a;
   --bg-dark: #020617;
   --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --text-light: #cbd5e1;
+  --text-secondary: #cbd5e1;
+  --text-light: #94a3b8;
   --border: #334155;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
@@ -53,13 +53,14 @@
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
 }
 
-/* ---------- TYPOGRAPHIE ---------- */
+/* ---------- TYPOGRAPHY ---------- */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
 body {
   font-family: 'Inter', sans-serif;
   color: var(--text-primary);
   background: var(--bg-light);
   line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
@@ -75,7 +76,7 @@ h1, h2, h3, h4, h5, h6 {
 .font-semibold { font-weight: 600; }
 .font-medium { font-weight: 500; }
 
-/* ---------- BOUTONS ---------- */
+/* ---------- BUTTONS ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -95,7 +96,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-success { background: var(--accent-success); color: white; }
 .btn-success:hover { background: #059669; }
 .btn-outline { border: 2px solid var(--primary); color: var(--primary); background: transparent; }
-.btn-outline:hover { background: var(--primary-light); }
+.btn-outline:hover { background: var(--primary); color: white; }
 .btn-sm { padding: 0.5rem 1rem; font-size: 0.875rem; }
 .btn-lg { padding: 1rem 2rem; font-size: 1.1rem; }
 .btn-full { width: 100%; }
@@ -112,19 +113,20 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 1rem;
   font-family: inherit;
   transition: all 0.3s ease;
-  background: white;
+  background: var(--bg-white);
+  color: var(--text-primary);
 }
 .input:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-light); }
 .input::placeholder { color: var(--text-light); }
 
 /* ---------- CARDS ---------- */
-.card { background: white; border-radius: var(--radius-xl); box-shadow: var(--shadow-sm); overflow: hidden; transition: all 0.3s ease; }
+.card { background: var(--bg-white); border-radius: var(--radius-xl); box-shadow: var(--shadow-md); overflow: hidden; transition: all 0.3s ease; }
 .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
 
 /* ---------- CONTAINERS ---------- */
 .container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* ---------- UTILITAIRES ---------- */
+/* ---------- UTILITIES ---------- */
 .flex { display: flex; }
 .items-center { align-items: center; }
 .justify-between { justify-content: space-between; }
@@ -154,7 +156,7 @@ h1, h2, h3, h4, h5, h6 {
 .text-success { color: var(--accent-success); }
 .text-error { color: var(--accent-error); }
 .text-secondary { color: var(--text-secondary); }
-.bg-white { background: white; }
+.bg-white { background: var(--bg-white); }
 .bg-light { background: var(--bg-light); }
 .rounded-lg { border-radius: var(--radius-lg); }
 .rounded-xl { border-radius: var(--radius-xl); }
