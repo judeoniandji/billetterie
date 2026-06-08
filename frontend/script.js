@@ -98,6 +98,17 @@ const Auth = {
     updateUI() {
         const profile = document.getElementById('userProfile');
         const loginBtn = document.getElementById('loginBtn');
+        const logoLink = document.getElementById('logoLink');
+        const footerAdminLink = document.getElementById('footerAdminLink');
+        const isAdmin = !!(state.user && state.user.role === 'admin');
+
+        if (logoLink) {
+            logoLink.setAttribute('href', isAdmin ? 'admin.html' : '#/');
+        }
+        if (footerAdminLink) {
+            footerAdminLink.hidden = !isAdmin;
+        }
+
         if (state.user) {
             profile.hidden = false;
             loginBtn.hidden = true;
@@ -1014,6 +1025,10 @@ const App = {
 
 document.addEventListener('DOMContentLoaded', async () => {
     Auth.load();
+    if (state.user && state.user.role !== 'admin') {
+        const adminLink = document.querySelector('a[href="admin.html"]');
+        if (adminLink) adminLink.hidden = true;
+    }
     Router.init();
 
     const app = document.getElementById('app');
