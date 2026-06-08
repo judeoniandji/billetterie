@@ -1,0 +1,27 @@
+/* ========================================
+   EVENTS PAGE STYLES
+   ======================================== */
+.events-page { padding: 3rem 0; }
+.filters-sidebar {
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  height: fit-content;
+}
+.filter-section { margin-bottom: 1.5rem; }
+.filter-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+.filter-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+}
+.range-input { width: 100%; margin-top: 0.5rem; }
+.price-display { text-align: right; color: var(--text-secondary); font-size: 0.875rem; }
