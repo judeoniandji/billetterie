@@ -3,12 +3,37 @@
    ======================================== */
 let currentUser = null;
 let currentPage = 'home';
+let isDarkMode = false;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
+  loadDarkMode();
   renderAuthSection();
 });
+
+// --- Dark Mode ---
+function loadDarkMode() {
+  const stored = localStorage.getItem('eventpass_darkmode');
+  if (stored === 'true') {
+    isDarkMode = true;
+    document.body.classList.add('dark-mode');
+    document.getElementById('darkModeBtn').textContent = '☀️ Mode Clair';
+  }
+}
+
+function toggleDarkMode() {
+  isDarkMode = !isDarkMode;
+  if (isDarkMode) {
+    document.body.classList.add('dark-mode');
+    document.getElementById('darkModeBtn').textContent = '☀️ Mode Clair';
+    localStorage.setItem('eventpass_darkmode', 'true');
+  } else {
+    document.body.classList.remove('dark-mode');
+    document.getElementById('darkModeBtn').textContent = '🌙 Mode Sombre';
+    localStorage.setItem('eventpass_darkmode', 'false');
+  }
+}
 
 // --- Toast Notifications ---
 function showToast(message, type = 'info') {
@@ -42,6 +67,14 @@ function checkAuth() {
 }
 
 function renderAuthSection() {
+  // Show/hide admin link
+  const adminNav = document.getElementById('adminNavLink');
+  if (currentUser && currentUser.role === 'admin') {
+    adminNav.classList.remove('hidden');
+  } else {
+    adminNav.classList.add('hidden');
+  }
+
   const section = document.getElementById('authSection');
   if (currentUser) {
     section.innerHTML = `

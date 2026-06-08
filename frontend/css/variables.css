@@ -15,7 +15,7 @@
   --bg-white: #ffffff;
   --bg-light: #f8fafc;
   --bg-dark: #0f172a;
-  --text-primary: #0f172a;
+  --text-primary: #000000;
   --text-secondary: #64748b;
   --text-light: #94a3b8;
   --border: #e2e8f0;
@@ -28,6 +28,29 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
   --radius-full: 9999px;
+}
+
+/* Dark Mode */
+.dark-mode {
+  --primary: #60a5fa;
+  --primary-dark: #3b82f6;
+  --primary-light: #1e3a8a;
+  --secondary: #a78bfa;
+  --secondary-light: #312e81;
+  --accent-success: #34d399;
+  --accent-warning: #fbbf24;
+  --accent-error: #f87171;
+  --bg-white: #1e293b;
+  --bg-light: #0f172a;
+  --bg-dark: #020617;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-light: #cbd5e1;
+  --border: #334155;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
 }
 
 /* ---------- TYPOGRAPHIE ---------- */

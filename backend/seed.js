@@ -23,7 +23,17 @@ const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) +
 
 const generateUtilisateurs = (count) => {
   const users = [];
-  for (let i = 0; i < count; i++) {
+  // Add Admin user first
+  users.push({
+    nom: "Admin",
+    prenom: "EventPass",
+    email: "admin@eventpass.com",
+    telephone: "+241700000000",
+    ville: "Libreville",
+    role: "admin"
+  });
+  // Add random users
+  for (let i = 0; i < count - 1; i++) {
     const nom = noms[getRandomInt(0, noms.length - 1)];
     const prenom = prenoms[getRandomInt(0, prenoms.length - 1)];
     users.push({

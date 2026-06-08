@@ -23,9 +23,12 @@
         <nav class="nav">
           <a href="#" class="nav-link active" onclick="navigateTo('home')">Accueil</a>
           <a href="#" class="nav-link" onclick="navigateTo('events')">Événements</a>
-          <a href="#" class="nav-link" onclick="navigateTo('admin')">Admin</a>
+          <a href="#" class="nav-link hidden" id="adminNavLink" onclick="navigateTo('admin')">Admin</a>
         </nav>
-        <div id="authSection" class="flex gap-4 items-center"></div>
+        <div class="flex gap-4 items-center">
+          <button class="btn btn-outline btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">🌙 Mode Sombre</button>
+          <div id="authSection"></div>
+        </div>
       </div>
     </div>
   </header>
