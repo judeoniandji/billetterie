@@ -11,12 +11,13 @@ export default function Header() {
   const [authOpen, setAuthOpen] = useState(false)
 
   const closeMenu = () => setMenuOpen(false)
+  const logoTo = user?.role === 'admin' ? '/admin' : '/'
 
   return (
     <>
       <header className="header">
         <div className="container header__inner">
-          <NavLink to="/" className="logo" onClick={closeMenu}>
+          <NavLink to={logoTo} className="logo" onClick={closeMenu}>
             <span className="logo__icon">🎟</span>
             <span className="logo__text">EventPass</span>
           </NavLink>
@@ -31,11 +32,6 @@ export default function Header() {
             <NavLink to="/reservations" className={({ isActive }) => `nav__link${isActive ? ' active' : ''}`} onClick={closeMenu}>
               Mes billets
             </NavLink>
-            {user?.role === 'admin' && (
-              <NavLink to="/admin" className={({ isActive }) => `nav__link${isActive ? ' active' : ''}`} onClick={closeMenu}>
-                Admin
-              </NavLink>
-            )}
           </nav>
 
           <div className="header__actions">
