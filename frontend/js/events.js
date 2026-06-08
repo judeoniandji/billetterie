@@ -56,8 +56,8 @@ async function loadEventsPage() {
 
               <div class="filter-section">
                 <h4 class="filter-title">Prix maximum</h4>
-                <input type="range" id="priceRange" min="0" max="500" value="500" class="range-input" oninput="updatePriceDisplay()">
-                <p id="priceRangeDisplay" class="price-display">500 €</p>
+                <input type="range" id="priceRange" min="0" max="100000" value="100000" class="range-input" oninput="updatePriceDisplay()">
+                <p id="priceRangeDisplay" class="price-display">100 000 FCFA</p>
               </div>
 
               <div class="filter-section">
@@ -104,8 +104,8 @@ function renderEventsList(events) {
 }
 
 function updatePriceDisplay() {
-  const price = document.getElementById('priceRange').value;
-  document.getElementById('priceRangeDisplay').textContent = `${price} €`;
+  const price = parseInt(document.getElementById('priceRange').value, 10);
+  document.getElementById('priceRangeDisplay').textContent = `${price.toLocaleString('fr-FR')} FCFA`;
   applyFilters();
 }
 
@@ -131,8 +131,8 @@ function applyFilters(searchQuery = '', city = '', date = '') {
 
 function resetFilters() {
   document.querySelectorAll('.category-filter').forEach(cb => cb.checked = false);
-  document.getElementById('priceRange').value = 500;
-  document.getElementById('priceRangeDisplay').textContent = '500 €';
+  document.getElementById('priceRange').value = 100000;
+  document.getElementById('priceRangeDisplay').textContent = '100 000 FCFA';
   renderEventsList(window.allEvents.filter(e => !isEventPast(e.date)));
 }
 
