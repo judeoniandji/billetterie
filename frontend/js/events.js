@@ -83,8 +83,10 @@ async function loadEventsPage() {
 
   try {
     const data = await window.api.getEvents();
-    filteredEvents = data.filter(e => !isEventPast(e.date));
-    window.allEvents = data;
+    let events = data;
+    if (data.evenements) events = data.evenements;
+    filteredEvents = events.filter(e => !isEventPast(e.date));
+    window.allEvents = events;
     renderEventsList(filteredEvents);
   } catch(e) {
     filteredEvents = window.allEvents.filter(e => !isEventPast(e.date));

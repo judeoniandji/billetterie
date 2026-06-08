@@ -4,21 +4,21 @@
 
 /* ---------- COLORS ---------- */
 :root {
-  --primary: #1e3a8a;
-  --primary-dark: #1e40af;
-  --primary-light: #dbeafe;
-  --secondary: #8b5cf6;
-  --secondary-light: #ede9fe;
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --primary-light: #e0e7ff;
+  --secondary: #ec4899;
+  --secondary-light: #fce7f3;
   --accent-success: #10b981;
   --accent-warning: #f59e0b;
   --accent-error: #ef4444;
   --bg-white: #ffffff;
-  --bg-light: #f8fafc;
+  --bg-light: #f9fafb;
   --bg-dark: #0f172a;
-  --text-primary: #000000;
-  --text-secondary: #64748b;
-  --text-light: #94a3b8;
-  --border: #e2e8f0;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-light: #9ca3af;
+  --border: #e5e7eb;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -32,21 +32,21 @@
 
 /* Dark Mode */
 .dark-mode {
-  --primary: #60a5fa;
-  --primary-dark: #3b82f6;
-  --primary-light: #1e3a8a;
-  --secondary: #a78bfa;
-  --secondary-light: #312e81;
+  --primary: #818cf8;
+  --primary-dark: #6366f1;
+  --primary-light: #312e81;
+  --secondary: #f472b6;
+  --secondary-light: #4c1d95;
   --accent-success: #34d399;
   --accent-warning: #fbbf24;
   --accent-error: #f87171;
-  --bg-white: #1e293b;
+  --bg-white: #1f2937;
   --bg-light: #0f172a;
   --bg-dark: #020617;
-  --text-primary: #ffffff;
-  --text-secondary: #cbd5e1;
-  --text-light: #94a3b8;
-  --border: #334155;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-light: #9ca3af;
+  --border: #374151;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);

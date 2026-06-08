@@ -6,26 +6,37 @@ let allEvents = [];
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     const data = await window.api.getEvents();
-    allEvents = data;
-    renderEvents(allEvents);
+    // Handle both cases: if data is { evenements: ... } or directly array
+    if (data.evenements) {
+      allEvents = data.evenements;
+    } else if (Array.isArray(data)) {
+      allEvents = data;
+    } else {
+      allEvents = [];
+    }
     window.allEvents = allEvents;
+    renderEvents(allEvents);
   } catch (error) {
-    showToast('Erreur de chargement des événements', 'error');
+    console.error('Error loading events:', error);
+    showToast('Erreur lors du chargement des événements', 'error');
   }
 });
 
 function renderEvents(events) {
   const container = document.getElementById('eventsGrid');
-  container.innerHTML = events
-    .filter(e => !isEventPast(e.date))
-    .slice(0, 6)
-    .map(event => createEventCard(event)).join('');
+  const currentEvents = events.filter(e => !isEventPast(e.date)).slice(0, 6);
+  
+  if (currentEvents.length === 0) {
+    container.innerHTML = '<p class="text-center text-secondary py-8 col-span-full">Aucun événement à venir</p>';
+    return;
+  }
+  
+  container.innerHTML = currentEvents.map(event => createEventCard(event)).join('');
 }
 
 function createEventCard(event) {
-  const isPast = isEventPast(event.date);
-  const badge = event.places_disponibles < 20 ? 'badge-limited' : 'badge-popular';
-  const badgeText = event.places_disponibles < 20 ? 'Places limitées' : 'Populaire';
+  const badge = event.places_disponibles < 100 ? 'badge-limited' : 'badge-popular';
+  const badgeText = event.places_disponibles < 100 ? 'Places limitées' : 'Populaire';
   const imgUrl = `https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80`;
   
   return `
@@ -63,7 +74,13 @@ async function searchEvents() {
 }
 
 function navigateToEvent(eventId) {
-  showToast('Chargement de l\'événement...', 'info');
+  const event = window.allEvents.find(e => e._id === eventId);
+  if (!event) {
+    showToast('Événement introuvable', 'error');
+    return;
+  }
+  selectedEvent = event;
+  loadEventDetailPage(event);
 }
 
 async function handleLogin() {
