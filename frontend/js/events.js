@@ -4,6 +4,31 @@
 let filteredEvents = [];
 let selectedEvent = null;
 
+function createEventCard(event) {
+  const isPast = isEventPast(event.date);
+  const badge = event.places_disponibles < 20 ? 'badge-limited' : 'badge-popular';
+  const badgeText = event.places_disponibles < 20 ? 'Places limitées' : 'Populaire';
+  const imgUrl = `https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80`;
+  
+  return `
+    <div class="card event-card" onclick="navigateToEvent('${event._id}')">
+      <div class="event-card-image" style="background-image: url('${imgUrl}')">
+        <span class="event-card-badge ${badge}">${badgeText}</span>
+      </div>
+      <div class="event-card-content">
+        <h3 class="event-card-title">${event.titre}</h3>
+        <p class="text-secondary mb-2">📍 ${event.lieu} • ${formatDate(event.date)}</p>
+        <div class="event-card-meta">
+          <div class="event-card-date">
+            <span>🎟️ ${event.places_disponibles} places</span>
+          </div>
+          <div class="event-card-price">${formatPrice(event.prix)}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function loadEventsPage() {
   const main = document.getElementById('mainContent');
   main.innerHTML = `
@@ -151,7 +176,7 @@ function loadEventDetailPage(event) {
               <div class="mb-6">
                 <h3 class="text-2xl font-semibold mb-2">${formatPrice(event.prix)}</h3>
                 <div class="flex items-center gap-2 text-sm text-secondary">
-                  <span>🎟️ ${event.capacite} places restantes</span>
+                  <span>🎟️ ${event.places_disponibles} places restantes</span>
                 </div>
               </div>
 
@@ -168,7 +193,7 @@ function loadEventDetailPage(event) {
 
               <div class="input-group mb-6">
                 <label>Nombre de places</label>
-                <input type="number" id="ticketCount" value="1" min="1" max="${event.capacite}" class="input">
+                <input type="number" id="ticketCount" value="1" min="1" max="${event.places_disponibles}" class="input">
               </div>
 
               <button class="btn btn-primary btn-full btn-lg" onclick="startReservation('${event._id}')">

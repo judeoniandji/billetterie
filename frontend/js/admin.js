@@ -58,7 +58,7 @@ async function loadAdminPage() {
                   <td class="font-semibold">${ev.titre}</td>
                   <td>${ev.lieu}</td>
                   <td>${formatDate(ev.date)}</td>
-                  <td>${ev.capacite}</td>
+                  <td>${ev.places_disponibles}</td>
                   <td>${formatPrice(ev.prix)}</td>
                   <td>
                     <span class="badge-popular" style="padding:0.375rem 0.75rem;border-radius:999px;font-size:0.75rem;color:white;">

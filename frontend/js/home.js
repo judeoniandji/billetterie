@@ -24,8 +24,8 @@ function renderEvents(events) {
 
 function createEventCard(event) {
   const isPast = isEventPast(event.date);
-  const badge = event.capacite < 20 ? 'badge-limited' : 'badge-popular';
-  const badgeText = event.capacite < 20 ? 'Places limitées' : 'Populaire';
+  const badge = event.places_disponibles < 20 ? 'badge-limited' : 'badge-popular';
+  const badgeText = event.places_disponibles < 20 ? 'Places limitées' : 'Populaire';
   const imgUrl = `https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80`;
   
   return `
@@ -38,7 +38,7 @@ function createEventCard(event) {
         <p class="text-secondary mb-2">📍 ${event.lieu} • ${formatDate(event.date)}</p>
         <div class="event-card-meta">
           <div class="event-card-date">
-            <span>🎟️ ${event.capacite} places</span>
+            <span>🎟️ ${event.places_disponibles} places</span>
           </div>
           <div class="event-card-price">${formatPrice(event.prix)}</div>
         </div>
