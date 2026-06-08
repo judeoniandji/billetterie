@@ -39,8 +39,8 @@ app.use("/api/evenements", evenementRoutes);
 // Servir les fichiers statiques du frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
-// Catch-all pour toutes les autres routes (pour React/Vue/vanilla SPA)
-app.get("*", (req, res) => {
+// Catch-all SPA (Express 5 : syntaxe {*path} requise)
+app.get("/{*path}", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 

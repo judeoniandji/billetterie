@@ -8,8 +8,25 @@ const crypto = require("crypto");
 // @route   GET /api/reservations/utilisateur/:id
 exports.getReservationsByUser = async (req, res) => {
   try {
-    const reservations = await Reservation.find({ utilisateur_id: req.params.id }).sort({ date_creation: -1 });
+    const reservations = await Reservation.find({ utilisateur_id: req.params.id })
+      .populate("evenement_id")
+      .sort({ date_creation: -1 });
     res.status(200).json(reservations);
+  } catch (error) {
+    res.status(500).json({ message: "Erreur serveur", error: error.message });
+  }
+};
+
+// @desc    Récupérer les billets d'une réservation
+// @route   GET /api/reservations/:id/billets
+exports.getBilletsByReservation = async (req, res) => {
+  try {
+    const reservation = await Reservation.findById(req.params.id).populate("evenement_id");
+    if (!reservation) {
+      return res.status(404).json({ message: "Réservation introuvable" });
+    }
+    const billets = await Billet.find({ reservation_id: req.params.id });
+    res.status(200).json({ reservation, billets });
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }
@@ -130,7 +147,11 @@ exports.payerReservation = async (req, res) => {
     await session.commitTransaction();
     session.endSession();
 
-    res.status(200).json({ message: "Paiement confirmé, billets générés avec succès." });
+    res.status(200).json({
+      message: "Paiement confirmé, billets générés avec succès.",
+      reservation,
+      billets
+    });
 
   } catch (error) {
     await session.abortTransaction();

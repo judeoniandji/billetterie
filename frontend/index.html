@@ -3,181 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Billetterie Gabonaise</title>
+    <title>Eventia — Billetterie événementielle</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Header -->
-    <header class="main-header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <span class="logo-text">Billetterie Gabonaise</span>
-                </div>
-                <div class="header-actions">
-                    <div id="userProfile" class="user-profile" style="display: none;">
-                        <div class="user-info">
-                            <span id="userName"></span>
-                            <button class="btn-logout" onclick="logout()">Se déconnecter</button>
-                        </div>
+    <header class="header" id="mainHeader">
+        <div class="container header__inner">
+            <a href="#/" class="logo" data-nav>
+                <span class="logo__icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 9a3 3 0 0 1 3-3h14a3 3 0 0 1 3 3v1H2V9z"/><path d="M2 10v9a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3v-9"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                </span>
+                <span class="logo__text">Eventia</span>
+            </a>
+
+            <nav class="nav" id="mainNav">
+                <a href="#/" class="nav__link" data-nav>Accueil</a>
+                <a href="#/events" class="nav__link" data-nav>Événements</a>
+                <a href="#/reservations" class="nav__link" data-nav>Mes billets</a>
+            </nav>
+
+            <div class="header__actions">
+                <div id="userProfile" class="user-profile" hidden>
+                    <div class="user-profile__avatar" id="userAvatar">U</div>
+                    <div class="user-profile__info">
+                        <span id="userName" class="user-profile__name"></span>
+                        <button class="user-profile__logout" onclick="App.auth.logout()">Déconnexion</button>
                     </div>
-                    <button id="loginBtn" class="btn btn-primary" onclick="openUserModal()">
-                        Se connecter / S'inscrire
-                    </button>
                 </div>
+                <button id="loginBtn" class="btn btn--primary btn--sm" onclick="App.auth.openModal()">
+                    Connexion
+                </button>
+                <button class="nav-toggle" id="navToggle" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="main-nav">
-        <div class="container">
-            <div class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('events')">
-                    Événements
-                </button>
-                <button class="tab-btn" onclick="switchTab('reservations')">
-                    Mes réservations
-                </button>
-                <button class="tab-btn" onclick="switchTab('dashboard')">
-                    Statistiques
-                </button>
+    <!-- Main SPA View -->
+    <main id="app" class="app"></main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer__inner">
+            <div class="footer__brand">
+                <span class="logo__text">Eventia</span>
+                <p>La billetterie événementielle moderne du Gabon.</p>
             </div>
+            <div class="footer__links">
+                <a href="#/events" data-nav>Événements</a>
+                <a href="#/reservations" data-nav>Mes billets</a>
+                <a href="admin.html">Administration</a>
+            </div>
+            <p class="footer__copy">&copy; 2026 Eventia. Tous droits réservés.</p>
         </div>
-    </nav>
+    </footer>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Events Tab -->
-            <div id="events" class="tab-content active">
-                <!-- Filters -->
-                <div class="filters-section">
-                    <h2 class="section-title">Trouve ton événement</h2>
-                    <div class="filters-grid">
-                        <div class="filter-group">
-                            <input type="text" id="searchInput" placeholder="Rechercher un événement..." oninput="filterEvents()">
-                        </div>
-                        <div class="filter-group">
-                            <select id="lieuFilter" onchange="filterEvents()">
-                                <option value="">Tous les lieux</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <select id="prixMaxFilter" onchange="filterEvents()">
-                                <option value="">Tous les prix</option>
-                                <option value="5000">Moins de 5 000 FCFA</option>
-                                <option value="10000">Moins de 10 000 FCFA</option>
-                                <option value="20000">Moins de 20 000 FCFA</option>
-                            </select>
-                        </div>
-                        <div class="filter-group">
-                            <button class="btn btn-secondary" onclick="resetFilters()">Réinitialiser</button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Auth Modal -->
+    <div class="modal" id="authModal" role="dialog" aria-modal="true">
+        <div class="modal__backdrop" onclick="App.auth.closeModal()"></div>
+        <div class="modal__panel">
+            <button class="modal__close" onclick="App.auth.closeModal()" aria-label="Fermer">&times;</button>
+            <h2 class="modal__title">Bienvenue sur Eventia</h2>
+            <p class="modal__subtitle">Connectez-vous pour réserver vos places</p>
 
-                <!-- Events Grid -->
-                <div id="eventsGrid" class="events-grid">
-                    <p class="loading">Chargement des événements...</p>
-                </div>
+            <div class="auth-tabs">
+                <button class="auth-tabs__btn active" data-auth-tab="login">Connexion</button>
+                <button class="auth-tabs__btn" data-auth-tab="register">Inscription</button>
             </div>
 
-            <!-- Reservations Tab -->
-            <div id="reservations" class="tab-content">
-                <h2 class="section-title">Mes réservations</h2>
-                <div id="reservationsList" class="reservations-list">
-                    <p class="loading">Connecte-toi pour voir tes réservations</p>
+            <form id="loginForm" class="auth-form" onsubmit="App.auth.login(event)">
+                <div class="form-field">
+                    <label for="loginTelephone">Téléphone</label>
+                    <input type="tel" id="loginTelephone" placeholder="+241 07 XX XX XX" required>
                 </div>
-            </div>
+                <button type="submit" class="btn btn--primary btn--full">Se connecter</button>
+            </form>
 
-            <!-- Dashboard Tab -->
-            <div id="dashboard" class="tab-content">
-                <h2 class="section-title">Statistiques des recettes</h2>
-                <div id="statsGrid" class="stats-grid">
-                    <p class="loading">Chargement des statistiques...</p>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- User Modal -->
-    <div class="modal" id="userModal">
-        <div class="modal-wrapper">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeUserModal()">×</button>
-                
-                <!-- Auth Tabs -->
-                <div class="auth-tabs">
-                    <button class="auth-tab active" onclick="switchAuthTab('register')">S'inscrire</button>
-                    <button class="auth-tab" onclick="switchAuthTab('login')">Se connecter</button>
-                </div>
-
-                <!-- Register Form -->
-                <div id="registerForm" class="auth-form">
-                    <div class="form-group">
-                        <label>Prénom *</label>
-                        <input type="text" id="regPrenom" placeholder="Votre prénom">
+            <form id="registerForm" class="auth-form" hidden onsubmit="App.auth.register(event)">
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="regPrenom">Prénom</label>
+                        <input type="text" id="regPrenom" required>
                     </div>
-                    <div class="form-group">
-                        <label>Nom *</label>
-                        <input type="text" id="regNom" placeholder="Votre nom">
+                    <div class="form-field">
+                        <label for="regNom">Nom</label>
+                        <input type="text" id="regNom" required>
                     </div>
-                    <div class="form-group">
-                        <label>Téléphone *</label>
-                        <input type="tel" id="regTelephone" placeholder="Ex: 06 00 00 00">
-                    </div>
-                    <div class="form-group">
-                        <label>Ville</label>
-                        <select id="regVille">
-                            <option value="Libreville">Libreville</option>
-                            <option value="Port-Gentil">Port-Gentil</option>
-                            <option value="Franceville">Franceville</option>
-                            <option value="Owendo">Owendo</option>
-                            <option value="Akanda">Akanda</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary btn-full" onclick="registerUser()">Créer un compte</button>
                 </div>
-
-                <!-- Login Form -->
-                <div id="loginForm" class="auth-form" style="display: none;">
-                    <div class="form-group">
-                        <label>Téléphone *</label>
-                        <input type="tel" id="loginTelephone" placeholder="Votre numéro de téléphone">
-                    </div>
-                    <button class="btn btn-primary btn-full" onclick="loginUser()">Se connecter</button>
+                <div class="form-field">
+                    <label for="regTelephone">Téléphone</label>
+                    <input type="tel" id="regTelephone" required>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Booking Modal -->
-    <div class="modal" id="bookingModal">
-        <div class="modal-wrapper">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeModal()">×</button>
-                <h3>Réserver un événement</h3>
-                <p id="modalEventTitle"></p>
-                <input type="hidden" id="modalEventId">
-                <div class="form-group">
-                    <label>Nombre de places *</label>
-                    <input type="number" id="ticketsCount" min="1" value="1">
+                <div class="form-field">
+                    <label for="regVille">Ville</label>
+                    <select id="regVille">
+                        <option value="Libreville">Libreville</option>
+                        <option value="Port-Gentil">Port-Gentil</option>
+                        <option value="Franceville">Franceville</option>
+                        <option value="Owendo">Owendo</option>
+                        <option value="Akanda">Akanda</option>
+                    </select>
                 </div>
-                <div class="modal-actions">
-                    <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
-                    <button class="btn btn-success" onclick="submitBooking()">Confirmer la réservation</button>
-                </div>
-            </div>
+                <button type="submit" class="btn btn--primary btn--full">Créer mon compte</button>
+            </form>
         </div>
     </div>
 
     <!-- Toast Container -->
-    <div id="toastContainer" class="toast-container"></div>
+    <div id="toastContainer" class="toast-container" aria-live="polite"></div>
 
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" hidden>
+        <div class="spinner"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
