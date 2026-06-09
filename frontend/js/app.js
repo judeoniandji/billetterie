@@ -146,7 +146,7 @@ function formatDate(dateStr) {
   return date.toLocaleDateString('fr-FR', options);
 }
 function formatPrice(price) {
-  return `${price.toFixed(2)} €`;
+  return `${price.toLocaleString('fr-FR')} FCFA`;
 }
 function isEventPast(eventDate) {
   return new Date(eventDate) < new Date();

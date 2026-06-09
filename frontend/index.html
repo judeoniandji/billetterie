@@ -39,14 +39,14 @@
     <section class="hero">
       <div class="container">
         <div class="hero-content text-center">
-          <h1 class="hero-title text-5xl font-semibold">Réservez vos événements en quelques clics</h1>
-          <p class="hero-subtitle text-xl text-secondary mt-4 mb-8">Concerts, spectacles, conférences et événements sportifs</p>
+          <h1 class="hero-title text-5xl font-semibold">Découvrez et réservez les meilleurs événements</h1>
+          <p class="hero-subtitle text-xl text-secondary mt-4 mb-8">Concerts, spectacles, conférences et événements sportifs près de chez vous</p>
           
           <!-- Search Bar -->
-          <div class="search-bar bg-white rounded-xl shadow-lg p-4 grid grid-cols-4 gap-4 max-w-4xl mx-auto">
+          <div class="search-bar">
             <div class="input-group mb-0">
               <label>Événement</label>
-              <input type="text" id="searchEvent" class="input" placeholder="Rechercher...">
+              <input type="text" id="searchEvent" class="input" placeholder="Rechercher un événement...">
             </div>
             <div class="input-group mb-0">
               <label>Ville</label>
@@ -63,7 +63,7 @@
               <input type="date" id="searchDate" class="input">
             </div>
             <div class="flex items-end">
-              <button class="btn btn-primary btn-full" onclick="searchEvents()">Rechercher</button>
+              <button class="btn btn-primary btn-full" onclick="searchEvents()">🔍 Rechercher</button>
             </div>
           </div>
         </div>
@@ -71,35 +71,36 @@
     </section>
 
     <!-- Popular Events -->
-    <section class="py-16 bg-white">
+    <section class="py-20 bg-white">
       <div class="container">
-        <h2 class="text-3xl font-semibold mb-8">Événements populaires</h2>
-        <div id="eventsGrid" class="grid grid-cols-3 gap-6"></div>
-        <div class="text-center mt-8">
-          <button class="btn btn-primary btn-lg" onclick="navigateTo('events')">Voir tous les événements</button>
+        <h2 class="text-3xl font-semibold mb-8 text-center">🔥 Événements populaires</h2>
+        <div id="eventsGrid" class="grid grid-cols-3 gap-8 mb-12"></div>
+        <div class="text-center">
+          <button class="btn btn-primary btn-lg" onclick="navigateTo('events')">Voir tous les événements →</button>
         </div>
       </div>
     </section>
 
     <!-- Features -->
-    <section class="py-16 bg-light">
+    <section class="py-20 bg-light">
       <div class="container">
-        <h2 class="text-3xl font-semibold text-center mb-12">Pourquoi EventPass ?</h2>
+        <h2 class="text-3xl font-semibold text-center mb-4">Pourquoi choisir EventPass ?</h2>
+        <p class="text-secondary text-center mb-12 text-lg">Une expérience simple, rapide et sécurisée</p>
         <div class="grid grid-cols-3 gap-8">
-          <div class="text-center">
-            <div class="text-5xl mb-4">⚡</div>
-            <h3 class="text-xl font-semibold mb-2">Réservation rapide</h3>
-            <p class="text-secondary">En quelques clics, vous avez vos billets</p>
+          <div class="feature-card">
+            <span class="feature-icon">⚡</span>
+            <h3>Réservation ultra-rapide</h3>
+            <p>En quelques clics, vous obtenez vos billets électroniques</p>
           </div>
-          <div class="text-center">
-            <div class="text-5xl mb-4">🔒</div>
-            <h3 class="text-xl font-semibold mb-2">Sécurisé</h3>
-            <p class="text-secondary">Paiement sécurisé et données protégées</p>
+          <div class="feature-card">
+            <span class="feature-icon">🔒</span>
+            <h3>100% sécurisé</h3>
+            <p>Vos données et vos paiements sont protégés</p>
           </div>
-          <div class="text-center">
-            <div class="text-5xl mb-4">📱</div>
-            <h3 class="text-xl font-semibold mb-2">Billet digital</h3>
-            <p class="text-secondary">QR code directement sur votre téléphone</p>
+          <div class="feature-card">
+            <span class="feature-icon">📱</span>
+            <h3>Billets digitaux</h3>
+            <p>QR code directement sur votre téléphone, rien à imprimer</p>
           </div>
         </div>
       </div>
@@ -109,7 +110,7 @@
   <!-- Footer -->
   <footer class="bg-white border-t border-gray-100 py-12">
     <div class="container text-center">
-      <div class="text-2xl font-bold text-primary mb-4">🎟️ EventPass</div>
+      <div class="text-2xl font-bold mb-4" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎟️ EventPass</div>
       <p class="text-secondary">© 2026 EventPass. Tous droits réservés.</p>
     </div>
   </footer>
@@ -122,10 +123,10 @@
     <div class="modal">
       <div class="modal-header">
         <h3 id="authModalTitle">Connexion</h3>
-        <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+        <button class="modal-close" onclick="closeModal('authModal')">×</button>
       </div>
       <div class="modal-body">
-        <div class="flex gap-2 mb-4">
+        <div class="flex gap-2 mb-6">
           <button class="btn flex-1" id="loginTab" onclick="switchAuthTab('login')">Se connecter</button>
           <button class="btn btn-outline flex-1" id="registerTab" onclick="switchAuthTab('register')">S'inscrire</button>
         </div>
