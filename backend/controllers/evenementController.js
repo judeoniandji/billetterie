@@ -22,7 +22,7 @@ exports.getEvenements = async (req, res) => {
     
     // Pagination
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 50;
     const skip = (page - 1) * limit;
 
     // Recherche textuelle (si index text est configuré)
@@ -41,15 +41,8 @@ exports.getEvenements = async (req, res) => {
     // Comptage total pour la pagination
     const total = await Evenement.countDocuments(filtres);
 
-    res.status(200).json({
-      evenements,
-      pagination: {
-        page,
-        limit,
-        total,
-        pages: Math.ceil(total / limit)
-      }
-    });
+    // RETOURNE DIRECTEMENT LE TABLEAU (pour compatibilité frontend)
+    res.status(200).json(evenements);
   } catch (error) {
     res.status(500).json({ message: "Erreur serveur", error: error.message });
   }

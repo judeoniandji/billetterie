@@ -35,16 +35,16 @@ async function loadEventsPage() {
     <div class="events-page">
       <div class="container">
         <h1 class="text-3xl font-semibold mb-8">Tous les événements</h1>
-        <div class="grid grid-cols-4 gap-6">
-          <div class="grid-cols-1">
-            <div class="filters-sidebar">
-              <div class="filter-section">
-                <h4 class="filter-title">Catégorie</h4>
-                <div class="filter-checkbox">
+        <div class="flex flex-col lg:flex-row gap-8">
+          <div class="lg:w-1/4">
+            <div class="filters-sidebar bg-white rounded-xl shadow-lg p-6 sticky top-6">
+              <div class="filter-section mb-6">
+                <h4 class="filter-title font-semibold mb-3 text-lg">Catégorie</h4>
+                <div class="filter-checkbox mb-2">
                   <input type="checkbox" id="cat-concert" class="category-filter" data-cat="Concert">
                   <label for="cat-concert">Concert</label>
                 </div>
-                <div class="filter-checkbox">
+                <div class="filter-checkbox mb-2">
                   <input type="checkbox" id="cat-sport" class="category-filter" data-cat="Sport">
                   <label for="cat-sport">Sport</label>
                 </div>
@@ -54,27 +54,27 @@ async function loadEventsPage() {
                 </div>
               </div>
 
-              <div class="filter-section">
-                <h4 class="filter-title">Prix maximum</h4>
-                <input type="range" id="priceRange" min="0" max="100000" value="100000" class="range-input" oninput="updatePriceDisplay()">
-                <p id="priceRangeDisplay" class="price-display">100 000 FCFA</p>
+              <div class="filter-section mb-6">
+                <h4 class="filter-title font-semibold mb-3 text-lg">Prix maximum</h4>
+                <input type="range" id="priceRange" min="0" max="100000" value="100000" class="range-input w-full" oninput="updatePriceDisplay()">
+                <p id="priceRangeDisplay" class="price-display font-semibold text-primary">100 000 FCFA</p>
               </div>
 
-              <div class="filter-section">
-                <h4 class="filter-title">Trier par</h4>
-                <select id="sortSelect" class="select" onchange="applyFilters()">
+              <div class="filter-section mb-6">
+                <h4 class="filter-title font-semibold mb-3 text-lg">Trier par</h4>
+                <select id="sortSelect" class="select w-full" onchange="applyFilters()">
                   <option value="date">Date</option>
                   <option value="price-asc">Prix croissant</option>
                   <option value="price-desc">Prix décroissant</option>
                 </select>
               </div>
 
-              <button class="btn btn-outline btn-full mt-4" onclick="resetFilters()">Réinitialiser</button>
+              <button class="btn btn-outline btn-full" onclick="resetFilters()">Réinitialiser</button>
             </div>
           </div>
 
-          <div class="grid-cols-3">
-            <div id="eventsList" class="grid grid-cols-2 gap-6"></div>
+          <div class="lg:w-3/4">
+            <div id="eventsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"></div>
           </div>
         </div>
       </div>
@@ -325,9 +325,11 @@ async function confirmPayment(eventId, ticketCount, total) {
     const reservationData = {
       utilisateur_id: currentUser._id, evenement_id: eventId, nombre_places: ticketCount
     };
-    const reservation = await window.api.createReservation(reservationData);
-    await window.api.payReservation(reservation._id);
-    loadTicketPage(reservation, selectedEvent, ticketCount);
+    const result = await window.api.createReservation(reservationData);
+    const reservation = result.reservation; // extract from { message, reservation }
+    const payResult = await window.api.payReservation(reservation._id);
+    showToast('Paiement confirmé! Votre billet est prêt!', 'success');
+    navigateTo('myTickets');
   } catch(e) {
     showToast(e.message || 'Erreur de paiement', 'error');
   }

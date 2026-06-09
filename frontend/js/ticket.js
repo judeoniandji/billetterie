@@ -144,7 +144,7 @@ function renderMyTicket(reservation) {
 function generateMyTicketsQRCodes(reservations) {
   setTimeout(() => {
     reservations.forEach(r => {
-      if (r.statut === 'PAYEE') {
+      if (r.statut === 'PAYEE' || r.statut === 'CONFIRMEE') {
         const container = document.getElementById(`qrcode-${r._id}`);
         if (container) {
           container.innerHTML = '';

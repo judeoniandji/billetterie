@@ -87,7 +87,8 @@ async function handleLogin() {
   const phone = document.getElementById('loginPhone').value.trim();
   if (!phone) return showToast('Veuillez renseigner votre téléphone', 'error');
   try {
-    const user = await window.api.registerOrLoginUser({ telephone: phone });
+    const result = await window.api.registerOrLoginUser({ telephone: phone });
+    const user = result.utilisateur || result; // handle both cases
     currentUser = user;
     localStorage.setItem('eventpass_user', JSON.stringify(user));
     closeModal('authModal');
@@ -111,7 +112,8 @@ async function handleRegister() {
   }
   
   try {
-    const user = await window.api.registerOrLoginUser({ prenom, nom, telephone, ville });
+    const result = await window.api.registerOrLoginUser({ prenom, nom, telephone, ville });
+    const user = result.utilisateur || result;
     currentUser = user;
     localStorage.setItem('eventpass_user', JSON.stringify(user));
     closeModal('authModal');

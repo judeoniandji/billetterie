@@ -29,6 +29,6 @@ async function registerOrLoginUser(data) { return apiRequest('/utilisateurs', { 
 // --- Reservations ---
 async function createReservation(data) { return apiRequest('/reservations', { method: 'POST', body: JSON.stringify(data) }); }
 async function getReservationsByUser(userId) { return apiRequest(`/reservations/utilisateur/${userId}`); }
-async function payReservation(id) { return apiRequest(`/reservations/${id}/payer`, { method: 'PUT' }); }
+async function payReservation(id) { return apiRequest(`/reservations/${id}/payer`, { method: 'POST' }); }
 
 window.api = { getEvents, getEventById, registerOrLoginUser, createReservation, getReservationsByUser, payReservation };
