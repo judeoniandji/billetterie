@@ -8,6 +8,11 @@
   box-shadow: var(--shadow-sm);
   padding: 2rem;
   text-align: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.stats-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
 }
 .stats-icon { font-size: 3rem; margin-bottom: 1rem; }
 .stats-value {
@@ -24,9 +29,20 @@
   background: var(--bg-light);
   padding: 1rem 1.5rem;
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 .admin-table td {
   padding: 1rem 1.5rem;
   border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.admin-event-thumbnail {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
 }

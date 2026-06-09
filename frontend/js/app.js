@@ -4,12 +4,35 @@
 let currentUser = null;
 let currentPage = 'home';
 let isDarkMode = false;
+let logoClickCount = 0;
+let logoClickTimer = null;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
   loadDarkMode();
   renderAuthSection();
+  
+  // Easter egg pour le bouton admin
+  const logo = document.querySelector('.logo');
+  if (logo) {
+    logo.addEventListener('click', (e) => {
+      e.preventDefault();
+      logoClickCount++;
+      
+      // Réinitialiser le compteur après 2 secondes sans clic
+      if (logoClickTimer) clearTimeout(logoClickTimer);
+      logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2000);
+      
+      if (logoClickCount >= 5) {
+        // Afficher le bouton admin
+        const adminNav = document.getElementById('adminNavLink');
+        adminNav.classList.remove('hidden');
+        showToast('Mode admin activé ! 🎉', 'success');
+        logoClickCount = 0;
+      }
+    });
+  }
 });
 
 // --- Dark Mode ---
