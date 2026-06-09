@@ -203,23 +203,6 @@ function loadEventDetailPage(event) {
               </div>
               
               <div class="p-6">
-                <div class="border-b border-gray-100 pb-5 mb-6">
-                  <div class="flex items-center gap-3 py-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">📅</div>
-                    <div>
-                      <div class="text-sm text-gray-500">Date</div>
-                      <div class="font-semibold text-gray-800">${formatDate(event.date)}</div>
-                    </div>
-                  </div>
-                  <div class="flex items-center gap-3 py-3">
-                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">📍</div>
-                    <div>
-                      <div class="text-sm text-gray-500">Lieu</div>
-                      <div class="font-semibold text-gray-800">${event.lieu}</div>
-                    </div>
-                  </div>
-                </div>
-                
                 <div class="mb-6">
                   <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre de places</label>
                   <div class="flex items-center gap-3">
