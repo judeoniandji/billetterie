@@ -159,6 +159,22 @@ body {
   color: var(--text-primary);
 }
 
+/* ---------- EVENT DETAIL PAGE ---------- */
+.absolute.inset-0 {
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+.bg-gradient-to-t {
+  background: linear-gradient(to top, var(--tw-gradient-to), var(--tw-gradient-from));
+}
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+}
+.from-primary-light { --tw-gradient-from: var(--primary-light); }
+.to-white { --tw-gradient-to: white; }
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 768px) {
   .nav { display: none; }

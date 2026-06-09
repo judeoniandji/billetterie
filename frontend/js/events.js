@@ -151,62 +151,101 @@ function loadEventDetailPage(event) {
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1600&q=80';
   
   main.innerHTML = `
-    <div class="py-8">
-      <div class="container">
-        <button class="btn btn-outline mb-8" onclick="navigateTo('events')">← Retour aux événements</button>
+    <div>
+      <!-- Hero Section with Event Image -->
+      <div class="relative w-full h-[450px] overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${imgUrl}')"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
         
-        <div class="grid grid-cols-3 gap-8">
-          <div class="grid-cols-2">
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-              <div class="w-full h-80 bg-cover bg-center" style="background-image: url('${imgUrl}')"></div>
+        <!-- Back Button -->
+        <div class="relative container pt-6">
+          <button class="bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full hover:bg-white/30 transition-all flex items-center gap-2" onclick="navigateTo('events')">
+            <span>←</span> Retour aux événements
+          </button>
+        </div>
+        
+        <!-- Hero Text -->
+        <div class="relative container absolute bottom-0 left-0 right-0 pb-12">
+          <div class="flex items-center gap-4 text-white/90 mb-4">
+            <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm flex items-center gap-2">
+              📅 ${formatDate(event.date)}
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm flex items-center gap-2">
+              📍 ${event.lieu}
+            </span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">${event.titre}</h1>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="container py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <!-- Left Column: Details -->
+          <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-lg p-8">
+              <h2 class="text-2xl font-bold mb-4 text-gray-800">À propos de cet événement</h2>
+              <p class="text-gray-600 leading-relaxed text-lg">${event.description || 'Rejoignez-nous pour un événement inoubliable rempli de moments exceptionnels !'}</p>
+            </div>
+          </div>
+          
+          <!-- Right Column: Booking Card -->
+          <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-24">
+              <div class="p-6 bg-gradient-to-r from-primary-light to-white">
+                <div class="text-3xl font-extrabold text-primary mb-2">${formatPrice(event.prix)}</div>
+                <div class="flex items-center gap-2 text-gray-600">
+                  <span class="text-xl">🎟️</span>
+                  <span class="font-medium">
+                    ${event.places_disponibles} place${event.places_disponibles > 1 ? 's' : ''} restante${event.places_disponibles > 1 ? 's' : ''}
+                  </span>
+                </div>
+              </div>
               
-              <div class="p-8">
-                <div class="flex items-center gap-2 text-sm text-secondary mb-3">
-                  <span>📅 ${formatDate(event.date)}</span>
-                  <span>•</span>
-                  <span>📍 ${event.lieu}</span>
+              <div class="p-6">
+                <div class="border-b border-gray-100 pb-5 mb-6">
+                  <div class="flex items-center gap-3 py-3">
+                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">📅</div>
+                    <div>
+                      <div class="text-sm text-gray-500">Date</div>
+                      <div class="font-semibold text-gray-800">${formatDate(event.date)}</div>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-3 py-3">
+                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-xl">📍</div>
+                    <div>
+                      <div class="text-sm text-gray-500">Lieu</div>
+                      <div class="font-semibold text-gray-800">${event.lieu}</div>
+                    </div>
+                  </div>
                 </div>
                 
-                <h1 class="text-4xl font-semibold mb-4">${event.titre}</h1>
-                <p class="text-secondary leading-relaxed mb-8">${event.description || 'Découvrez un événement exceptionnel !'}</p>
-              </div>
-              </div>
-          </div>
-
-          <div class="grid-cols-1">
-            <div class="bg-white rounded-xl shadow-lg p-8">
-              <div class="mb-6">
-                <h3 class="text-2xl font-semibold mb-2">${formatPrice(event.prix)}</h3>
-                <div class="flex items-center gap-2 text-sm text-secondary">
-                  <span>🎟️ ${event.places_disponibles} places restantes</span>
+                <div class="mb-6">
+                  <label class="block text-sm font-semibold text-gray-700 mb-2">Nombre de places</label>
+                  <div class="flex items-center gap-3">
+                    <button class="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xl transition-all" onclick="updateTicketCount(-1)">-</button>
+                    <input type="number" id="ticketCount" value="1" min="1" max="${event.places_disponibles}" class="w-20 text-center text-xl font-semibold border-2 border-gray-100 rounded-xl py-2 focus:outline-none focus:border-primary" readonly>
+                    <button class="w-12 h-12 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xl transition-all" onclick="updateTicketCount(1)">+</button>
+                  </div>
                 </div>
+                
+                <button class="btn btn-primary btn-full btn-lg" onclick="startReservation('${event._id}')">
+                  Réserver maintenant
+                </button>
               </div>
-
-              <div class="border-t border-b border-gray-100 py-6 mb-6">
-                <div class="flex justify-between mb-4">
-                  <span class="text-secondary">Date</span>
-                  <span class="font-semibold">${formatDate(event.date)}</span>
-                </div>
-                <div class="flex justify-between">
-                  <span class="text-secondary">Lieu</span>
-                  <span class="font-semibold">${event.lieu}</span>
-                </div>
-              </div>
-
-              <div class="input-group mb-6">
-                <label>Nombre de places</label>
-                <input type="number" id="ticketCount" value="1" min="1" max="${event.places_disponibles}" class="input">
-              </div>
-
-              <button class="btn btn-primary btn-full btn-lg" onclick="startReservation('${event._id}')">
-                Réserver maintenant
-              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   `;
+}
+
+function updateTicketCount(delta) {
+  const input = document.getElementById('ticketCount');
+  let count = parseInt(input.value) + delta;
+  count = Math.max(1, Math.min(count, parseInt(input.max)));
+  input.value = count;
 }
 
 async function startReservation(eventId) {
