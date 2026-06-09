@@ -136,11 +136,16 @@ function switchAuthTab(tab) {
 }
 
 function handleLogout() {
+  const userName = currentUser ? `${currentUser.prenom} ${currentUser.nom}` : '';
   localStorage.removeItem('eventpass_user');
   currentUser = null;
   renderAuthSection();
   if (currentPage !== 'home') navigateTo('home');
-  showToast('Vous êtes déconnecté.', 'info');
+  if (userName) {
+    showToast(`Au revoir ${userName} ! À bientôt sur EventPass !`, 'info');
+  } else {
+    showToast('Vous êtes déconnecté.', 'info');
+  }
 }
 
 // --- Navigation ---

@@ -92,7 +92,9 @@ async function handleLogin() {
     localStorage.setItem('eventpass_user', JSON.stringify(user));
     closeModal('authModal');
     renderAuthSection();
-    showToast('Connexion réussie !', 'success');
+    // Message personnalisé
+    const roleText = user.role === 'admin' ? 'Administrateur' : 'Acheteur';
+    showToast(`Bonjour ${user.prenom} ${user.nom} ! (${roleText})`, 'success');
   } catch (e) {
     showToast(e.message || 'Erreur de connexion', 'error');
   }
@@ -114,7 +116,8 @@ async function handleRegister() {
     localStorage.setItem('eventpass_user', JSON.stringify(user));
     closeModal('authModal');
     renderAuthSection();
-    showToast('Inscription réussie !', 'success');
+    // Message personnalisé
+    showToast(`Bonjour ${user.prenom} ${user.nom} ! Bienvenue sur EventPass !`, 'success');
   } catch (e) {
     showToast(e.message || 'Erreur d\'inscription', 'error');
   }
