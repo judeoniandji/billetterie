@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: eventpass-billetterie
+    env: node
+    plan: starter
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: MONGO_URI
+        sync: false
+      - key: PORT
+        value: 10000
+    autoDeploy: true
