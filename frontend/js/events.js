@@ -266,74 +266,93 @@ function loadReservationPage(event, ticketCount) {
   },1000);
 
   main.innerHTML = `
-    <div class="py-16">
-      <div class="container max-w-5xl">
-        <h1 class="text-3xl font-semibold mb-8 text-center">Finaliser votre réservation</h1>
+    <div class="py-12">
+      <div class="container max-w-4xl">
+        <!-- Back button -->
+        <button class="flex items-center gap-2 text-gray-600 hover:text-primary mb-8 transition-colors" onclick="navigateTo('events')">
+          <span class="text-2xl">←</span>
+          <span class="font-semibold">Retour à l'événement</span>
+        </button>
         
-        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8 flex items-center gap-4">
-          <span class="text-4xl">⏱️</span>
-          <div>
-            <h3 class="font-semibold text-xl mb-1">Votre réservation est en attente !</h3>
-            <p class="text-yellow-800">Vous avez <span id="reservationTimer" class="font-bold text-red-600 text-2xl">10:00</span> pour confirmer votre paiement.</p>
+        <!-- Timer banner -->
+        <div class="bg-gradient-to-r from-yellow-100 via-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-6 mb-10 flex items-center gap-5">
+          <div class="w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center text-3xl">⏱️</div>
+          <div class="flex-1">
+            <h2 class="font-bold text-2xl text-yellow-800 mb-2">Votre réservation est en attente !</h2>
+            <p class="text-yellow-700">
+              Vous avez <span id="reservationTimer" class="font-extrabold text-3xl text-red-600 mx-1">10:00</span> pour confirmer votre paiement avant que vos places ne soient libérées.
+            </p>
           </div>
         </div>
         
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="bg-white rounded-xl shadow-lg p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <span class="text-3xl">👤</span>
-              <h3 class="text-xl font-semibold">Informations personnelles</h3>
-            </div>
-            <div class="space-y-6">
-              <div class="input-group">
-                <label class="text-sm font-semibold text-gray-700">Nom complet</label>
-                <input type="text" class="input bg-gray-50" value="${currentUser.prenom} ${currentUser.nom}" disabled>
+        <!-- Two-column layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <!-- Left: User info (2/3 on desktop) -->
+          <div class="lg:col-span-2">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+              <div class="flex items-center gap-3 mb-7 pb-5 border-b border-gray-100">
+                <div class="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center text-2xl">👤</div>
+                <h3 class="text-xl font-bold text-gray-800">Vos informations</h3>
               </div>
-              <div class="input-group">
-                <label class="text-sm font-semibold text-gray-700">Téléphone</label>
-                <input type="text" class="input bg-gray-50" value="${currentUser.telephone}" disabled>
-              </div>
-              <div class="input-group">
-                <label class="text-sm font-semibold text-gray-700">Email</label>
-                <input type="email" class="input" placeholder="votre@email.com" value="${currentUser.email || ''}">
+              
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="bg-gray-50 rounded-xl p-5">
+                  <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Nom complet</label>
+                  <div class="font-semibold text-gray-800 text-lg">${currentUser.prenom} ${currentUser.nom}</div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-5">
+                  <label class="text-xs font-semibold text-gray-500 uppercase tracking-wider block mb-2">Téléphone</label>
+                  <div class="font-semibold text-gray-800 text-lg">${currentUser.telephone}</div>
+                </div>
               </div>
             </div>
           </div>
           
-          <div class="bg-white rounded-xl shadow-lg p-8">
-            <div class="flex items-center gap-3 mb-6">
-              <span class="text-3xl">🎫</span>
-              <h3 class="text-xl font-semibold">Récapitulatif de la commande</h3>
-            </div>
-            
-            <div class="mb-8 pb-8 border-b border-gray-200">
-              <div class="flex items-start gap-4 mb-4">
-                <div class="w-20 h-20 bg-cover bg-center rounded-lg" style="background-image: url('${event.image}')"></div>
-                <div class="flex-1">
-                  <h4 class="font-semibold text-lg">${event.titre}</h4>
-                  <p class="text-sm text-secondary">📍 ${event.lieu}</p>
-                  <p class="text-sm text-secondary">📅 ${formatDate(event.date)}</p>
-                </div>
-              </div>
+          <!-- Right: Order summary (1/3 on desktop) -->
+          <div class="lg:col-span-1">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden sticky top-24">
+              <!-- Event banner -->
+              <div class="h-40 bg-cover bg-center" style="background-image: url('${event.image}')"></div>
               
-              <div class="flex justify-between items-center py-3 border-t border-gray-100">
-                <span class="text-secondary">Nombre de places</span>
-                <span class="font-semibold text-lg">${ticketCount}</span>
-              </div>
-              <div class="flex justify-between items-center py-3 border-t border-gray-100">
-                <span class="text-secondary">Prix par place</span>
-                <span class="font-semibold">${formatPrice(event.prix)}</span>
+              <div class="p-7">
+                <h4 class="font-bold text-xl text-gray-800 mb-2">${event.titre}</h4>
+                <div class="flex items-center gap-2 text-gray-500 mb-1">
+                  <span>📍</span>
+                  <span class="text-sm">${event.lieu}</span>
+                </div>
+                <div class="flex items-center gap-2 text-gray-500 mb-6">
+                  <span>📅</span>
+                  <span class="text-sm">${formatDate(event.date)}</span>
+                </div>
+                
+                <!-- Details list -->
+                <div class="space-y-3 mb-6">
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Nombre de places</span>
+                    <span class="font-semibold text-gray-800">${ticketCount}</span>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                    <span class="text-gray-500">Prix par place</span>
+                    <span class="font-semibold text-gray-800">${formatPrice(event.prix)}</span>
+                  </div>
+                </div>
+                
+                <!-- Divider -->
+                <div class="border-t border-gray-200 mb-6"></div>
+                
+                <!-- Total -->
+                <div class="flex justify-between items-center mb-7 p-4 bg-gradient-to-r from-primary-light to-white rounded-xl">
+                  <span class="font-bold text-xl text-gray-800">Total</span>
+                  <span class="text-3xl font-extrabold text-primary">${formatPrice(totalPrice)}</span>
+                </div>
+                
+                <!-- Pay button -->
+                <button class="btn btn-primary btn-full btn-lg text-lg py-5 flex items-center justify-center gap-2" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
+                  <span>✅</span>
+                  Confirmer et payer
+                </button>
               </div>
             </div>
-            
-            <div class="flex justify-between items-center mb-8 p-4 bg-primary-light rounded-xl">
-              <span class="font-semibold text-xl">Total à payer</span>
-              <span class="font-bold text-2xl text-primary">${formatPrice(totalPrice)}</span>
-            </div>
-            
-            <button class="btn btn-success btn-full btn-lg text-lg py-4" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
-              ✅ Confirmer et payer
-            </button>
           </div>
         </div>
       </div>

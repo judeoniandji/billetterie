@@ -1,74 +1,6 @@
 /* ========================================
    TICKET PAGE & MY TICKETS
    ======================================== */
-function loadTicketPage(reservation, event, ticketCount) {
-  const main = document.getElementById('mainContent');
-  const code = `EP-${reservation._id.substring(0, 8).toUpperCase()}`;
-  
-  main.innerHTML = `
-    <div class="ticket-wrapper">
-      <div class="container">
-        <div class="text-center mb-8">
-          <h1 class="text-3xl font-semibold mb-2">🎉 Paiement confirmé !</h1>
-          <p class="text-secondary">Votre billet est prêt</p>
-        </div>
-        
-        <div class="ticket">
-          <div class="ticket-header">
-            <h2 class="ticket-title">${event.titre}</h2>
-            <p class="ticket-subtitle">Billet EventPass</p>
-          </div>
-          
-          <div class="ticket-body">
-            <div class="ticket-info">
-              <h4>Détails de l'événement</h4>
-              <div class="ticket-detail">
-                <span class="ticket-label">Nom</span>
-                <span class="font-semibold">${currentUser.prenom} ${currentUser.nom}</span>
-              </div>
-              <div class="ticket-detail">
-                <span class="ticket-label">Date</span>
-                <span class="font-semibold">${formatDate(event.date)}</span>
-              </div>
-              <div class="ticket-detail">
-                <span class="ticket-label">Lieu</span>
-                <span class="font-semibold">${event.lieu}</span>
-              </div>
-              <div class="ticket-detail">
-                <span class="ticket-label">Places</span>
-                <span class="font-semibold">${ticketCount}</span>
-              </div>
-              <div class="ticket-detail">
-                <span class="ticket-label">Code unique</span>
-                <span class="font-semibold text-primary">${code}</span>
-              </div>
-            </div>
-            
-            <div class="ticket-qr">
-              <div class="ticket-status">✅ Confirmé</div>
-              <div id="qrcode"></div>
-              <p class="text-sm text-secondary mt-4">Présentez ce QR code à l'entrée</p>
-            </div>
-          </div>
-        </div>
-        
-        <div class="flex gap-4 justify-center mt-8">
-          <button class="btn btn-primary" onclick="downloadTicket('${code}')">Télécharger PDF</button>
-          <button class="btn btn-outline" onclick="navigateTo('home')">Retour à l'accueil</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  setTimeout(() => {
-    const qrContainer = document.getElementById('qrcode');
-    qrContainer.innerHTML = '';
-    new QRCode(qrContainer, {
-      text: code, width:180, height:180, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
-    });
-  },100);
-}
-
 async function loadMyTicketsPage() {
   if (!currentUser) {
     navigateTo('home');
@@ -79,6 +11,7 @@ async function loadMyTicketsPage() {
     const reservations = await window.api.getReservationsByUser(currentUser._id);
     renderMyTickets(reservations);
   } catch (e) {
+    console.log(e);
     showToast('Erreur de chargement', 'error');
     renderMyTickets([]);
   }
@@ -91,10 +24,10 @@ function renderMyTickets(reservations) {
   
   if (filteredReservations.length === 0) {
     main.innerHTML = `
-      <div class="py-16 text-center">
-        <div class="text-6xl mb-4">🎟️</div>
-        <h2 class="text-2xl font-semibold mb-2">Vous n'avez pas de billet</h2>
-        <p class="text-secondary mb-6">Découvrez nos événements et réservez votre première place !</p>
+      <div class="py-20 text-center">
+        <div class="text-7xl mb-6">🎫</div>
+        <h2 class="text-3xl font-bold mb-3">Vous n'avez pas de billet</h2>
+        <p class="text-gray-500 mb-8 text-lg">Découvrez nos événements et réservez votre première place !</p>
         <button class="btn btn-primary btn-lg" onclick="navigateTo('events')">Voir les événements</button>
       </div>
     `;
@@ -102,9 +35,12 @@ function renderMyTickets(reservations) {
   }
   
   main.innerHTML = `
-    <div class="container py-12">
-      <h1 class="text-3xl font-semibold mb-8">Mes billets</h1>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="container py-16">
+      <div class="flex items-center gap-3 mb-10">
+        <span class="text-4xl">🎟️</span>
+        <h1 class="text-4xl font-extrabold">Mes billets</h1>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         ${filteredReservations.map(renderMyTicket).join('')}
       </div>
     </div>
@@ -115,26 +51,65 @@ function renderMyTickets(reservations) {
 }
 
 function renderMyTicket(reservation) {
-  const event = window.allEvents.find(e => e._id === reservation.evenement_id);
+  // Handle both embedded event and ref
+  let event;
+  if (reservation.evenement_id && typeof reservation.evenement_id === 'object') {
+    event = reservation.evenement_id;
+  } else {
+    event = window.allEvents.find(e => e._id === reservation.evenement_id);
+  }
+  
   if (!event) return '';
+  
   const code = `EP-${reservation._id.substring(0, 8).toUpperCase()}`;
   
   return `
-    <div class="card" id="ticket-${reservation._id}">
-      <div class="event-card-image" style="background-image: url('${event.image}')"></div>
-      <div class="p-6">
-        <h3 class="text-xl font-semibold mb-2">${event.titre}</h3>
-        <p class="text-secondary mb-2">📍 ${event.lieu}</p>
-        <p class="text-secondary mb-4">📅 ${formatDate(event.date)}</p>
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-sm text-success font-semibold">✅ Confirmé</span>
-          <span class="text-sm font-semibold">${reservation.nombre_places} place(s)</span>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300">
+      <!-- Ticket top gradient -->
+      <div class="h-3 bg-gradient-to-r from-[#1e3a8a] via-[#10b981] to-[#1e3a8a]"></div>
+      
+      <div class="p-7">
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-2">${event.titre}</h3>
+            <div class="flex items-center gap-2 text-gray-500">
+              <span>📍</span>
+              <span class="text-lg">${event.lieu}</span>
+            </div>
+          </div>
+          <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full font-semibold text-sm">✅ Confirmé</span>
         </div>
-        <div class="text-center mb-4">
-          <div id="qrcode-${reservation._id}" class="inline-block"></div>
+        
+        <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-100">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">📅</span>
+            <div>
+              <div class="text-sm text-gray-500">Date</div>
+              <div class="font-semibold text-gray-800">${formatDate(event.date)}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🎫</span>
+            <div>
+              <div class="text-sm text-gray-500">Places</div>
+              <div class="font-semibold text-gray-800">${reservation.nombre_places}</div>
+            </div>
+          </div>
         </div>
-        <p class="text-center text-sm text-secondary font-semibold mb-4">Code : ${code}</p>
-        <button class="btn btn-primary btn-full btn-sm" onclick="downloadTicket('${code}')">📥 Télécharger</button>
+        
+        <div class="flex items-center justify-between gap-6">
+          <div class="bg-gray-50 rounded-xl p-3">
+            <div id="qrcode-${reservation._id}"></div>
+          </div>
+          <div class="text-right flex-1">
+            <div class="text-xs text-gray-500 uppercase tracking-wider font-semibold mb-1">Code billet</div>
+            <div class="text-2xl font-extrabold text-[#1e3a8a]">${code}</div>
+          </div>
+        </div>
+        
+        <div class="mt-6">
+          <button class="btn btn-primary btn-full" onclick="downloadTicket('${code}')">📥 Télécharger</button>
+        </div>
       </div>
     </div>
   `;
@@ -150,7 +125,7 @@ function generateMyTicketsQRCodes(reservations) {
           container.innerHTML = '';
           const code = `EP-${r._id.substring(0, 8).toUpperCase()}`;
           new QRCode(container, {
-            text: code, width: 120, height: 120, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
+            text: code, width: 100, height: 100, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
           });
         }
       }
