@@ -42,7 +42,7 @@ function loadDarkMode() {
   if (stored === 'true') {
     isDarkMode = true;
     document.body.classList.add('dark-mode');
-    document.getElementById('darkModeBtn').textContent = '☀️ Mode Clair';
+    document.getElementById('darkModeBtn').textContent = 'Mode Clair';
   }
 }
 
@@ -50,11 +50,11 @@ function toggleDarkMode() {
   isDarkMode = !isDarkMode;
   if (isDarkMode) {
     document.body.classList.add('dark-mode');
-    document.getElementById('darkModeBtn').textContent = '☀️ Mode Clair';
+    document.getElementById('darkModeBtn').textContent = 'Mode Clair';
     localStorage.setItem('eventpass_darkmode', 'true');
   } else {
     document.body.classList.remove('dark-mode');
-    document.getElementById('darkModeBtn').textContent = '🌙 Mode Sombre';
+    document.getElementById('darkModeBtn').textContent = 'Mode Sombre';
     localStorage.setItem('eventpass_darkmode', 'false');
   }
 }
@@ -63,9 +63,8 @@ function toggleDarkMode() {
 function showToast(message, type = 'info') {
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
-  const icons = { success: '✅', error: '❌', warning: '⚠️', info: 'ℹ️' };
   toast.className = `toast toast-${type}`;
-  toast.innerHTML = `<span class="text-xl">${icons[type]}</span><span>${message}</span>`;
+  toast.innerHTML = `<span>${message}</span>`;
   container.appendChild(toast);
   
   setTimeout(() => {

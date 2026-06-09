@@ -46,10 +46,10 @@ function createEventCard(event) {
       </div>
       <div class="event-card-content">
         <h3 class="event-card-title">${event.titre}</h3>
-        <p class="text-secondary mb-2">📍 ${event.lieu} • ${formatDate(event.date)}</p>
+        <p class="text-secondary mb-2">${event.lieu} • ${formatDate(event.date)}</p>
         <div class="event-card-meta">
           <div class="event-card-date">
-            <span>🎟️ ${event.places_disponibles} places</span>
+            <span>${event.places_disponibles} places</span>
           </div>
           <div class="event-card-price">${formatPrice(event.prix)}</div>
         </div>

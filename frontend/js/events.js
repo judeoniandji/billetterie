@@ -17,10 +17,10 @@ function createEventCard(event) {
       </div>
       <div class="event-card-content">
         <h3 class="event-card-title">${event.titre}</h3>
-        <p class="text-secondary mb-2">📍 ${event.lieu} • ${formatDate(event.date)}</p>
+        <p class="text-secondary mb-2">${event.lieu} • ${formatDate(event.date)}</p>
         <div class="event-card-meta">
           <div class="event-card-date">
-            <span>🎟️ ${event.places_disponibles} places</span>
+            <span>${event.places_disponibles} places</span>
           </div>
           <div class="event-card-price">${formatPrice(event.prix)}</div>
         </div>
@@ -168,10 +168,10 @@ function loadEventDetailPage(event) {
         <div class="relative container absolute bottom-0 left-0 right-0 pb-12">
           <div class="flex items-center gap-4 text-white/90 mb-4">
             <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm flex items-center gap-2">
-              📅 ${formatDate(event.date)}
+              ${formatDate(event.date)}
             </span>
             <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm flex items-center gap-2">
-              📍 ${event.lieu}
+              ${event.lieu}
             </span>
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">${event.titre}</h1>
@@ -195,7 +195,6 @@ function loadEventDetailPage(event) {
               <div class="p-6 bg-gradient-to-r from-primary-light to-white">
                 <div class="text-3xl font-extrabold text-primary mb-2">${formatPrice(event.prix)}</div>
                 <div class="flex items-center gap-2 text-gray-600">
-                  <span class="text-xl">🎟️</span>
                   <span class="font-medium">
                     ${event.places_disponibles} place${event.places_disponibles > 1 ? 's' : ''} restante${event.places_disponibles > 1 ? 's' : ''}
                   </span>
@@ -276,7 +275,7 @@ function loadReservationPage(event, ticketCount) {
         
         <!-- Timer banner -->
         <div class="bg-gradient-to-r from-yellow-100 via-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-6 mb-10 flex items-center gap-5">
-          <div class="w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center text-3xl">⏱️</div>
+          <div class="w-16 h-16 bg-yellow-300 rounded-full flex items-center justify-center"></div>
           <div class="flex-1">
             <h2 class="font-bold text-2xl text-yellow-800 mb-2">Votre réservation est en attente !</h2>
             <p class="text-yellow-700">
@@ -291,7 +290,7 @@ function loadReservationPage(event, ticketCount) {
           <div class="lg:col-span-2">
             <div class="bg-white rounded-2xl shadow-xl p-8">
               <div class="flex items-center gap-3 mb-7 pb-5 border-b border-gray-100">
-                <div class="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center text-2xl">👤</div>
+                <div class="w-12 h-12 bg-primary-light rounded-xl flex items-center justify-center"></div>
                 <h3 class="text-xl font-bold text-gray-800">Vos informations</h3>
               </div>
               
@@ -317,11 +316,9 @@ function loadReservationPage(event, ticketCount) {
               <div class="p-7">
                 <h4 class="font-bold text-xl text-gray-800 mb-2">${event.titre}</h4>
                 <div class="flex items-center gap-2 text-gray-500 mb-1">
-                  <span>📍</span>
                   <span class="text-sm">${event.lieu}</span>
                 </div>
                 <div class="flex items-center gap-2 text-gray-500 mb-6">
-                  <span>📅</span>
                   <span class="text-sm">${formatDate(event.date)}</span>
                 </div>
                 
@@ -348,7 +345,6 @@ function loadReservationPage(event, ticketCount) {
                 
                 <!-- Pay button -->
                 <button class="btn btn-primary btn-full btn-lg text-lg py-5 flex items-center justify-center gap-2" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
-                  <span>✅</span>
                   Confirmer et payer
                 </button>
               </div>

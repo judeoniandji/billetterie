@@ -25,7 +25,6 @@ function renderMyTickets(reservations) {
   if (filteredReservations.length === 0) {
     main.innerHTML = `
       <div class="py-20 text-center">
-        <div class="text-7xl mb-6">🎫</div>
         <h2 class="text-3xl font-bold mb-3">Vous n'avez pas de billet</h2>
         <p class="text-gray-500 mb-8 text-lg">Découvrez nos événements et réservez votre première place !</p>
         <button class="btn btn-primary btn-lg" onclick="navigateTo('events')">Voir les événements</button>
@@ -37,7 +36,6 @@ function renderMyTickets(reservations) {
   main.innerHTML = `
     <div class="container py-16">
       <div class="flex items-center gap-3 mb-10">
-        <span class="text-4xl">🎟️</span>
         <h1 class="text-4xl font-extrabold">Mes billets</h1>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -73,23 +71,20 @@ function renderMyTicket(reservation) {
           <div>
             <h3 class="text-2xl font-bold text-gray-800 mb-2">${event.titre}</h3>
             <div class="flex items-center gap-2 text-gray-500">
-              <span>📍</span>
               <span class="text-lg">${event.lieu}</span>
             </div>
           </div>
-          <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full font-semibold text-sm">✅ Confirmé</span>
+          <span class="bg-green-100 text-green-700 px-4 py-1 rounded-full font-semibold text-sm">Confirmé</span>
         </div>
         
         <div class="flex items-center gap-6 mb-6 pb-6 border-b border-gray-100">
           <div class="flex items-center gap-3">
-            <span class="text-2xl">📅</span>
             <div>
               <div class="text-sm text-gray-500">Date</div>
               <div class="font-semibold text-gray-800">${formatDate(event.date)}</div>
             </div>
           </div>
           <div class="flex items-center gap-3">
-            <span class="text-2xl">🎫</span>
             <div>
               <div class="text-sm text-gray-500">Places</div>
               <div class="font-semibold text-gray-800">${reservation.nombre_places}</div>
@@ -108,7 +103,7 @@ function renderMyTicket(reservation) {
         </div>
         
         <div class="mt-6">
-          <button class="btn btn-primary btn-full" onclick="downloadTicket('${code}')">📥 Télécharger</button>
+          <button class="btn btn-primary btn-full" onclick="downloadTicket('${code}')">Télécharger</button>
         </div>
       </div>
     </div>

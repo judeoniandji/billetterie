@@ -20,7 +20,7 @@ async function loadAdminPage() {
         <h1 class="text-4xl font-semibold mb-6">Administration EventPass</h1>
         <p class="text-secondary mb-10">Veuillez vous connecter pour accéder au tableau de bord</p>
         <button class="btn btn-primary btn-lg" onclick="switchAuthTab('login'); openModal('authModal');">
-          🔐 Se connecter
+          Se connecter
         </button>
       </div>
     `;
@@ -54,7 +54,7 @@ async function loadAdminPage() {
             <p class="text-secondary mt-2">Gestion complète de EventPass</p>
           </div>
           <div class="flex gap-4">
-            <button class="btn btn-success" onclick="openAddEventModal()">➕ Ajouter événement</button>
+            <button class="btn btn-success" onclick="openAddEventModal()">Ajouter événement</button>
             <button class="btn btn-outline" onclick="navigateTo('home')">Retour au site</button>
           </div>
         </div>
@@ -62,22 +62,22 @@ async function loadAdminPage() {
         <!-- Stats Cards -->
         <div class="grid grid-cols-4 gap-6 mb-12">
           <div class="stats-card">
-            <div class="stats-icon">🎟️</div>
+            <div class="stats-icon"></div>
             <div class="stats-value">${adminStats.totalTickets}</div>
             <div class="stats-label">Billets vendus</div>
           </div>
           <div class="stats-card">
-            <div class="stats-icon">📅</div>
+            <div class="stats-icon"></div>
             <div class="stats-value">${adminStats.totalEvents}</div>
             <div class="stats-label">Événements</div>
           </div>
           <div class="stats-card">
-            <div class="stats-icon">👥</div>
+            <div class="stats-icon"></div>
             <div class="stats-value">${adminStats.totalReservations}</div>
             <div class="stats-label">Réservations</div>
           </div>
           <div class="stats-card">
-            <div class="stats-icon">💰</div>
+            <div class="stats-icon"></div>
             <div class="stats-value">${formatPrice(adminStats.totalRevenue)}</div>
             <div class="stats-label">Chiffre d'affaires</div>
           </div>
@@ -124,8 +124,8 @@ async function loadAdminPage() {
                     </td>
                     <td>
                       <div class="flex gap-2">
-                        <button class="btn btn-outline btn-sm" onclick="openEditEventModal('${ev._id}')">✏️ Modifier</button>
-                        <button class="btn" onclick="deleteEvent('${ev._id}')">🗑️</button>
+                        <button class="btn btn-outline btn-sm" onclick="openEditEventModal('${ev._id}')">Modifier</button>
+                        <button class="btn" onclick="deleteEvent('${ev._id}')">Supprimer</button>
                       </div>
                     </td>
                   </tr>
