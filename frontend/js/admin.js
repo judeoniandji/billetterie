@@ -14,6 +14,7 @@ async function loadAdminPage() {
   
   // Protection : vérifier connexion et rôle admin
   if (!currentUser) {
+    isAdminLogin = true;
     main.innerHTML = `
       <div class="py-20 text-center">
         <h1 class="text-4xl font-semibold mb-6">Administration EventPass</h1>
@@ -24,6 +25,8 @@ async function loadAdminPage() {
       </div>
     `;
     return;
+  } else {
+    isAdminLogin = false;
   }
   
   if (currentUser.role !== 'admin') {

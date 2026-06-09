@@ -6,6 +6,7 @@ let currentPage = 'home';
 let isDarkMode = false;
 let logoClickCount = 0;
 let logoClickTimer = null;
+let isAdminLogin = false;
 
 // Initialize app
 document.addEventListener('DOMContentLoaded', () => {
@@ -120,13 +121,21 @@ function switchAuthTab(tab) {
   const registerForm = document.getElementById('registerForm');
   const title = document.getElementById('authModalTitle');
   
+  // Hide register tab when in admin mode
+  if (isAdminLogin) {
+    registerTab.classList.add('hidden');
+    title.textContent = 'Connexion Admin';
+  } else {
+    registerTab.classList.remove('hidden');
+  }
+  
   if (tab === 'login') {
     loginTab.className = 'btn flex-1';
     registerTab.className = 'btn btn-outline flex-1';
     loginForm.classList.remove('hidden');
     registerForm.classList.add('hidden');
-    title.textContent = 'Connexion';
-  } else {
+    if (!isAdminLogin) title.textContent = 'Connexion';
+  } else if (!isAdminLogin) {
     registerTab.className = 'btn flex-1';
     loginTab.className = 'btn btn-outline flex-1';
     registerForm.classList.remove('hidden');
@@ -151,6 +160,10 @@ function handleLogout() {
 // --- Navigation ---
 function navigateTo(page) {
   currentPage = page;
+  // Reset admin login flag when not going to admin
+  if (page !== 'admin') {
+    isAdminLogin = false;
+  }
   const mainContent = document.getElementById('mainContent');
   document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
   
