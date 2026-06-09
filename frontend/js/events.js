@@ -245,48 +245,72 @@ function loadReservationPage(event, ticketCount) {
 
   main.innerHTML = `
     <div class="py-16">
-      <div class="container max-w-4xl">
+      <div class="container max-w-5xl">
         <h1 class="text-3xl font-semibold mb-8 text-center">Finaliser votre réservation</h1>
         
-        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8 flex items-center gap-3">
-          <span class="text-2xl">⏱️</span>
+        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8 flex items-center gap-4">
+          <span class="text-4xl">⏱️</span>
           <div>
-            <strong>Votre réservation est en attente !</strong><br>
-            <span class="text-yellow-800">Vous avez <span id="reservationTimer" class="font-semibold text-red-600">10:00</span> pour confirmer votre paiement.</span>
+            <h3 class="font-semibold text-xl mb-1">Votre réservation est en attente !</h3>
+            <p class="text-yellow-800">Vous avez <span id="reservationTimer" class="font-bold text-red-600 text-2xl">10:00</span> pour confirmer votre paiement.</p>
           </div>
         </div>
         
-        <div class="grid grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div class="bg-white rounded-xl shadow-lg p-8">
-            <h3 class="text-xl font-semibold mb-6">Informations</h3>
-            <div class="input-group">
-              <label>Nom complet</label>
-              <input type="text" class="input" value="${currentUser.prenom} ${currentUser.nom}" disabled>
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">👤</span>
+              <h3 class="text-xl font-semibold">Informations personnelles</h3>
             </div>
-            <div class="input-group">
-              <label>Téléphone</label>
-              <input type="text" class="input" value="${currentUser.telephone}" disabled>
+            <div class="space-y-6">
+              <div class="input-group">
+                <label class="text-sm font-semibold text-gray-700">Nom complet</label>
+                <input type="text" class="input bg-gray-50" value="${currentUser.prenom} ${currentUser.nom}" disabled>
+              </div>
+              <div class="input-group">
+                <label class="text-sm font-semibold text-gray-700">Téléphone</label>
+                <input type="text" class="input bg-gray-50" value="${currentUser.telephone}" disabled>
+              </div>
+              <div class="input-group">
+                <label class="text-sm font-semibold text-gray-700">Email</label>
+                <input type="email" class="input" placeholder="votre@email.com" value="${currentUser.email || ''}">
+              </div>
             </div>
           </div>
           
           <div class="bg-white rounded-xl shadow-lg p-8">
-            <h3 class="text-xl font-semibold mb-6">Récapitulatif</h3>
+            <div class="flex items-center gap-3 mb-6">
+              <span class="text-3xl">🎫</span>
+              <h3 class="text-xl font-semibold">Récapitulatif de la commande</h3>
+            </div>
             
-            <div class="mb-6 pb-6 border-b border-gray-100">
-              <div class="flex justify-between mb-2">
-                <span>${event.titre}</span>
-                <span>x${ticketCount}</span>
+            <div class="mb-8 pb-8 border-b border-gray-200">
+              <div class="flex items-start gap-4 mb-4">
+                <div class="w-20 h-20 bg-cover bg-center rounded-lg" style="background-image: url('${event.image}')"></div>
+                <div class="flex-1">
+                  <h4 class="font-semibold text-lg">${event.titre}</h4>
+                  <p class="text-sm text-secondary">📍 ${event.lieu}</p>
+                  <p class="text-sm text-secondary">📅 ${formatDate(event.date)}</p>
+                </div>
               </div>
-              <p class="text-sm text-secondary">📍 ${event.lieu} • ${formatDate(event.date)}</p>
+              
+              <div class="flex justify-between items-center py-3 border-t border-gray-100">
+                <span class="text-secondary">Nombre de places</span>
+                <span class="font-semibold text-lg">${ticketCount}</span>
+              </div>
+              <div class="flex justify-between items-center py-3 border-t border-gray-100">
+                <span class="text-secondary">Prix par place</span>
+                <span class="font-semibold">${formatPrice(event.prix)}</span>
+              </div>
             </div>
             
-            <div class="flex justify-between text-xl font-semibold mb-8">
-              <span>Total</span>
-              <span class="text-primary">${formatPrice(totalPrice)}</span>
+            <div class="flex justify-between items-center mb-8 p-4 bg-primary-light rounded-xl">
+              <span class="font-semibold text-xl">Total à payer</span>
+              <span class="font-bold text-2xl text-primary">${formatPrice(totalPrice)}</span>
             </div>
             
-            <button class="btn btn-success btn-full btn-lg" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
-              Confirmer le paiement
+            <button class="btn btn-success btn-full btn-lg text-lg py-4" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
+              ✅ Confirmer et payer
             </button>
           </div>
         </div>

@@ -87,7 +87,7 @@ async function loadMyTicketsPage() {
 function renderMyTickets(reservations) {
   const main = document.getElementById('mainContent');
   
-  const filteredReservations = reservations.filter(r => r.statut === 'PAYEE');
+  const filteredReservations = reservations.filter(r => r.statut === 'PAYEE' || r.statut === 'CONFIRMEE');
   
   if (filteredReservations.length === 0) {
     main.innerHTML = `
@@ -104,30 +104,58 @@ function renderMyTickets(reservations) {
   main.innerHTML = `
     <div class="container py-12">
       <h1 class="text-3xl font-semibold mb-8">Mes billets</h1>
-      <div class="grid grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         ${filteredReservations.map(renderMyTicket).join('')}
       </div>
     </div>
   `;
+  
+  // Générer les QR codes après le rendu
+  generateMyTicketsQRCodes(filteredReservations);
 }
 
 function renderMyTicket(reservation) {
   const event = window.allEvents.find(e => e._id === reservation.evenement_id);
   if (!event) return '';
+  const code = `EP-${reservation._id.substring(0, 8).toUpperCase()}`;
   
   return `
-    <div class="card">
-      <div class="event-card-image" style="background: linear-gradient(135deg, var(--primary-light), white)"></div>
+    <div class="card" id="ticket-${reservation._id}">
+      <div class="event-card-image" style="background-image: url('${event.image}')"></div>
       <div class="p-6">
         <h3 class="text-xl font-semibold mb-2">${event.titre}</h3>
-        <p class="text-secondary mb-4">📍 ${event.lieu} • ${formatDate(event.date)}</p>
-        <div class="flex justify-between items-center">
+        <p class="text-secondary mb-2">📍 ${event.lieu}</p>
+        <p class="text-secondary mb-4">📅 ${formatDate(event.date)}</p>
+        <div class="flex justify-between items-center mb-4">
           <span class="text-sm text-success font-semibold">✅ Confirmé</span>
           <span class="text-sm font-semibold">${reservation.nombre_places} place(s)</span>
         </div>
+        <div class="text-center mb-4">
+          <div id="qrcode-${reservation._id}" class="inline-block"></div>
+        </div>
+        <p class="text-center text-sm text-secondary font-semibold mb-4">Code : ${code}</p>
+        <button class="btn btn-primary btn-full btn-sm" onclick="downloadTicket('${code}')">📥 Télécharger</button>
       </div>
     </div>
   `;
+}
+
+// Après avoir rendu les billets, générer les QR codes
+function generateMyTicketsQRCodes(reservations) {
+  setTimeout(() => {
+    reservations.forEach(r => {
+      if (r.statut === 'PAYEE') {
+        const container = document.getElementById(`qrcode-${r._id}`);
+        if (container) {
+          container.innerHTML = '';
+          const code = `EP-${r._id.substring(0, 8).toUpperCase()}`;
+          new QRCode(container, {
+            text: code, width: 120, height: 120, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
+          });
+        }
+      }
+    });
+  }, 200);
 }
 
 function downloadTicket(code) {

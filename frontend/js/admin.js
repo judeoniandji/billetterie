@@ -10,6 +10,20 @@ let adminStats = {
 };
 
 async function loadAdminPage() {
+  // Protection : vérifier connexion et rôle admin
+  if (!currentUser) {
+    showToast('Veuillez vous connecter pour accéder à l\'administration', 'error');
+    switchAuthTab('login');
+    openModal('authModal');
+    return;
+  }
+  
+  if (currentUser.role !== 'admin') {
+    showToast('Accès refusé : vous n\'êtes pas administrateur', 'error');
+    navigateTo('home');
+    return;
+  }
+  
   const main = document.getElementById('mainContent');
   
   // Charger les stats depuis l'API
