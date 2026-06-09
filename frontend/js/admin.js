@@ -10,11 +10,19 @@ let adminStats = {
 };
 
 async function loadAdminPage() {
+  const main = document.getElementById('mainContent');
+  
   // Protection : vérifier connexion et rôle admin
   if (!currentUser) {
-    showToast('Veuillez vous connecter pour accéder à l\'administration', 'error');
-    switchAuthTab('login');
-    openModal('authModal');
+    main.innerHTML = `
+      <div class="py-20 text-center">
+        <h1 class="text-4xl font-semibold mb-6">Administration EventPass</h1>
+        <p class="text-secondary mb-10">Veuillez vous connecter pour accéder au tableau de bord</p>
+        <button class="btn btn-primary btn-lg" onclick="switchAuthTab('login'); openModal('authModal');">
+          🔐 Se connecter
+        </button>
+      </div>
+    `;
     return;
   }
   
@@ -23,8 +31,6 @@ async function loadAdminPage() {
     navigateTo('home');
     return;
   }
-  
-  const main = document.getElementById('mainContent');
   
   // Charger les stats depuis l'API
   try {
