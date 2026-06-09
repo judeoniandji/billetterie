@@ -8,7 +8,7 @@ function createEventCard(event) {
   const isPast = isEventPast(event.date);
   const badge = event.places_disponibles < 20 ? 'badge-limited' : 'badge-popular';
   const badgeText = event.places_disponibles < 20 ? 'Places limitées' : 'Populaire';
-  const imgUrl = `https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80`;
+  const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
   
   return `
     <div class="card event-card" onclick="navigateToEvent('${event._id}')">
@@ -148,7 +148,7 @@ function navigateToEvent(eventId) {
 
 function loadEventDetailPage(event) {
   const main = document.getElementById('mainContent');
-  const imgUrl = `https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1600&q=80`;
+  const imgUrl = event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1600&q=80';
   
   main.innerHTML = `
     <div class="py-8">

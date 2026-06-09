@@ -37,7 +37,7 @@ function renderEvents(events) {
 function createEventCard(event) {
   const badge = event.places_disponibles < 100 ? 'badge-limited' : 'badge-popular';
   const badgeText = event.places_disponibles < 100 ? 'Places limitées' : 'Populaire';
-  const imgUrl = `https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80`;
+  const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
   
   return `
     <div class="card event-card" onclick="navigateToEvent('${event._id}')">
