@@ -35,23 +35,34 @@ function renderEvents(events) {
 }
 
 function createEventCard(event) {
-  const badge = event.places_disponibles < 100 ? 'badge-limited' : 'badge-popular';
-  const badgeText = event.places_disponibles < 100 ? 'Places limitées' : 'Populaire';
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
   
   return `
-    <div class="card event-card" onclick="navigateToEvent('${event._id}')">
-      <div class="event-card-image" style="background-image: url('${imgUrl}')">
-        <span class="event-card-badge ${badge}">${badgeText}</span>
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="navigateToEvent('${event._id}')">
+      <div class="w-full h-48 bg-cover bg-center relative" style="background-image: url('${imgUrl}')">
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
+          ${event.categorie || 'Événement'}
+        </div>
       </div>
-      <div class="event-card-content">
-        <h3 class="event-card-title">${event.titre}</h3>
-        <p class="text-secondary mb-2">${event.lieu} • ${formatDate(event.date)}</p>
-        <div class="event-card-meta">
-          <div class="event-card-date">
-            <span>${event.places_disponibles} places</span>
+      
+      <div class="p-5">
+        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">${event.titre}</h3>
+        
+        <div class="flex items-center gap-2 text-gray-600 text-sm mb-2">
+          <span class="text-primary font-semibold">${formatDate(event.date)}</span>
+          <span>•</span>
+          <span>${event.lieu}</span>
+        </div>
+        
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+          <div>
+            <span class="text-xs text-gray-500">À partir de</span>
+            <div class="font-extrabold text-xl text-primary">${formatPrice(event.prix)}</div>
           </div>
-          <div class="event-card-price">${formatPrice(event.prix)}</div>
+          
+          <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-all">
+            Réserver
+          </button>
         </div>
       </div>
     </div>

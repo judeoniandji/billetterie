@@ -3,26 +3,42 @@
    ======================================== */
 let filteredEvents = [];
 let selectedEvent = null;
+let activeCategory = 'Toutes';
+
+const CATEGORIES = [
+  'Toutes', 'Concert', 'Culture', 'Formation', 'Soirée', 
+  'Tourisme', 'Sport', 'Festival', 'Business', 'Autre'
+];
 
 function createEventCard(event) {
-  const isPast = isEventPast(event.date);
-  const badge = event.places_disponibles < 20 ? 'badge-limited' : 'badge-popular';
-  const badgeText = event.places_disponibles < 20 ? 'Places limitées' : 'Populaire';
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
   
   return `
-    <div class="card event-card" onclick="navigateToEvent('${event._id}')">
-      <div class="event-card-image" style="background-image: url('${imgUrl}')">
-        <span class="event-card-badge ${badge}">${badgeText}</span>
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="navigateToEvent('${event._id}')">
+      <div class="w-full h-48 bg-cover bg-center relative" style="background-image: url('${imgUrl}')">
+        <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
+          ${event.categorie || 'Événement'}
+        </div>
       </div>
-      <div class="event-card-content">
-        <h3 class="event-card-title">${event.titre}</h3>
-        <p class="text-secondary mb-2">${event.lieu} • ${formatDate(event.date)}</p>
-        <div class="event-card-meta">
-          <div class="event-card-date">
-            <span>${event.places_disponibles} places</span>
+      
+      <div class="p-5">
+        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">${event.titre}</h3>
+        
+        <div class="flex items-center gap-2 text-gray-600 text-sm mb-2">
+          <span class="text-primary font-semibold">${formatDate(event.date)}</span>
+          <span>•</span>
+          <span>${event.lieu}</span>
+        </div>
+        
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
+          <div>
+            <span class="text-xs text-gray-500">À partir de</span>
+            <div class="font-extrabold text-xl text-primary">${formatPrice(event.prix)}</div>
           </div>
-          <div class="event-card-price">${formatPrice(event.prix)}</div>
+          
+          <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-all">
+            Réserver
+          </button>
         </div>
       </div>
     </div>
@@ -32,51 +48,25 @@ function createEventCard(event) {
 async function loadEventsPage() {
   const main = document.getElementById('mainContent');
   main.innerHTML = `
-    <div class="events-page">
-      <div class="container">
-        <h1 class="text-3xl font-semibold mb-8">Tous les événements</h1>
-        <div class="flex flex-col lg:flex-row gap-8">
-          <div class="lg:w-1/4">
-            <div class="filters-sidebar bg-white rounded-xl shadow-lg p-6 sticky top-6">
-              <div class="filter-section mb-6">
-                <h4 class="filter-title font-semibold mb-3 text-lg">Catégorie</h4>
-                <div class="filter-checkbox mb-2">
-                  <input type="checkbox" id="cat-concert" class="category-filter" data-cat="Concert">
-                  <label for="cat-concert">Concert</label>
-                </div>
-                <div class="filter-checkbox mb-2">
-                  <input type="checkbox" id="cat-sport" class="category-filter" data-cat="Sport">
-                  <label for="cat-sport">Sport</label>
-                </div>
-                <div class="filter-checkbox">
-                  <input type="checkbox" id="cat-conf" class="category-filter" data-cat="Conférence">
-                  <label for="cat-conf">Conférence</label>
-                </div>
-              </div>
-
-              <div class="filter-section mb-6">
-                <h4 class="filter-title font-semibold mb-3 text-lg">Prix maximum</h4>
-                <input type="range" id="priceRange" min="0" max="100000" value="100000" class="range-input w-full" oninput="updatePriceDisplay()">
-                <p id="priceRangeDisplay" class="price-display font-semibold text-primary">100 000 FCFA</p>
-              </div>
-
-              <div class="filter-section mb-6">
-                <h4 class="filter-title font-semibold mb-3 text-lg">Trier par</h4>
-                <select id="sortSelect" class="select w-full" onchange="applyFilters()">
-                  <option value="date">Date</option>
-                  <option value="price-asc">Prix croissant</option>
-                  <option value="price-desc">Prix décroissant</option>
-                </select>
-              </div>
-
-              <button class="btn btn-outline btn-full" onclick="resetFilters()">Réinitialiser</button>
-            </div>
-          </div>
-
-          <div class="lg:w-3/4">
-            <div id="eventsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6"></div>
-          </div>
+    <div class="min-h-screen bg-gray-50">
+      <div class="container py-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Tous les événements</h1>
+        
+        <!-- Category Tabs -->
+        <div class="flex flex-wrap gap-3 mb-8">
+          ${CATEGORIES.map(cat => `
+            <button 
+              class="category-tab px-5 py-2 rounded-full font-semibold transition-all ${cat === 'Toutes' ? 'bg-primary text-white' : 'bg-white text-gray-700 border border-gray-200 hover:border-primary hover:text-primary'}"
+              data-category="${cat}"
+              onclick="selectCategory('${cat}')"
+            >
+              ${cat}
+            </button>
+          `).join('')}
         </div>
+        
+        <!-- Events Grid -->
+        <div id="eventsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
       </div>
     </div>
   `;
@@ -92,6 +82,29 @@ async function loadEventsPage() {
     filteredEvents = window.allEvents.filter(e => !isEventPast(e.date));
     renderEventsList(filteredEvents);
   }
+}
+
+function selectCategory(category) {
+  activeCategory = category;
+  
+  // Update tab styles
+  document.querySelectorAll('.category-tab').forEach(tab => {
+    if (tab.dataset.category === category) {
+      tab.classList.remove('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+      tab.classList.add('bg-primary', 'text-white');
+    } else {
+      tab.classList.remove('bg-primary', 'text-white');
+      tab.classList.add('bg-white', 'text-gray-700', 'border', 'border-gray-200');
+    }
+  });
+  
+  // Filter events
+  let filtered = filteredEvents;
+  if (category !== 'Toutes') {
+    filtered = filteredEvents.filter(e => e.categorie === category);
+  }
+  
+  renderEventsList(filtered);
 }
 
 function renderEventsList(events) {
