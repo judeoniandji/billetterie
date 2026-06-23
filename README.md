@@ -1,11 +1,20 @@
-# Plateforme de Billetterie Événementielle - Groupe 9
+<div align="center">
 
-**Membres du groupe :**
-- ONIANDJI Jude
-- BOUALA NUKAFO Kingsy Jones
-- MAKAYA Taliane
+# 🎫 Projet NoSQL - Plateforme de Billetterie Événementielle
 
-**Projet du module Bases de données NoSQL - Master I - Année Académique 2025-2026**
+### Groupe 9 : ONIANDJI Jude • BOUALA NUKAFO Kingsy Jones • MAKAYA Taliane
+
+**Master I - Bases de données NoSQL - Université Omar Bongo**
+
+**Année Académique 2025-2026**
+
+---
+
+![MongoDB](https://img.shields.io/badge/MongoDB-4.4.6-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20.x-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![License](https://img.shields.io/badge/License-Educational-blue?style=for-the-badge)
+
+</div>
 
 ---
 
@@ -13,303 +22,200 @@
 
 Une plateforme de vente de billets pour concerts et événements à Libreville. Les utilisateurs réservent des places ; le paiement doit être confirmé sous dix minutes, sinon la réservation expire et les places sont relibérées.
 
-**Focus NoSQL :** Index TTL et expiration automatique. Exploitation d'un index TTL pour faire expirer automatiquement les réservations non payées, et discussion du rôle de Redis pour les sessions.
+### 🎯 Focus NoSQL
+
+**Index TTL et expiration automatique** - Exploitation d'un index TTL pour faire expirer automatiquement les réservations non payées, et discussion du rôle de Redis pour les sessions.
 
 ---
 
 ## 🗄️ Collections principales
 
-- **evenements** : Informations sur les concerts et événements
-- **reservations** : Réservations des utilisateurs (avec TTL)
-- **utilisateurs** : Informations sur les utilisateurs
-- **billets** : Billets générés après paiement
+| Collection | Description | Index |
+|------------|-------------|-------|
+| **utilisateurs** | Informations sur les utilisateurs | `{ email: 1 }` |
+| **evenements** | Informations sur les concerts et événements | `{ date: 1, lieu: 1 }`, `{ prix: 1 }`, `{ titre: "text", description: "text" }` |
+| **reservations** | Réservations des utilisateurs (avec TTL) | `{ date_creation: 1 }` (TTL: 600s) |
+| **billets** | Billets générés après paiement | - |
 
 ---
 
 ## 🚀 Installation et configuration
 
-### Prérequis
+### 📦 Prérequis
 
-- Node.js (v20 ou supérieur)
-- MongoDB (local ou Atlas)
-- npm ou yarn
+- [MongoDB](https://www.mongodb.com/try/download/community) (local ou Atlas)
+- [mongosh](https://www.mongodb.com/try/download/shell) (MongoDB Shell)
 
-### Étapes d'installation
+### 🛠️ Étapes d'installation
 
-1. **Cloner le dépôt**
+#### 1. Cloner le dépôt
+
 ```bash
 git clone https://github.com/votre-groupe/billetterie-nosql.git
 cd billetterie-nosql
 ```
 
-2. **Installer les dépendances**
+#### 2. Se connecter à MongoDB
+
+**MongoDB Atlas (recommandé) :**
 ```bash
-cd backend
-npm install
+mongosh "mongodb+srv://votre_user:votre_password@cluster.mongodb.net/billetterie"
 ```
 
-3. **Configurer les variables d'environnement**
-
-Créer un fichier `.env` dans le dossier `backend` avec le contenu suivant :
-```env
-PORT=5000
-MONGO_URI=mongodb+srv://votre_user:votre_password@cluster.mongodb.net/billetterie?retryWrites=true&w=majority
+**MongoDB Local :**
+```bash
+mongosh
 ```
 
-**Pour MongoDB Atlas :**
-1. Créer un compte gratuit sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-2. Créer un cluster M0 (gratuit)
-3. Créer un utilisateur de base de données
-4. Whitelister l'IP `0.0.0.0/0` (pour le développement)
-5. Copier la chaîne de connexion et remplacer `<password>` par le mot de passe de l'utilisateur
+> 💡 **Pour MongoDB Atlas :**
+> 1. Créer un compte gratuit sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+> 2. Créer un cluster M0 (gratuit)
+> 3. Créer un utilisateur de base de données
+> 4. Whitelister l'IP `0.0.0.0/0` (pour le développement)
+> 5. Copier la chaîne de connexion
 
-4. **Peupler la base de données avec des données de test**
+#### 3. Peupler la base de données
+
 ```bash
-node seed.js
+mongosh load("data/seed.js")
 ```
 
 Cette commande insère :
-- 35 utilisateurs avec des noms gabonais
-- 30 événements
-- 35 réservations
-- Des billets pour les réservations confirmées
+- ✅ 35 utilisateurs avec des noms gabonais
+- ✅ 30 événements
+- ✅ 35 réservations
+- ✅ Des billets pour les réservations confirmées
 
-5. **Créer les index**
+#### 4. Exécuter les scripts de démonstration
+
 ```bash
-node scripts/createIndexes.js
-```
+# Opérations CRUD
+mongosh load("scripts/01-crud.js")
 
-Cette commande crée les index suivants :
-- Index composé sur `date` et `lieu` (Evenement)
-- Index sur `prix` (Evenement)
-- Index text sur `titre` et `description` (Evenement)
-- Index sur `email` (Utilisateur)
-- Index TTL sur `date_creation` (Reservation)
+# Requêtes avancées
+mongosh load("scripts/02-requetes.js")
 
-6. **Lancer le serveur**
-```bash
-npm start
-```
+# Agrégations
+mongosh load("scripts/03-agregations.js")
 
-Ou en mode développement avec auto-reload :
-```bash
-npm run dev
-```
-
-Le serveur sera accessible sur `http://localhost:5000`
-
----
-
-## 📡 API Endpoints
-
-### Événements
-
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/api/evenements` | Lister tous les événements (avec filtres et pagination) |
-| POST | `/api/evenements` | Créer un nouvel événement |
-| PUT | `/api/evenements/:id` | Mettre à jour un événement |
-| DELETE | `/api/evenements/:id` | Supprimer un événement |
-| GET | `/api/evenements/stats/recettes` | Agréger les recettes par événement |
-
-### Réservations
-
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| POST | `/api/reservations` | Créer une réservation (avec gestion de concurrence) |
-| POST | `/api/reservations/:id/payer` | Confirmer le paiement et générer les billets |
-
-### Utilisateurs
-
-| Méthode | Endpoint | Description |
-|---------|----------|-------------|
-| GET | `/api/utilisateurs/test` | Récupérer un utilisateur au hasard (pour tests) |
-
----
-
-## 🔍 Filtres et pagination
-
-### Filtres disponibles pour `/api/evenements`
-
-- `?lieu=Libreville` : Filtrer par lieu (regex insensible à la casse)
-- `?prix_max=15000` : Filtrer par prix maximum
-- `?prix_min=5000` : Filtrer par prix minimum
-- `?recherche=concert` : Recherche textuelle dans titre et description
-- `?page=2` : Numéro de page (pagination)
-- `?limit=5` : Nombre de résultats par page
-
-**Exemple :**
-```
-GET /api/evenements?lieu=Libreville&prix_max=15000&page=1&limit=10
+# Indexation et analyse des performances
+mongosh load("scripts/04-index.js")
 ```
 
 ---
 
-## 🧪 Tester l'API
+## 📁 Structure du dépôt
 
-### Avec Postman
-
-1. Importer la collection `postman_collection.json` dans Postman
-2. Exécuter les requêtes pré-configurées
-
-### Avec le frontend
-
-Ouvrir `http://localhost:5000` dans un navigateur pour accéder à l'interface de test.
-
----
-
-## 📊 Scripts d'analyse
-
-### Analyse des performances des index
-
-**Avant création des index :**
-```bash
-node scripts/explainAnalysis.js
 ```
-
-**Après création des index :**
-```bash
-node scripts/explainAfterIndexes.js
-```
-
-Ces scripts montrent :
-- Le type de scan (COLLSCAN vs IXSCAN)
-- Le nombre de documents examinés
-- Le temps d'exécution
-- L'index utilisé
-
----
-
-## 🏗️ Architecture technique
-
-### Stack technique
-
-- **Backend** : Node.js, Express
-- **Base de données** : MongoDB (Mongoose)
-- **Frontend** : HTML, CSS, JavaScript (vanilla)
-
-### Focus NoSQL - Index TTL
-
-Le projet utilise un index TTL (Time-To-Live) sur la collection `reservations` pour supprimer automatiquement les réservations non payées après 10 minutes :
-
-```javascript
-reservationSchema.index(
-  { date_creation: 1 },
-  {
-    expireAfterSeconds: 600,
-    partialFilterExpression: { statut: "EN_ATTENTE" }
-  }
-);
-```
-
-Un worker (`ttlWorker.js`) surveille les expirations et réincrémente automatiquement les places disponibles.
-
-### Gestion de la concurrence
-
-Pour garantir qu'on ne vende jamais plus de places que la capacité, le système utilise une mise à jour atomique avec condition :
-
-```javascript
-await Evenement.updateOne(
-  { 
-    _id: evenement_id, 
-    places_disponibles: { $gte: nombre_places } // Condition stricte
-  },
-  { 
-    $inc: { places_disponibles: -nombre_places } // Décrémentation atomique
-  }
-);
+billetterie-nosql/
+├─ 📄 README.md
+├─ 📁 conception/
+│   ├─ 📄 modele-donnees.md (à convertir en PDF)
+│   └─ 📄 schema.md (à convertir en PNG)
+├─ 📁 data/
+│   └─ 📄 seed.js
+├─ 📁 scripts/
+│   ├─ 📄 01-crud.js
+│   ├─ 📄 02-requetes.js
+│   ├─ 📄 03-agregations.js
+│   └─ 📄 04-index.js
+├─ 📁 explain/
+│   └─ 📄 explain-avant-apres.md (à convertir en PDF)
+├─ 📁 rapport/
+│   └─ 📄 rapport.md (à convertir en PDF)
+└─ 📁 api/ (optionnel - API REST Node.js)
 ```
 
 ---
 
-## 📝 Livrables
+## ✅ Livrables
 
 ### Socle obligatoire
 
-- ✅ Dossier de conception avec modèle de données
-- ✅ Base de données peuplée (30-50 documents par collection)
-- ✅ Opérations CRUD complètes
-- ✅ Requêtes avancées et agrégation
-- ✅ Indexation et performance (3 index minimum)
-- ✅ Captures explain() avant/après
-- ✅ Rapport écrit (10-15 pages)
-- ✅ Dépôt Git avec README
-- ✅ Présentation orale
+| Livrable | Fichier | Statut |
+|----------|---------|--------|
+| Conception | `conception/modele-donnees.md` | ✅ |
+| Schéma visuel | `conception/schema.md` | ✅ |
+| Données de test | `data/seed.js` | ✅ |
+| Opérations CRUD | `scripts/01-crud.js` | ✅ |
+| Requêtes avancées | `scripts/02-requetes.js` | ✅ |
+| Agrégations | `scripts/03-agregations.js` | ✅ |
+| Indexation & performance | `scripts/04-index.js` | ✅ |
+| Analyse explain | `explain/explain-avant-apres.md` | ✅ |
+| Rapport écrit | `rapport/rapport.md` | ✅ |
+| Dépôt Git + README | - | ✅ |
 
-### Livrables spécifiques Groupe 9
+### 🎯 Livrables spécifiques Groupe 9
 
 - ✅ Index TTL sur les réservations (expiration 10 minutes)
 - ✅ Décrément/réincrément automatique des places
 - ✅ Agrégation des recettes par événement
-- ✅ Endpoint refusant la vente au-delà de la capacité
+- ✅ Gestion de la concurrence (pas de survente)
 
-### Bonus
+### 🎁 Bonus (optionnel)
 
-- ✅ API REST Node.js (+2 points)
+- ✅ API REST Node.js dans le dossier `api/` (+2 points)
 - ✅ Collection Postman documentée (+1 point)
 - ⏳ Déploiement VPS (+2 points)
 
 ---
 
-## 📈 Index créés
+## � Index créés
 
-### Collection `evenements`
+Le script `scripts/04-index.js` crée les index suivants :
 
-1. **Index composé** `{ date: 1, lieu: 1 }`
-   - Justification : Optimise les recherches par date et lieu combinées
-
-2. **Index sur prix** `{ prix: 1 }`
-   - Justification : Optimise les filtres par fourchette de prix
-
-3. **Index text** `{ titre: "text", description: "text" }`
-   - Justification : Permet la recherche plein texte sémantique
-
-### Collection `utilisateurs`
-
-4. **Index sur email** `{ email: 1 }`
-   - Justification : Optimise l'authentification par email
-
-### Collection `reservations`
-
-5. **Index TTL** `{ date_creation: 1 }` avec `expireAfterSeconds: 600`
-   - Justification : Supprime automatiquement les réservations non payées après 10 minutes
+| Collection | Type de l'index | Configuration | Justification |
+|------------|-----------------|---------------|---------------|
+| **evenements** | Composé | `{ date: 1, lieu: 1 }` | Optimise les recherches par date et lieu combinées |
+| **evenements** | Simple | `{ prix: 1 }` | Optimise les filtres par fourchette de prix |
+| **evenements** | Text | `{ titre: "text", description: "text" }` | Permet la recherche plein texte |
+| **utilisateurs** | Simple | `{ email: 1 }` | Optimise l'authentification par email |
+| **reservations** | TTL | `{ date_creation: 1 }` (600s) | Supprime automatiquement les réservations non payées |
 
 ---
 
 ## 🎓 Comparaison SQL vs NoSQL
 
-### Avantages de MongoDB pour ce projet
+### ✨ Avantages de MongoDB pour ce projet
 
-1. **Schéma flexible** : Les événements peuvent avoir des attributs variables (artistes, types de billets, etc.)
-2. **Index TTL natif** : Expiration automatique des documents sans cron externe
-3. **Mises à jour atomiques** : Gestion de la concurrence sans transactions complexes
-4. **Agrégation puissante** : Pipeline d'agrégation pour les statistiques de recettes
-5. **Scalabilité horizontale** : Facile à scaler avec sharding si le volume augmente
+| Avantage | Description |
+|----------|-------------|
+| **Schéma flexible** | Les événements peuvent avoir des attributs variables (artistes, types de billets) |
+| **Index TTL natif** | Expiration automatique des documents sans cron externe |
+| **Mises à jour atomiques** | Gestion de la concurrence sans transactions complexes |
+| **Agrégation puissante** | Pipeline d'agrégation pour les statistiques de recettes |
+| **Scalabilité horizontale** | Facile à scaler avec sharding si le volume augmente |
 
-### Limites par rapport au relationnel
+### ⚠️ Limites par rapport au relationnel
 
-1. **Pas de jointures natives** : Utilisation de $lookup qui est moins performant que les JOIN SQL
-2. **Transactions limitées** : Les transactions multi-documents existent mais sont plus complexes
-3. **Schéma dynamique** : Risque d'incohérence si mal géré
+| Limite | Description |
+|--------|-------------|
+| **Pas de jointures natives** | Utilisation de $lookup moins performant que les JOIN SQL |
+| **Transactions limitées** | Plus complexes à mettre en œuvre qu'en SQL |
+| **Schéma dynamique** | Risque d'incohérence si mal géré |
 
 ---
 
 ## 📚 Documentation
 
-- **Dossier de conception** : `docs/conception.md`
-- **Rapport écrit** : `docs/rapport.pdf`
-- **Présentation** : `docs/presentation.pdf`
+| Document | Emplacement | Format |
+|----------|-------------|--------|
+| Conception | `conception/modele-donnees.md` | Markdown → PDF |
+| Schéma | `conception/schema.md` | Mermaid → PNG |
+| Rapport | `rapport/rapport.md` | Markdown → PDF |
+| Analyse explain | `explain/explain-avant-apres.md` | Markdown → PDF |
 
 ---
 
-## 🤝 Contribution
+## 👥 Équipe
 
 Ce projet est réalisé dans le cadre du module Bases de données NoSQL de l'Université Omar Bongo.
 
-**Commits par membre :**
-- ONIANDJI Jude : Modèles, indexation, seed
-- BOUALA NUKAFO Kingsy Jones : API REST, contrôleurs
-- MAKAYA Taliane : Frontend, tests, documentation
+| Membre | Rôle |
+|--------|------|
+| ONIANDJI Jude | Modèles, indexation, seed |
+| BOUALA NUKAFO Kingsy Jones | API REST, contrôleurs |
+| MAKAYA Taliane | Frontend, tests, documentation |
 
 ---
 
@@ -319,6 +225,10 @@ Ce projet est réalisé à des fins pédagogiques dans le cadre d'un projet univ
 
 ---
 
-## 📞 Contact
+<div align="center">
 
-Pour toute question concernant ce projet, contacter les membres du groupe.
+**🎓 Université Omar Bongo - Master I - Bases de données NoSQL**
+
+**Année Académique 2025-2026**
+
+</div>
