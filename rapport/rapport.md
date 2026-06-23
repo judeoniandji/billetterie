@@ -7,7 +7,7 @@
 
 ---
 
-## Table des matières
+ Table des matières
 
 1. [Introduction](#1-introduction)
 2. [Présentation du sujet](#2-présentation-du-sujet)
@@ -22,7 +22,7 @@
 
 ---
 
-## 1. Introduction
+ 1. Introduction
 
 Ce projet constitue l'évaluation pratique du module "Bases de données NoSQL" du Master I de l'Université Omar Bongo. L'objectif est de concevoir et réaliser une solution de données complète reposant sur MongoDB, depuis la modélisation jusqu'aux requêtes d'agrégation et à l'optimisation par index.
 
@@ -30,13 +30,13 @@ Notre groupe (Groupe 9) a travaillé sur le thème "Plateforme de Billetterie É
 
 ---
 
-## 2. Présentation du sujet
+ 2. Présentation du sujet
 
-### 2.1 Contexte
+# 2.1 Contexte
 
 Une plateforme de vente de billets pour concerts et événements à Libreville permet aux utilisateurs de réserver des places en ligne. Le paiement doit être confirmé sous dix minutes, sinon la réservation expire et les places sont relibérées pour d'autres utilisateurs.
 
-### 2.2 Besoins fonctionnels
+# 2.2 Besoins fonctionnels
 
 - Création et gestion d'événements (concerts, spectacles)
 - Réservation de places par les utilisateurs
@@ -46,26 +46,26 @@ Une plateforme de vente de billets pour concerts et événements à Libreville p
 - Suivi des recettes par événement
 - Gestion de la capacité des événements (pas de survente)
 
-### 2.3 Focus NoSQL
+# 2.3 Focus NoSQL
 
 Le focus NoSQL du Groupe 9 est l'**index TTL et expiration automatique**. L'objectif est d'exploiter un index TTL pour faire expirer automatiquement les réservations non payées après 10 minutes, et de discuter du rôle de Redis pour les sessions (vu en théorie).
 
-### 2.4 Livrables spécifiques
+# 2.4 Livrables spécifiques
 
 - Index TTL sur les réservations non confirmées, avec expiration après dix minutes
 - Décrément et réincrément automatiques des places disponibles selon le cycle de réservation
 - Requête d'agrégation des recettes par événement
 - Endpoint de réservation refusant la vente au-delà de la capacité de l'événement
 
-### 2.5 Défi technique
+# 2.5 Défi technique
 
 Le défi technique est de garantir qu'on ne vende jamais plus de places que la capacité de l'événement (gestion de concurrence).
 
 ---
 
-## 3. Modélisation des données
+ 3. Modélisation des données
 
-### 3.1 Collections principales
+# 3.1 Collections principales
 
 Nous avons défini quatre collections principales :
 
@@ -74,9 +74,9 @@ Nous avons défini quatre collections principales :
 3. **reservations** - Réservations des utilisateurs (avec TTL)
 4. **billets** - Billets générés après paiement
 
-### 3.2 Structure des collections
+# 3.2 Structure des collections
 
-#### Collection `utilisateurs`
+## Collection `utilisateurs`
 
 ```javascript
 {
@@ -92,7 +92,7 @@ Nous avons défini quatre collections principales :
 }
 ```
 
-#### Collection `evenements`
+## Collection `evenements`
 
 ```javascript
 {
@@ -114,7 +114,7 @@ Nous avons défini quatre collections principales :
 }
 ```
 
-#### Collection `reservations`
+## Collection `reservations`
 
 ```javascript
 {
@@ -128,7 +128,7 @@ Nous avons défini quatre collections principales :
 }
 ```
 
-#### Collection `billets`
+## Collection `billets`
 
 ```javascript
 {
@@ -143,9 +143,9 @@ Nous avons défini quatre collections principales :
 }
 ```
 
-### 3.3 Justification des choix Embedding vs Referencing
+# 3.3 Justification des choix Embedding vs Referencing
 
-#### Réservation : Referencing
+## Réservation : Referencing
 
 **Choix :** Référencement (Referencing) pour `utilisateur_id` et `evenement_id`
 
@@ -159,7 +159,7 @@ Nous avons défini quatre collections principales :
 
 4. **Flexibilité** : Le référencement permet de récupérer les informations à jour via `$lookup` lors des agrégations.
 
-#### Événement - Artistes : Embedding
+## Événement - Artistes : Embedding
 
 **Choix :** Imbrication (Embedding) pour `artistes`
 
@@ -173,7 +173,7 @@ Nous avons défini quatre collections principales :
 
 4. **Stabilité** : La liste des artistes d'un événement change rarement après sa création.
 
-#### Billet : Referencing
+## Billet : Referencing
 
 **Choix :** Référencement (Referencing) pour `reservation_id`, `evenement_id`, `utilisateur_id`
 
@@ -189,20 +189,20 @@ Nous avons défini quatre collections principales :
 
 ---
 
-## 4. Implémentation technique
+ 4. Implémentation technique
 
-### 4.1 Stack technique
+# 4.1 Stack technique
 
 - **Backend** : Node.js, Express
 - **Base de données** : MongoDB Atlas (Mongoose)
 - **Frontend** : HTML, CSS, JavaScript (vanilla)
 - **Tests** : Postman Collection
 
-### 4.2 Opérations CRUD
+# 4.2 Opérations CRUD
 
 Nous avons implémenté toutes les opérations CRUD requises :
 
-#### Create (insertOne / insertMany)
+## Create (insertOne / insertMany)
 
 ```javascript
 // Création d'un événement
@@ -213,7 +213,7 @@ const eventSauvegarde = await nouvelEvenement.save();
 const utilisateurs = await Utilisateur.insertMany(utilisateursData);
 ```
 
-#### Read (find avec filtres et projection)
+## Read (find avec filtres et projection)
 
 ```javascript
 // Recherche avec filtres
@@ -224,7 +224,7 @@ if (req.query.prix_max) filtres.prix = { $lte: Number(req.query.prix_max) };
 const evenements = await Evenement.find(filtres).sort({ date: 1 });
 ```
 
-#### Update (updateOne / updateMany avec $set, $inc, $push, $pull)
+## Update (updateOne / updateMany avec $set, $inc, $push, $pull)
 
 ```javascript
 // Mise à jour avec $set
@@ -241,17 +241,17 @@ await Evenement.updateOne(
 );
 ```
 
-#### Delete (deleteOne / deleteMany)
+## Delete (deleteOne / deleteMany)
 
 ```javascript
 const eventSupprime = await Evenement.findByIdAndDelete(req.params.id);
 ```
 
-### 4.3 API REST
+# 4.3 API REST
 
 Nous avons développé une API REST complète avec les endpoints suivants :
 
-#### Événements
+## Événements
 
 | Méthode | Endpoint | Description |
 |---------|----------|-------------|
@@ -261,14 +261,14 @@ Nous avons développé une API REST complète avec les endpoints suivants :
 | DELETE | `/api/evenements/:id` | Supprimer un événement |
 | GET | `/api/evenements/stats/recettes` | Agréger les recettes par événement |
 
-#### Réservations
+## Réservations
 
 | Méthode | Endpoint | Description |
 |---------|----------|-------------|
 | POST | `/api/reservations` | Créer une réservation (avec gestion de concurrence) |
 | POST | `/api/reservations/:id/payer` | Confirmer le paiement et générer les billets |
 
-### 4.4 Données de test
+# 4.4 Données de test
 
 Les données de test sont ancrées dans le contexte gabonais :
 
@@ -287,13 +287,13 @@ Le script `seed.js` insère :
 
 ---
 
-## 5. Focus NoSQL - Index TTL
+ 5. Focus NoSQL - Index TTL
 
-### 5.1 Principe de l'index TTL
+# 5.1 Principe de l'index TTL
 
 L'index TTL (Time-To-Live) de MongoDB permet de supprimer automatiquement des documents après un certain délai. C'est une fonctionnalité native qui évite d'avoir à implémenter un cron externe pour la suppression de données expirées.
 
-### 5.2 Implémentation
+# 5.2 Implémentation
 
 ```javascript
 reservationSchema.index(
@@ -310,7 +310,7 @@ reservationSchema.index(
 - Si `date_creation + 600 secondes < maintenant` ET `statut == "EN_ATTENTE"`, le document est supprimé
 - Le `partialFilterExpression` garantit que seules les réservations non confirmées sont supprimées
 
-### 5.3 Worker TTL pour restitution des places
+# 5.3 Worker TTL pour restitution des places
 
 L'index TTL supprime les réservations expirées, mais ne réincrémente pas automatiquement les places disponibles. Pour cela, nous avons implémenté un worker (`ttlWorker.js`) qui :
 
@@ -338,7 +338,7 @@ setInterval(async () => {
 }, 60000); // Vérification toutes les minutes
 ```
 
-### 5.4 Rôle de Redis pour les sessions (vu en théorie)
+# 5.4 Rôle de Redis pour les sessions (vu en théorie)
 
 **Pourquoi Redis serait pertinent :**
 
@@ -356,9 +356,9 @@ setInterval(async () => {
 
 ---
 
-## 6. Indexation et performance
+ 6. Indexation et performance
 
-### 6.1 Index créés
+# 6.1 Index créés
 
 | Collection | Index | Justification |
 |------------|-------|--------------|
@@ -368,11 +368,11 @@ setInterval(async () => {
 | utilisateurs | `{ email: 1 }` | Optimise l'authentification par email |
 | reservations | `{ date_creation: 1 }` (TTL) | Supprime automatiquement les réservations non payées après 10 min |
 
-### 6.2 Analyse explain()
+# 6.2 Analyse explain()
 
 Nous avons réalisé une analyse des performances avant et après la création des index en utilisant la méthode `explain("executionStats")`.
 
-#### Résultats avant indexation
+## Résultats avant indexation
 
 **TEST 1 : Recherche par lieu 'Libreville'**
 - Stage : COLLSCAN (scan complet de la collection)
@@ -394,11 +394,11 @@ Nous avons réalisé une analyse des performances avant et après la création d
 - Documents examinés : 0
 - Temps d'exécution : 1 ms
 
-#### Résultats après indexation
+## Résultats après indexation
 
 Les résultats après indexation montrent une amélioration des performances, bien que le volume de données (30 documents) soit trop faible pour observer des différences significatives. Avec un volume plus important (1000+ documents), les gains seraient beaucoup plus marqués.
 
-### 6.3 Justification des index
+# 6.3 Justification des index
 
 1. **Index composé (date, lieu)** : Les utilisateurs recherchent souvent des événements par date et par lieu. Ce composé permet d'optimiser les requêtes du type "Quels événements à Libreville en décembre ?"
 
@@ -412,9 +412,9 @@ Les résultats après indexation montrent une amélioration des performances, bi
 
 ---
 
-## 7. Requêtes avancées et agrégation
+ 7. Requêtes avancées et agrégation
 
-### 7.1 Opérateurs utilisés
+# 7.1 Opérateurs utilisés
 
 Nous avons utilisé les opérateurs suivants :
 
@@ -425,7 +425,7 @@ Nous avons utilisé les opérateurs suivants :
 - **Regex** : `$regex` avec `$options: "i"` pour insensibilité à la casse
 - **Text search** : `$text` avec `$search`
 
-### 7.2 Tri, pagination et comptage
+# 7.2 Tri, pagination et comptage
 
 ```javascript
 // Tri
@@ -444,7 +444,7 @@ const evenements = await Evenement.find(filtres)
 const total = await Evenement.countDocuments(filtres);
 ```
 
-### 7.3 Pipeline d'agrégation - Recettes par événement
+# 7.3 Pipeline d'agrégation - Recettes par événement
 
 ```javascript
 const statsRecettes = await Reservation.aggregate([
@@ -499,9 +499,9 @@ const statsRecettes = await Reservation.aggregate([
 
 ---
 
-## 8. Comparaison SQL vs NoSQL
+ 8. Comparaison SQL vs NoSQL
 
-### 8.1 Avantages de MongoDB pour ce projet
+# 8.1 Avantages de MongoDB pour ce projet
 
 1. **Schéma flexible** : Les événements peuvent avoir des attributs variables (artistes, types de billets, etc.) sans avoir à modifier la structure de la base de données.
 
@@ -515,7 +515,7 @@ const statsRecettes = await Reservation.aggregate([
 
 6. **Documents auto-contenus** : Les données liées (artistes d'un événement) peuvent être embarquées, réduisant le nombre de jointures nécessaires.
 
-### 8.2 Limites par rapport au relationnel
+# 8.2 Limites par rapport au relationnel
 
 1. **Pas de jointures natives** : Utilisation de `$lookup` qui est moins performant que les JOIN SQL, surtout pour les gros volumes de données.
 
@@ -525,7 +525,7 @@ const statsRecettes = await Reservation.aggregate([
 
 4. **Moins mature** : MongoDB est plus jeune que les SGBDR, donc moins d'outils et d'expertise disponibles.
 
-### 8.3 Quand choisir MongoDB vs SQL
+# 8.3 Quand choisir MongoDB vs SQL
 
 **MongoDB est préféré quand :**
 - Le schéma des données évolue fréquemment
@@ -543,9 +543,9 @@ const statsRecettes = await Reservation.aggregate([
 
 ---
 
-## 9. Difficultés rencontrées
+ 9. Difficultés rencontrées
 
-### 9.1 Gestion de la concurrence
+# 9.1 Gestion de la concurrence
 
 **Problème :** Comment garantir qu'on ne vende jamais plus de places que la capacité de l'événement, même avec des requêtes concurrentes ?
 
@@ -569,7 +569,7 @@ if (updateResult.modifiedCount === 0) {
 
 Cette approche garantit l'atomicité sans avoir besoin de transactions complexes.
 
-### 9.2 Expiration TTL et restitution des places
+# 9.2 Expiration TTL et restitution des places
 
 **Problème :** L'index TTL supprime les réservations expirées, mais ne réincrémente pas automatiquement les places disponibles.
 
@@ -595,13 +595,13 @@ setInterval(async () => {
 }, 60000);
 ```
 
-### 9.3 Structure du résultat explain()
+# 9.3 Structure du résultat explain()
 
 **Problème :** La structure du résultat `explain()` varie selon la version de MongoDB, rendant difficile l'analyse automatisée.
 
 **Solution :** Adaptation du script pour gérer différentes structures et afficher les informations essentielles (documents examinés, temps d'exécution).
 
-### 9.4 Index dupliqués
+# 9.4 Index dupliqués
 
 **Problème :** Erreur lors de la création des index due à des index déjà existants avec le même nom.
 
@@ -609,11 +609,11 @@ setInterval(async () => {
 
 ---
 
-## 10. Conclusion
+ 10. Conclusion
 
 Ce projet nous a permis de mettre en pratique l'ensemble des notions étudiées dans le module "Bases de données NoSQL". Nous avons conçu et réalisé une solution complète pour une plateforme de billetterie événementielle, en mettant particulièrement en valeur l'index TTL pour l'expiration automatique des réservations.
 
-### 10.1 Points forts du projet
+# 10.1 Points forts du projet
 
 - **Modélisation pertinente** : Choix justifiés entre embedding et referencing selon les patterns d'accès
 - **Indexation optimisée** : 5 index créés avec justification, dont un index TTL et un index composé
@@ -622,7 +622,7 @@ Ce projet nous a permis de mettre en pratique l'ensemble des notions étudiées 
 - **API REST fonctionnelle** : Endpoints CRUD avec filtres, pagination et recherche textuelle
 - **Données réalistes** : Données de test ancrées dans le contexte gabonais
 
-### 10.2 Apprentissages
+# 10.2 Apprentissages
 
 - Compréhension approfondie du modèle de données documentaire
 - Maîtrise des opérations CRUD et des requêtes avancées MongoDB
@@ -630,7 +630,7 @@ Ce projet nous a permis de mettre en pratique l'ensemble des notions étudiées 
 - Utilisation de l'index TTL pour l'expiration automatique des données
 - Comparaison concrète entre SQL et NoSQL
 
-### 10.3 Perspectives
+# 10.3 Perspectives
 
 Pour améliorer ce projet, nous pourrions :
 
@@ -641,7 +641,7 @@ Pour améliorer ce projet, nous pourrions :
 - Ajouter une interface utilisateur plus complète
 - Implémenter un système de notifications en temps réel
 
-### 10.4 Conclusion générale
+# 10.4 Conclusion générale
 
 Ce projet a été une expérience enrichissante qui nous a permis de comprendre les forces et les limites de MongoDB par rapport aux bases de données relationnelles. Le focus sur l'index TTL nous a permis d'explorer une fonctionnalité spécifique de MongoDB qui n'a pas d'équivalent direct dans le monde relationnel.
 
@@ -649,9 +649,9 @@ La gestion de la concurrence et l'expiration automatique des réservations sont 
 
 ---
 
-## Annexes
+ Annexes
 
-### Annexe A : Structure du projet
+# Annexe A : Structure du projet
 
 ```
 billetterie-nosql/
@@ -692,7 +692,7 @@ billetterie-nosql/
 └── README.md
 ```
 
-### Annexe B : Commandes utiles
+# Annexe B : Commandes utiles
 
 ```bash
 # Installer les dépendances
@@ -718,7 +718,7 @@ npm start
 npm run dev
 ```
 
-### Annexe C : Références
+# Annexe C : Références
 
 - Documentation MongoDB : https://docs.mongodb.com/
 - Documentation Mongoose : https://mongoosejs.com/docs/

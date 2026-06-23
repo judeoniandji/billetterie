@@ -1,11 +1,11 @@
-# Dossier de Conception - Plateforme de Billetterie Événementielle
+ Dossier de Conception - Plateforme de Billetterie Événementielle
 
-**Groupe 9 :** ONIANDJI Jude, BOUALA NUKAFO Kingsy Jones, MAKAYA Taliane  
+**Groupe 9 :** ONIANDJI Jude, BOUALA NUKAFO Kingsy Jones, 
 **Module :** Bases de données NoSQL - Master I - Année Académique 2025-2026
 
----
+-
 
-## 1. Contexte du projet
+ 1. Contexte du projet
 
 Une plateforme de vente de billets pour concerts et événements à Libreville. Les utilisateurs réservent des places ; le paiement doit être confirmé sous dix minutes, sinon la réservation expire et les places sont relibérées.
 
@@ -13,20 +13,19 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-## 2. Modèle de données
+ 2. Modèle de données
 
-### 2.1 Collections principales
+ 2.1 Collections principales
 
 1. **utilisateurs** - Informations sur les utilisateurs
 2. **evenements** - Informations sur les concerts et événements
 3. **reservations** - Réservations des utilisateurs (avec TTL)
 4. **billets** - Billets générés après paiement
 
----
 
-## 3. Structure des collections
+ 3. Structure des collections
 
-### 3.1 Collection `utilisateurs`
+ 3.1 Collection `utilisateurs`
 
 ```javascript
 {
@@ -47,7 +46,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 3.2 Collection `evenements`
+# 3.2 Collection `evenements`
 
 ```javascript
 {
@@ -76,7 +75,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 3.3 Collection `reservations`
+# 3.3 Collection `reservations`
 
 ```javascript
 {
@@ -95,7 +94,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 3.4 Collection `billets`
+# 3.4 Collection `billets`
 
 ```javascript
 {
@@ -112,9 +111,9 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-## 4. Justification des choix Embedding vs Referencing
+ 4. Justification des choix Embedding vs Referencing
 
-### 4.1 Réservation : Referencing
+# 4.1 Réservation : Referencing
 
 **Choix :** Référencement (Referencing) pour `utilisateur_id` et `evenement_id`
 
@@ -132,7 +131,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 4.2 Événement - Artistes : Embedding
+# 4.2 Événement - Artistes : Embedding
 
 **Choix :** Imbrication (Embedding) pour `artistes`
 
@@ -150,7 +149,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 4.3 Billet : Referencing
+# 4.3 Billet : Referencing
 
 **Choix :** Référencement (Referencing) pour `reservation_id`, `evenement_id`, `utilisateur_id`
 
@@ -166,7 +165,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-### 4.4 Utilisateur : Pas d'embedding des réservations
+# 4.4 Utilisateur : Pas d'embedding des réservations
 
 **Choix :** Pas d'embedding des réservations dans l'utilisateur
 
@@ -184,9 +183,9 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-## 5. Focus NoSQL - Index TTL
+ 5. Focus NoSQL - Index TTL
 
-### 5.1 Principe de l'index TTL
+# 5.1 Principe de l'index TTL
 
 L'index TTL (Time-To-Live) de MongoDB permet de supprimer automatiquement des documents après un certain délai.
 
@@ -209,7 +208,7 @@ reservationSchema.index(
 
 ---
 
-### 5.2 Worker TTL pour restitution des places
+# 5.2 Worker TTL pour restitution des places
 
 L'index TTL supprime les réservations expirées, mais ne réincrémente pas automatiquement les places disponibles. Pour cela, nous avons implémenté un worker (`ttlWorker.js`) qui :
 
@@ -241,7 +240,7 @@ setInterval(async () => {
 
 ---
 
-### 5.3 Rôle de Redis pour les sessions (vu en théorie)
+# 5.3 Rôle de Redis pour les sessions (vu en théorie)
 
 **Pourquoi Redis serait pertinent :**
 
@@ -259,13 +258,13 @@ setInterval(async () => {
 
 ---
 
-## 6. Gestion de la concurrence
+ 6. Gestion de la concurrence
 
-### 6.1 Problème
+# 6.1 Problème
 
 Le défi technique est de garantir qu'on ne vende jamais plus de places que la capacité de l'événement, même avec des requêtes concurrentes.
 
-### 6.2 Solution : Mise à jour atomique avec condition
+# 6.2 Solution : Mise à jour atomique avec condition
 
 Au lieu de lire la capacité puis d'écrire (ce qui crée une "race condition"), nous utilisons une mise à jour atomique :
 
@@ -292,7 +291,7 @@ if (updateResult.modifiedCount === 0) {
 
 ---
 
-## 7. Pipeline d'agrégation - Recettes par événement
+ 7. Pipeline d'agrégation - Recettes par événement
 
 ```javascript
 Reservation.aggregate([
@@ -336,9 +335,9 @@ Reservation.aggregate([
 
 ---
 
-## 8. Indexation et performance
+ 8. Indexation et performance
 
-### 8.1 Index créés
+# 8.1 Index créés
 
 | Collection | Index | Justification |
 |------------|-------|--------------|
@@ -348,7 +347,7 @@ Reservation.aggregate([
 | utilisateurs | `{ email: 1 }` | Optimise l'authentification par email |
 | reservations | `{ date_creation: 1 }` (TTL) | Supprime automatiquement les réservations non payées après 10 min |
 
-### 8.2 Analyse explain()
+# 8.2 Analyse explain()
 
 **Avant indexation :**
 - Stage : COLLSCAN (scan complet de la collection)
@@ -362,7 +361,7 @@ Reservation.aggregate([
 
 ---
 
-## 9. Données de test
+ 9. Données de test
 
 Les données de test sont ancrées dans le contexte gabonais :
 - **Noms** : Ndong, Moussavou, Mba, Obame, Biyoghe, Ngoma, Koumba, Nziengui, Nzoghe, Essono
@@ -374,6 +373,6 @@ Les données de test sont ancrées dans le contexte gabonais :
 
 ---
 
-## 10. Conclusion
+ 10. Conclusion
 
 Ce modèle de données NoSQL a été conçu pour répondre aux besoins spécifiques d'une plateforme de billetterie événementielle, en mettant particulièrement en valeur l'index TTL pour l'expiration automatique des réservations. Les choix entre embedding et referencing ont été justifiés en fonction des patterns d'accès et des contraintes de performance.

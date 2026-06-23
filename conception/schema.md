@@ -1,6 +1,6 @@
 # Schéma du modèle de données - Plateforme de Billetterie
 
-## Représentation Mermaid (à convertir en image)
+ Représentation Mermaid (à convertir en image)
 
 ```mermaid
 erDiagram
@@ -58,7 +58,7 @@ erDiagram
     }
 ```
 
-## Représentation ASCII
+ Représentation ASCII
 
 ```
 ┌─────────────────────────────────┐
@@ -140,34 +140,34 @@ erDiagram
         └─────────────────────────────┘
 ```
 
-## Instructions pour convertir en PNG
+ Instructions pour convertir en PNG
 
-### Option 1: Mermaid Live Editor
+# Option 1: Mermaid Live Editor
 1. Copiez le code Mermaid ci-dessus
 2. Allez sur https://mermaid.live/
 3. Collez le code dans l'éditeur
 4. Exportez en PNG
 
-### Option 2: Draw.io
+# Option 2: Draw.io
 1. Allez sur https://app.diagrams.net/
 2. Créez un nouveau diagramme
 3. Dessinez les 4 collections avec leurs champs
 4. Ajoutez les relations (lignes)
 5. Exportez en PNG
 
-### Option 3: Excalidraw
+# Option 3: Excalidraw
 1. Allez sur https://excalidraw.com/
 2. Dessinez le schéma manuellement
 3. Exportez en PNG
 
-## Notes sur les relations
+ Notes sur les relations
 
 - **UTILISATEUR → RESERVATION** : Un utilisateur peut effectuer plusieurs réservations (1:N)
 - **EVENEMENT → RESERVATION** : Un événement peut avoir plusieurs réservations (1:N)
 - **RESERVATION → BILLET** : Une réservation génère plusieurs billets (1:N)
 - **EVENEMENT → BILLET** : Un événement correspond à plusieurs billets (1:N)
 
-## Index créés
+ Index créés
 
 - **utilisateurs** : `{ email: 1 }`
 - **evenements** : `{ date: 1, lieu: 1 }`, `{ prix: 1 }`, `{ titre: "text", description: "text" }`

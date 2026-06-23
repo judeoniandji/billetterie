@@ -5,9 +5,9 @@
 
 ---
 
-## Procédure pour générer les captures explain()
+ Procédure pour générer les captures explain()
 
-### Étape 1 : Analyse avant création des index
+# Étape 1 : Analyse avant création des index
 
 ```bash
 cd backend
@@ -16,7 +16,7 @@ node scripts/explainAnalysis.js
 
 Ce script analyse les performances des requêtes SANS les index créés.
 
-### Étape 2 : Création des index
+# Étape 2 : Création des index
 
 ```bash
 node scripts/createIndexes.js
@@ -24,7 +24,7 @@ node scripts/createIndexes.js
 
 Ce script crée tous les index définis dans les modèles Mongoose.
 
-### Étape 3 : Analyse après création des index
+# Étape 3 : Analyse après création des index
 
 ```bash
 node scripts/explainAfterIndexes.js
@@ -34,9 +34,9 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-## Résultats attendus
+ Résultats attendus
 
-### TEST 1 : Recherche par lieu 'Libreville'
+# TEST 1 : Recherche par lieu 'Libreville'
 
 **Avant index (COLLSCAN) :**
 - Stage : COLLSCAN
@@ -54,7 +54,7 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-### TEST 2 : Recherche par prix <= 15000
+# TEST 2 : Recherche par prix <= 15000
 
 **Avant index (COLLSCAN) :**
 - Stage : COLLSCAN
@@ -72,7 +72,7 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-### TEST 3 : Recherche composée date + lieu
+# TEST 3 : Recherche composée date + lieu
 
 **Avant index (COLLSCAN) :**
 - Stage : COLLSCAN
@@ -90,7 +90,7 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-### TEST 4 : Recherche par email
+# TEST 4 : Recherche par email
 
 **Avant index (COLLSCAN) :**
 - Stage : COLLSCAN
@@ -108,7 +108,7 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-## Synthèse des améliorations
+ Synthèse des améliorations
 
 | Requête | Avant (COLLSCAN) | Après (IXSCAN) | Réduction docs | Gain temps |
 |---------|-----------------|----------------|----------------|------------|
@@ -121,7 +121,7 @@ Ce script analyse les performances des requêtes AVEC les index créés.
 
 ---
 
-## Captures d'écran à inclure dans le rapport
+ Captures d'écran à inclure dans le rapport
 
 Pour le rapport, vous devez inclure les captures d'écran suivantes :
 
@@ -136,7 +136,7 @@ Pour le rapport, vous devez inclure les captures d'écran suivantes :
 
 ---
 
-## Commandes MongoDB Compass pour vérifier les index
+ Commandes MongoDB Compass pour vérifier les index
 
 Si vous utilisez MongoDB Compass, vous pouvez vérifier les index créés :
 
@@ -161,7 +161,7 @@ Si vous utilisez MongoDB Compass, vous pouvez vérifier les index créés :
 
 ---
 
-## Commandes mongosh pour vérifier les index
+ Commandes mongosh pour vérifier les index
 
 ```bash
 # Se connecter à MongoDB
@@ -179,7 +179,7 @@ db.reservations.getIndexes()
 
 ---
 
-## Note importante
+ Note importante
 
 Pour que l'analyse soit significative, assurez-vous que :
 1. La base de données contient au moins 30 documents par collection (déjà fait avec seed.js)
