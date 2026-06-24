@@ -2,6 +2,8 @@
    HOME PAGE LOGIC
    ======================================== */
 let allEvents = [];
+let selectedCountry = 'gabon';
+let selectedCategory = 'all';
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
@@ -16,6 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     window.allEvents = allEvents;
     renderEvents(allEvents);
+    updateEventsCount(allEvents);
+    setupCountrySelector();
+    setupCategoryPills();
   } catch (error) {
     console.error('Error loading events:', error);
     showToast('Erreur lors du chargement des événements', 'error');
@@ -24,7 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function renderEvents(events) {
   const container = document.getElementById('eventsGrid');
-  const currentEvents = events.filter(e => !isEventPast(e.date)).slice(0, 6);
+  const currentEvents = events.filter(e => !isEventPast(e.date));
   
   if (currentEvents.length === 0) {
     container.innerHTML = '<p class="text-center text-secondary py-8 col-span-full">Aucun événement à venir</p>';
@@ -32,6 +37,55 @@ function renderEvents(events) {
   }
   
   container.innerHTML = currentEvents.map(event => createEventCard(event)).join('');
+}
+
+function updateEventsCount(events) {
+  const count = events.filter(e => !isEventPast(e.date)).length;
+  const countElement = document.getElementById('eventsCount');
+  if (countElement) {
+    countElement.textContent = `${count} événements trouvés`;
+  }
+}
+
+function setupCountrySelector() {
+  const countryPills = document.querySelectorAll('.country-pill');
+  countryPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      countryPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      selectedCountry = pill.dataset.country;
+      filterEvents();
+    });
+  });
+}
+
+function setupCategoryPills() {
+  const categoryPills = document.querySelectorAll('.category-pill');
+  categoryPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      categoryPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      selectedCategory = pill.dataset.category;
+      filterEvents();
+    });
+  });
+}
+
+function filterEvents() {
+  let filtered = allEvents;
+  
+  // Filter by country (simulated - in real app, this would be server-side)
+  // For now, we'll just show all events since our data doesn't have country field
+  
+  // Filter by category
+  if (selectedCategory !== 'all') {
+    filtered = filtered.filter(e => 
+      (e.categorie || '').toLowerCase() === selectedCategory.toLowerCase()
+    );
+  }
+  
+  renderEvents(filtered);
+  updateEventsCount(filtered);
 }
 
 function createEventCard(event) {

@@ -26,6 +26,7 @@
           <a href="#" class="nav-link hidden" id="adminNavLink" onclick="navigateTo('admin')">Admin</a>
         </nav>
         <div class="flex gap-4 items-center">
+          <button class="btn btn-primary btn-sm" onclick="navigateTo('publish')">📢 Publier un événement</button>
           <button class="btn btn-outline btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">🌙 Mode Sombre</button>
           <div id="authSection"></div>
         </div>
@@ -52,10 +53,11 @@
               <label>Ville</label>
               <select id="searchCity" class="select">
                 <option value="">Toutes les villes</option>
-                <option value="Paris">Paris</option>
-                <option value="Lyon">Lyon</option>
-                <option value="Marseille">Marseille</option>
-                <option value="Bordeaux">Bordeaux</option>
+                <option value="Libreville">Libreville</option>
+                <option value="Port-Gentil">Port-Gentil</option>
+                <option value="Franceville">Franceville</option>
+                <option value="Owendo">Owendo</option>
+                <option value="Akanda">Akanda</option>
               </select>
             </div>
             <div class="input-group mb-0">
@@ -73,11 +75,35 @@
     <!-- Popular Events -->
     <section class="py-20 bg-white">
       <div class="container">
-        <h2 class="text-3xl font-semibold mb-8 text-center">🔥 Événements populaires</h2>
-        <div id="eventsGrid" class="grid grid-cols-3 gap-8 mb-12"></div>
-        <div class="text-center">
-          <button class="btn btn-primary btn-lg" onclick="navigateTo('events')">Voir tous les événements →</button>
+        <!-- Country Selector -->
+        <div class="country-selector mb-4">
+          <span class="country-label">🌍 Pays :</span>
+          <div class="country-pills">
+            <button class="country-pill active" data-country="gabon">Gabon</button>
+            <button class="country-pill" data-country="cote-ivoire">Côte d'Ivoire</button>
+            <button class="country-pill" data-country="cameroun">Cameroun</button>
+            <button class="country-pill" data-country="senegal">Sénégal</button>
+            <button class="country-pill" data-country="guinee">Guinée</button>
+          </div>
         </div>
+
+        <!-- Categories -->
+        <div class="categories mb-8">
+          <button class="category-pill active" data-category="all">Tous</button>
+          <button class="category-pill" data-category="Concert">🎵 Concert</button>
+          <button class="category-pill" data-category="Culture">🎭 Culture</button>
+          <button class="category-pill" data-category="Sport">⚽ Sport</button>
+          <button class="category-pill" data-category="Festival">🎪 Festival</button>
+          <button class="category-pill" data-category="Formation">📚 Formation</button>
+          <button class="category-pill" data-category="Soirée">🌙 Soirée</button>
+          <button class="category-pill" data-category="Business">💼 Business</button>
+        </div>
+
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-3xl font-semibold">Événements disponibles</h2>
+          <span id="eventsCount" class="events-count">0 événements trouvés</span>
+        </div>
+        <div id="eventsGrid" class="grid grid-cols-3 gap-8 mb-12"></div>
       </div>
     </section>
 

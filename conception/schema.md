@@ -1,4 +1,4 @@
-# Schéma du modèle de données - Plateforme de Billetterie
+ Schéma du modèle de données - Plateforme de Billetterie
 
  Représentation Mermaid (à convertir en image)
 
@@ -142,20 +142,20 @@ erDiagram
 
  Instructions pour convertir en PNG
 
-# Option 1: Mermaid Live Editor
+ Option 1: Mermaid Live Editor
 1. Copiez le code Mermaid ci-dessus
 2. Allez sur https://mermaid.live/
 3. Collez le code dans l'éditeur
 4. Exportez en PNG
 
-# Option 2: Draw.io
+ Option 2: Draw.io
 1. Allez sur https://app.diagrams.net/
 2. Créez un nouveau diagramme
 3. Dessinez les 4 collections avec leurs champs
 4. Ajoutez les relations (lignes)
 5. Exportez en PNG
 
-# Option 3: Excalidraw
+ Option 3: Excalidraw
 1. Allez sur https://excalidraw.com/
 2. Dessinez le schéma manuellement
 3. Exportez en PNG
