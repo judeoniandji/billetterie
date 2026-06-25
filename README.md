@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🎫 Projet NoSQL - Plateforme de Billetterie Événementielle
+#  Projet NoSQL - Plateforme de Billetterie Événementielle
 
 ### Groupe 9 : ONIANDJI Jude • BOUALA NUKAFO Kingsy Jones • MINDZELI Aenold
 
@@ -18,11 +18,11 @@
 
 ---
 
-## 📋 Description du projet
+##  Description du projet
 
 Une plateforme de vente de billets pour concerts et événements à Libreville. Les utilisateurs réservent des places ; le paiement doit être confirmé sous dix minutes, sinon la réservation expire et les places sont relibérées.
 
-### 🎯 Focus NoSQL
+###  Focus NoSQL
 
 **Index TTL et expiration automatique** - Exploitation d'un index TTL pour faire expirer automatiquement les réservations non payées, et discussion du rôle de Redis pour les sessions.
 
