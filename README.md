@@ -2,9 +2,9 @@
 
 # 🎫 Projet NoSQL - Plateforme de Billetterie Événementielle
 
-### Groupe 9 : ONIANDJI Jude • BOUALA NUKAFO Kingsy Jones • MAKAYA Taliane
+### Groupe 9 : ONIANDJI Jude • BOUALA NUKAFO Kingsy Jones • MINDZELI Aenold
 
-**Master I - Bases de données NoSQL - Université Omar Bongo**
+**Master I - Bases de données NoSQL - IAI**
 
 **Année Académique 2025-2026**
 
@@ -28,7 +28,7 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-## 🗄️ Collections principales
+##  Collections principales
 
 | Collection | Description | Index |
 |------------|-------------|-------|
@@ -39,14 +39,14 @@ Une plateforme de vente de billets pour concerts et événements à Libreville. 
 
 ---
 
-## 🚀 Installation et configuration
+##  Installation et configuration
 
-### 📦 Prérequis
+###  Prérequis
 
 - [MongoDB](https://www.mongodb.com/try/download/community) (local ou Atlas)
 - [mongosh](https://www.mongodb.com/try/download/shell) (MongoDB Shell)
 
-### 🛠️ Étapes d'installation
+###  Étapes d'installation
 
 #### 1. Cloner le dépôt
 
@@ -81,10 +81,10 @@ mongosh load("data/seed.js")
 ```
 
 Cette commande insère :
-- ✅ 35 utilisateurs avec des noms gabonais
-- ✅ 30 événements
-- ✅ 35 réservations
-- ✅ Des billets pour les réservations confirmées
+-  35 utilisateurs avec des noms gabonais
+-  30 événements
+-  35 réservations
+-  Des billets pour les réservations confirmées
 
 #### 4. Exécuter les scripts de démonstration
 
@@ -104,37 +104,37 @@ mongosh load("scripts/04-index.js")
 
 ---
 
-## 📁 Structure du dépôt
+##  Structure du dépôt
 
 ```
 billetterie-nosql/
-├─ 📄 README.md
-├─ 📁 conception/
-│   ├─ 📄 modele-donnees.md (à convertir en PDF)
-│   └─ 📄 schema.md (à convertir en PNG)
-├─ 📁 data/
-│   └─ 📄 seed.js
-├─ 📁 scripts/
-│   ├─ 📄 01-crud.js
-│   ├─ 📄 02-requetes.js
-│   ├─ 📄 03-agregations.js
-│   └─ 📄 04-index.js
-├─ 📁 explain/
-│   └─ 📄 explain-avant-apres.md (à convertir en PDF)
-├─ 📁 rapport/
-│   └─ 📄 rapport.md (à convertir en PDF)
-└─ 📁 api/ (optionnel - API REST Node.js)
+├─  README.md
+├─  conception/
+│   ├─  modele-donnees.md (à convertir en PDF)
+│   └─  schema.md (à convertir en PNG)
+├─  data/
+│   └─  seed.js
+├─ scripts/
+│   ├─  01-crud.js
+│   ├─  02-requetes.js
+│   ├─  03-agregations.js
+│   └─  04-index.js
+├─  explain/
+│   └─  explain-avant-apres.md (à convertir en PDF)
+├─  rapport/
+│   └─  rapport.md (à convertir en PDF)
+└─ api/ (optionnel - API REST Node.js)
 ```
 
 ---
 
-## ✅ Livrables
+##  Livrables
 
 ### Socle obligatoire
 
 | Livrable | Fichier | Statut |
 |----------|---------|--------|
-| Conception | `conception/modele-donnees.md` | ✅ |
+| Conception | `conception/modele-donnees.md` | ✅|
 | Schéma visuel | `conception/schema.md` | ✅ |
 | Données de test | `data/seed.js` | ✅ |
 | Opérations CRUD | `scripts/01-crud.js` | ✅ |
@@ -145,14 +145,14 @@ billetterie-nosql/
 | Rapport écrit | `rapport/rapport.md` | ✅ |
 | Dépôt Git + README | - | ✅ |
 
-### 🎯 Livrables spécifiques Groupe 9
+###  Livrables spécifiques Groupe 9
 
 - ✅ Index TTL sur les réservations (expiration 10 minutes)
 - ✅ Décrément/réincrément automatique des places
 - ✅ Agrégation des recettes par événement
 - ✅ Gestion de la concurrence (pas de survente)
 
-### 🎁 Bonus (optionnel)
+### Bonus (optionnel)
 
 - ✅ API REST Node.js dans le dossier `api/` (+2 points)
 - ✅ Collection Postman documentée (+1 point)
@@ -174,9 +174,9 @@ Le script `scripts/04-index.js` crée les index suivants :
 
 ---
 
-## 🎓 Comparaison SQL vs NoSQL
+##  Comparaison SQL vs NoSQL
 
-### ✨ Avantages de MongoDB pour ce projet
+###  Avantages de MongoDB pour ce projet
 
 | Avantage | Description |
 |----------|-------------|
@@ -186,7 +186,7 @@ Le script `scripts/04-index.js` crée les index suivants :
 | **Agrégation puissante** | Pipeline d'agrégation pour les statistiques de recettes |
 | **Scalabilité horizontale** | Facile à scaler avec sharding si le volume augmente |
 
-### ⚠️ Limites par rapport au relationnel
+###  Limites par rapport au relationnel
 
 | Limite | Description |
 |--------|-------------|
@@ -196,7 +196,7 @@ Le script `scripts/04-index.js` crée les index suivants :
 
 ---
 
-## 📚 Documentation
+##  Documentation
 
 | Document | Emplacement | Format |
 |----------|-------------|--------|
@@ -207,7 +207,7 @@ Le script `scripts/04-index.js` crée les index suivants :
 
 ---
 
-## 👥 Équipe
+##  Équipe
 
 Ce projet est réalisé dans le cadre du module Bases de données NoSQL de l'Université Omar Bongo.
 
@@ -215,11 +215,11 @@ Ce projet est réalisé dans le cadre du module Bases de données NoSQL de l'Uni
 |--------|------|
 | ONIANDJI Jude | Modèles, indexation, seed |
 | BOUALA NUKAFO Kingsy Jones | API REST, contrôleurs |
-| MAKAYA Taliane | Frontend, tests, documentation |
+| MINDZELI Arnold| Frontend, tests, documentation |
 
 ---
 
-## 📄 Licence
+##  Licence
 
 Ce projet est réalisé à des fins pédagogiques dans le cadre d'un projet universitaire.
 
@@ -227,7 +227,7 @@ Ce projet est réalisé à des fins pédagogiques dans le cadre d'un projet univ
 
 <div align="center">
 
-**🎓 Université Omar Bongo - Master I - Bases de données NoSQL**
+**IAI - Master I - Bases de données NoSQL**
 
 **Année Académique 2025-2026**
 
