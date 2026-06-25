@@ -267,7 +267,7 @@ const Components = {
     eventsGrid(events) {
         if (!events.length) {
             return `<div class="empty-state">
-                <div class="empty-state__icon">🎭</div>
+                <div class="empty-state__icon"></div>
                 <h3>Aucun événement trouvé</h3>
                 <p>Essayez de modifier vos filtres de recherche.</p>
             </div>`;
@@ -277,16 +277,16 @@ const Components = {
 
     categoryPills(active = '', context = 'events') {
         const cats = [
-            { id: '', label: 'Tous', icon: '✨' },
-            { id: 'concert', label: 'Concerts', icon: '🎵' },
-            { id: 'sport', label: 'Sport', icon: '⚽' },
-            { id: 'conference', label: 'Conférences', icon: '🎤' }
+            { id: '', label: 'Tous' },
+            { id: 'concert', label: 'Concerts' },
+            { id: 'sport', label: 'Sport' },
+            { id: 'conference', label: 'Conférences' }
         ];
         const handler = context === 'home' ? 'Pages.Home.setCategory' : 'Pages.Events.setCategory';
         return `<div class="categories">${cats.map(c => `
             <button class="category-pill${active === c.id ? ' active' : ''}"
                     onclick="${handler}('${c.id}')">
-                ${c.icon} ${c.label}
+                ${c.label}
             </button>
         `).join('')}</div>`;
     },
@@ -304,7 +304,7 @@ const Components = {
     countdownHTML(remaining) {
         if (remaining <= 0) {
             return `<div class="countdown countdown--expired">
-                <span class="countdown__icon">⏱</span>
+                <span class="countdown__icon"></span>
                 <div><div class="countdown__time">00:00</div><div class="countdown__label">Réservation expirée</div></div>
             </div>`;
         }
@@ -312,7 +312,7 @@ const Components = {
         const secs = remaining % 60;
         const urgent = remaining < 120;
         return `<div class="countdown${urgent ? ' countdown--urgent' : ''}" id="countdown">
-            <span class="countdown__icon">⏱</span>
+            <span class="countdown__icon"></span>
             <div>
                 <div class="countdown__time" id="countdownTime">${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}</div>
                 <div class="countdown__label">Temps restant pour payer</div>
@@ -455,7 +455,7 @@ const Pages = {
         return `
             <section class="hero">
                 <div class="container hero__content">
-                    <div class="hero__badge">🎟 Billetterie officielle</div>
+                    <div class="hero__badge">Billetterie officielle</div>
                     <h1 class="hero__title">Réservez vos événements <span>en un clic</span></h1>
                     <p class="hero__subtitle">Concerts, spectacles et conférences — trouvez votre prochaine expérience et recevez votre billet digital instantanément.</p>
                     <div class="hero__search">
@@ -590,8 +590,8 @@ const Pages = {
                                 <span class="event-card__badge event-card__badge--${cat}">${Utils.categoryLabel(cat)}</span>
                                 <h1 class="event-detail__hero-title">${Utils.escapeHtml(event.titre)}</h1>
                                 <div class="event-detail__hero-meta">
-                                    <span>📅 ${Utils.formatDate(event.date)}</span>
-                                    <span>📍 ${Utils.escapeHtml(event.lieu)}</span>
+                                    <span>${Utils.formatDate(event.date)}</span>
+                                    <span>${Utils.escapeHtml(event.lieu)}</span>
                                 </div>
                             </div>
                         </div>
@@ -871,7 +871,7 @@ const Pages = {
         async render() {
             if (!state.user) {
                 return `<div class="container empty-state page-enter">
-                    <div class="empty-state__icon">🎫</div>
+                    <div class="empty-state__icon"></div>
                     <h3>Connectez-vous pour voir vos billets</h3>
                     <button class="btn btn--primary" onclick="App.auth.openModal()">Se connecter</button>
                 </div>`;
@@ -880,7 +880,7 @@ const Pages = {
             await Reservations.fetch();
             if (!state.reservations.length) {
                 return `<div class="container empty-state page-enter">
-                    <div class="empty-state__icon">🎫</div>
+                    <div class="empty-state__icon"></div>
                     <h3>Aucune réservation</h3>
                     <p>Explorez nos événements et réservez vos places.</p>
                     <a href="#/events" class="btn btn--primary" data-nav style="margin-top:16px">Voir les événements</a>

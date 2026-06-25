@@ -49,10 +49,10 @@ function loadDarkMode() {
 function updateDarkModeButton() {
   const btn = document.getElementById('darkModeBtn');
   if (isDarkMode) {
-    btn.innerHTML = '<span>🌙</span> Mode Clair';
+    btn.innerHTML = 'Mode Clair';
     btn.setAttribute('aria-label', 'Passer au mode clair');
   } else {
-    btn.innerHTML = '<span>☀️</span> Mode Sombre';
+    btn.innerHTML = 'Mode Sombre';
     btn.setAttribute('aria-label', 'Passer au mode sombre');
   }
 }

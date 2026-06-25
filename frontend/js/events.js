@@ -209,7 +209,7 @@ function loadEventDetailPage(event) {
                 <div class="text-gray-500 font-bold uppercase tracking-wider text-xs mb-2">Prix du billet</div>
                 <div class="text-4xl font-black text-primary mb-3">${formatPrice(event.prix)}</div>
                 <div class="flex items-center gap-2 text-red-600 font-bold text-sm bg-red-50 px-3 py-1 rounded-full w-fit">
-                  <span>🔥</span> ${event.places_disponibles} places restantes
+                  ${event.places_disponibles} places restantes
                 </div>
               </div>
               
@@ -389,7 +389,7 @@ async function confirmPayment(eventId, ticketCount, total) {
     await window.api.payReservation(reservation._id);
     
     // Animation de succès magnifique
-    showToast('🎉 Paiement réussi ! Préparation de vos billets...', 'success');
+    showToast('Paiement réussi ! Préparation de vos billets...', 'success');
     
     setTimeout(() => {
       navigateTo('myTickets');
