@@ -67,7 +67,7 @@ mongosh "mongodb+srv://votre_user:votre_password@cluster.mongodb.net/billetterie
 mongosh
 ```
 
-> 💡 **Pour MongoDB Atlas :**
+>  **Pour MongoDB Atlas :**
 > 1. Créer un compte gratuit sur [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 > 2. Créer un cluster M0 (gratuit)
 > 3. Créer un utilisateur de base de données
@@ -120,9 +120,9 @@ billetterie-nosql/
 │   ├─  03-agregations.js
 │   └─  04-index.js
 ├─  explain/
-│   └─  explain-avant-apres.md (à convertir en PDF)
+│   └─  explain-avant-apres.pdf
 ├─  rapport/
-│   └─  rapport.md (à convertir en PDF)
+│   └─  rapport.pdf
 └─ api/ (optionnel - API REST Node.js)
 ```
 
