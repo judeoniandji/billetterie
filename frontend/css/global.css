@@ -120,3 +120,71 @@ body {
 @media (max-width: 640px) {
   .grid-cols-3 { grid-template-columns: 1fr; }
 }
+
+/* ---------- ANIMATIONS PREMIUM POUR BOUTONS ---------- */
+.btn-reserve-now {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* Effet de clic (compression) */
+.btn-reserve-now:active {
+  transform: scale(0.96) translateY(2px);
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+}
+
+/* État de chargement */
+.btn-loading {
+  pointer-events: none;
+  color: transparent !important;
+}
+
+.btn-loading::after {
+  content: "";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  left: 50%;
+  margin: -12px 0 0 -12px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 0.8s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Animation d'apparition de la page (Fade & Slide) */
+#mainContent {
+  animation: pageEnter 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Effet de brillance au survol */
+.btn-reserve-now::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: all 0.6s;
+}
+
+.btn-reserve-now:hover::before {
+  left: 100%;
+}

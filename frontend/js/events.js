@@ -251,9 +251,16 @@ async function startReservation(eventId) {
     return;
   }
 
-  selectedEvent = window.allEvents.find(e => e._id === eventId);
-  const ticketCount = parseInt(document.getElementById('ticketCount').value,10);
-  loadReservationPage(selectedEvent, ticketCount);
+  const btn = document.querySelector('.btn-reserve-now');
+  if (btn) btn.classList.add('btn-loading');
+
+  // Petit délai pour l'effet visuel magnifique
+  setTimeout(() => {
+    selectedEvent = window.allEvents.find(e => e._id === eventId);
+    const ticketCount = parseInt(document.getElementById('ticketCount').value,10);
+    loadReservationPage(selectedEvent, ticketCount);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, 600);
 }
 
 function loadReservationPage(event, ticketCount) {
@@ -370,17 +377,25 @@ function loadReservationPage(event, ticketCount) {
 }
 
 async function confirmPayment(eventId, ticketCount, total) {
+  const btn = document.querySelector('.btn-reserve-now');
+  if (btn) btn.classList.add('btn-loading');
+
   try {
-    showToast('Traitement en cours...', 'info');
     const reservationData = {
       utilisateur_id: currentUser._id, evenement_id: eventId, nombre_places: ticketCount
     };
     const result = await window.api.createReservation(reservationData);
-    const reservation = result.reservation; // extract from { message, reservation }
-    const payResult = await window.api.payReservation(reservation._id);
-    showToast('Paiement confirmé! Votre billet est prêt!', 'success');
-    navigateTo('myTickets');
+    const reservation = result.reservation;
+    await window.api.payReservation(reservation._id);
+    
+    // Animation de succès magnifique
+    showToast('🎉 Paiement réussi ! Préparation de vos billets...', 'success');
+    
+    setTimeout(() => {
+      navigateTo('myTickets');
+    }, 1000);
   } catch(e) {
+    if (btn) btn.classList.remove('btn-loading');
     showToast(e.message || 'Erreur de paiement', 'error');
   }
 }
