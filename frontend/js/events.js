@@ -164,60 +164,69 @@ function loadEventDetailPage(event) {
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=1600&q=80';
   
   main.innerHTML = `
-    <div class="py-12">
-      <div class="container">
-        <!-- Back button -->
-        <button class="flex items-center gap-2 text-gray-600 hover:text-primary mb-8 transition-colors" onclick="navigateTo('events')">
-          <span class="text-2xl">←</span>
-          <span class="font-semibold">Retour aux événements</span>
-        </button>
+    <div>
+      <!-- Hero Section with Event Image -->
+      <div class="relative w-full h-[450px] overflow-hidden">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${imgUrl}')"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
         
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          <!-- Left Column: Image & Description -->
+        <!-- Back Button -->
+        <div class="relative container pt-6">
+          <button class="bg-white/20 backdrop-blur-md border border-white/30 text-white px-4 py-2 rounded-full hover:bg-white/30 transition-all flex items-center gap-2" onclick="navigateTo('events')">
+            <span>←</span> Retour aux événements
+          </button>
+        </div>
+        
+        <!-- Hero Text -->
+        <div class="relative container absolute bottom-0 left-0 right-0 pb-12">
+          <div class="flex items-center gap-4 text-white/90 mb-4">
+            <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+              ${formatDate(event.date)}
+            </span>
+            <span class="bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+              ${event.lieu}
+            </span>
+          </div>
+          <h1 class="text-4xl md:text-5xl font-black text-white mb-3">${event.titre}</h1>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <div class="container py-10">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+          <!-- Left Column: Details -->
           <div class="lg:col-span-2">
-            <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
-              <div class="h-[400px] bg-cover bg-center" style="background-image: url('${imgUrl}')"></div>
-              <div class="p-8 md:p-12">
-                <div class="flex flex-wrap gap-4 mb-6">
-                  <span class="bg-primary-light text-primary px-4 py-1 rounded-full text-sm font-bold">${formatDate(event.date)}</span>
-                  <span class="bg-gray-100 text-gray-600 px-4 py-1 rounded-full text-sm font-bold">${event.lieu}</span>
-                </div>
-                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">${event.titre}</h1>
-                <div class="prose max-w-none">
-                  <h3 class="text-xl font-bold text-gray-800 mb-4">À propos de cet événement</h3>
-                  <p class="text-gray-600 leading-relaxed text-lg">${event.description || 'Rejoignez-nous pour un événement inoubliable rempli de moments exceptionnels !'}</p>
-                </div>
-              </div>
+            <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
+              <h2 class="text-2xl font-black mb-6 text-gray-900">À propos de cet événement</h2>
+              <p class="text-gray-600 leading-relaxed text-lg">${event.description || 'Rejoignez-nous pour un événement inoubliable rempli de moments exceptionnels !'}</p>
             </div>
           </div>
           
           <!-- Right Column: Booking Card -->
           <div class="lg:col-span-1">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 sticky top-24 border-2 border-primary-light">
-              <div class="mb-8 text-center">
-                <div class="text-gray-500 font-bold uppercase tracking-wider text-sm mb-2">Prix du billet</div>
-                <div class="text-5xl font-black text-primary mb-4">${formatPrice(event.prix)}</div>
-                <div class="inline-flex items-center gap-2 bg-red-50 text-red-600 px-4 py-2 rounded-full text-sm font-bold">
+            <div class="bg-white rounded-3xl shadow-2xl overflow-hidden sticky top-24 border border-gray-100">
+              <div class="p-8 bg-gradient-to-br from-primary-light to-white border-b border-gray-100">
+                <div class="text-gray-500 font-bold uppercase tracking-wider text-xs mb-2">Prix du billet</div>
+                <div class="text-4xl font-black text-primary mb-3">${formatPrice(event.prix)}</div>
+                <div class="flex items-center gap-2 text-red-600 font-bold text-sm bg-red-50 px-3 py-1 rounded-full w-fit">
                   <span>🔥</span> ${event.places_disponibles} places restantes
                 </div>
               </div>
               
-              <div class="space-y-6">
-                <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Nombre de places</label>
-                  <div class="flex items-center justify-between bg-gray-50 rounded-2xl p-2 border-2 border-gray-100">
+              <div class="p-8">
+                <div class="mb-8">
+                  <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-4">Quantité</label>
+                  <div class="flex items-center justify-between bg-gray-50 rounded-2xl p-2 border border-gray-100">
                     <button class="w-12 h-12 rounded-xl bg-white shadow-sm hover:bg-gray-100 text-gray-800 font-bold text-xl transition-all" onclick="updateTicketCount(-1)">-</button>
                     <input type="number" id="ticketCount" value="1" min="1" max="${event.places_disponibles}" class="bg-transparent w-16 text-center text-2xl font-black text-gray-800 focus:outline-none" readonly>
                     <button class="w-12 h-12 rounded-xl bg-white shadow-sm hover:bg-gray-100 text-gray-800 font-bold text-xl transition-all" onclick="updateTicketCount(1)">+</button>
                   </div>
                 </div>
                 
-                <div class="pt-4">
-                  <button class="btn btn-primary btn-full btn-lg btn-reserve-now py-5 text-xl shadow-2xl" onclick="startReservation('${event._id}')">
-                    Réserver maintenant
-                  </button>
-                  <p class="text-center text-gray-400 text-xs mt-4 font-medium">Paiement sécurisé • Confirmation instantanée</p>
-                </div>
+                <button class="btn btn-primary btn-full btn-lg btn-reserve-now py-5 text-xl shadow-xl" onclick="startReservation('${event._id}')">
+                  Réserver maintenant
+                </button>
+                <p class="text-center text-gray-400 text-[10px] mt-5 font-bold uppercase tracking-widest">Paiement 100% Sécurisé</p>
               </div>
             </div>
           </div>
