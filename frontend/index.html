@@ -26,8 +26,8 @@
           <a href="#" class="nav-link hidden" id="adminNavLink" onclick="navigateTo('admin')">Admin</a>
         </nav>
         <div class="flex gap-4 items-center">
-          <button class="btn btn-primary btn-sm" onclick="navigateTo('publish')">📢 Publier un événement</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">🌙 Mode Sombre</button>
+          <button class="btn btn-primary btn-sm hidden" id="publishEventBtn" onclick="navigateTo('admin')">Publier un événement</button>
+          <button class="btn btn-outline btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">Mode Sombre</button>
           <div id="authSection"></div>
         </div>
       </div>
@@ -65,7 +65,7 @@
               <input type="date" id="searchDate" class="input">
             </div>
             <div class="flex items-end">
-              <button class="btn btn-primary btn-full" onclick="searchEvents()">🔍 Rechercher</button>
+              <button class="btn btn-primary btn-full" onclick="searchEvents()">Rechercher</button>
             </div>
           </div>
         </div>
@@ -77,7 +77,7 @@
       <div class="container">
         <!-- Country Selector -->
         <div class="country-selector mb-4">
-          <span class="country-label">🌍 Pays :</span>
+          <span class="country-label">Pays :</span>
           <div class="country-pills">
             <button class="country-pill active" data-country="gabon">Gabon</button>
             <button class="country-pill" data-country="cote-ivoire">Côte d'Ivoire</button>
@@ -90,13 +90,13 @@
         <!-- Categories -->
         <div class="categories mb-8">
           <button class="category-pill active" data-category="all">Tous</button>
-          <button class="category-pill" data-category="Concert">🎵 Concert</button>
-          <button class="category-pill" data-category="Culture">🎭 Culture</button>
-          <button class="category-pill" data-category="Sport">⚽ Sport</button>
-          <button class="category-pill" data-category="Festival">🎪 Festival</button>
-          <button class="category-pill" data-category="Formation">📚 Formation</button>
-          <button class="category-pill" data-category="Soirée">🌙 Soirée</button>
-          <button class="category-pill" data-category="Business">💼 Business</button>
+          <button class="category-pill" data-category="Concert">Concert</button>
+          <button class="category-pill" data-category="Culture">Culture</button>
+          <button class="category-pill" data-category="Sport">Sport</button>
+          <button class="category-pill" data-category="Festival">Festival</button>
+          <button class="category-pill" data-category="Formation">Formation</button>
+          <button class="category-pill" data-category="Soirée">Soirée</button>
+          <button class="category-pill" data-category="Business">Business</button>
         </div>
 
         <div class="flex items-center justify-between mb-6">

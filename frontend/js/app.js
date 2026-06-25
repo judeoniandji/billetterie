@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Afficher le bouton admin
         const adminNav = document.getElementById('adminNavLink');
         adminNav.classList.remove('hidden');
-        showToast('Mode admin activé ! 🎉', 'success');
+        showToast('Mode admin activé !', 'success');
         logoClickCount = 0;
       }
     });
@@ -90,12 +90,15 @@ function checkAuth() {
 }
 
 function renderAuthSection() {
-  // Show/hide admin link
+  // Show/hide admin link and publish button
   const adminNav = document.getElementById('adminNavLink');
+  const publishEventBtn = document.getElementById('publishEventBtn');
   if (currentUser && currentUser.role === 'admin') {
     adminNav.classList.remove('hidden');
+    publishEventBtn.classList.remove('hidden');
   } else {
     adminNav.classList.add('hidden');
+    publishEventBtn.classList.add('hidden');
   }
 
   const section = document.getElementById('authSection');

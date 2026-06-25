@@ -46,15 +46,15 @@ async function loadAdminPage() {
   }
 
   main.innerHTML = `
-    <div class="admin-wrapper">
+    <div class="min-h-screen bg-gray-50 py-8">
       <div class="container">
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
-            <h1 class="text-3xl font-semibold">Tableau de bord</h1>
-            <p class="text-secondary mt-2">Gestion complète de EventPass</p>
+            <h1 class="text-3xl font-bold text-gray-800">Tableau de bord</h1>
+            <p class="text-gray-500 mt-1">Gestion complète de EventPass</p>
           </div>
-          <div class="flex gap-4">
-            <button class="btn btn-success" onclick="openAddEventModal()">Ajouter événement</button>
+          <div class="flex gap-3">
+            <button class="btn btn-primary" onclick="openAddEventModal()">Nouvel événement</button>
             <button class="btn btn-outline" onclick="navigateTo('home')">Retour au site</button>
           </div>
         </div>
@@ -175,7 +175,7 @@ async function loadAdminPage() {
               <textarea id="event-description" class="input" rows="4"></textarea>
             </div>
             <div class="col-span-2">
-              <button type="submit" class="btn btn-primary btn-full">💾 Enregistrer</button>
+              <button type="submit" class="btn btn-primary btn-full">Enregistrer</button>
             </div>
           </form>
         </div>

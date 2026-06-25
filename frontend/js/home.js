@@ -90,12 +90,18 @@ function filterEvents() {
 
 function createEventCard(event) {
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
+  const placesDisponibles = event.places_disponibles || 0;
+  const capaciteTotale = event.capacite_totale || 0;
+  const placesText = capaciteTotale > 0 ? `${placesDisponibles} restantes sur ${capaciteTotale}` : 'Indisponible';
   
   return `
     <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="navigateToEvent('${event._id}')">
       <div class="w-full h-48 bg-cover bg-center relative" style="background-image: url('${imgUrl}')">
         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
           ${event.categorie || 'Événement'}
+        </div>
+        <div class="absolute top-3 right-3 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+          ${placesText}
         </div>
       </div>
       
@@ -114,7 +120,7 @@ function createEventCard(event) {
             <div class="font-extrabold text-xl text-primary">${formatPrice(event.prix)}</div>
           </div>
           
-          <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-all">
+          <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-all" onclick="event.stopPropagation(); navigateToEvent('${event._id}')">
             Réserver
           </button>
         </div>

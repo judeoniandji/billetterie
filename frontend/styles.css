@@ -10,38 +10,38 @@
 }
 
 :root {
-    --blue-900: #0c1e3c;
-    --blue-800: #1e3a5f;
-    --blue-700: #1e40af;
-    --blue-600: #2563eb;
-    --blue-500: #3b82f6;
-    --blue-100: #dbeafe;
-    --blue-50: #eff6ff;
+    --blue-900: #1e3a5f;
+    --blue-800: #2d5a7b;
+    --blue-700: #3d7a9e;
+    --blue-600: #4d9ac1;
+    --blue-500: #5dbae4;
+    --blue-100: #d4e8f5;
+    --blue-50: #e8f4fc;
 
-    --violet-600: #7c3aed;
-    --violet-500: #8b5cf6;
-    --violet-100: #ede9fe;
+    --violet-600: #8b7eb5;
+    --violet-500: #a394c4;
+    --violet-100: #e8e4f0;
 
-    --green-600: #059669;
-    --green-500: #10b981;
-    --green-100: #d1fae5;
+    --green-600: #5c9e7a;
+    --green-500: #7cb899;
+    --green-100: #d4ecd9;
 
-    --red-500: #ef4444;
-    --red-100: #fee2e2;
-    --amber-500: #f59e0b;
-    --amber-100: #fef3c7;
+    --red-500: #c47a7a;
+    --red-100: #f0d4d4;
+    --amber-500: #d4a57a;
+    --amber-100: #f5e8d4;
 
     --white: #ffffff;
-    --gray-50: #f8fafc;
-    --gray-100: #f1f5f9;
-    --gray-200: #e2e8f0;
-    --gray-300: #cbd5e1;
-    --gray-400: #94a3b8;
-    --gray-500: #64748b;
-    --gray-600: #475569;
-    --gray-700: #334155;
-    --gray-800: #1e293b;
-    --gray-900: #0f172a;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f5;
+    --gray-200: #e9ecef;
+    --gray-300: #dee2e6;
+    --gray-400: #adb5bd;
+    --gray-500: #6c757d;
+    --gray-600: #495057;
+    --gray-700: #343a40;
+    --gray-800: #212529;
+    --gray-900: #1a1d20;
 
     --font: 'Inter', system-ui, -apple-system, sans-serif;
     --radius-sm: 8px;
@@ -50,10 +50,10 @@
     --radius-xl: 24px;
     --radius-full: 9999px;
 
-    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
-    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
-    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
-    --shadow-xl: 0 20px 48px rgba(15, 23, 42, 0.16);
+    --shadow-sm: 0 1px 2px rgba(26, 29, 32, 0.05);
+    --shadow-md: 0 4px 12px rgba(26, 29, 32, 0.08);
+    --shadow-lg: 0 12px 32px rgba(26, 29, 32, 0.12);
+    --shadow-xl: 0 20px 48px rgba(26, 29, 32, 0.16);
 
     --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --header-h: 72px;
