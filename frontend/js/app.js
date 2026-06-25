@@ -42,7 +42,18 @@ function loadDarkMode() {
   if (stored === 'true') {
     isDarkMode = true;
     document.body.classList.add('dark-mode');
-    document.getElementById('darkModeBtn').textContent = 'Mode Clair';
+    updateDarkModeButton();
+  }
+}
+
+function updateDarkModeButton() {
+  const btn = document.getElementById('darkModeBtn');
+  if (isDarkMode) {
+    btn.textContent = '🌙 Mode Clair';
+    btn.setAttribute('aria-label', 'Passer au mode clair');
+  } else {
+    btn.textContent = '☀️ Mode Sombre';
+    btn.setAttribute('aria-label', 'Passer au mode sombre');
   }
 }
 
@@ -50,13 +61,13 @@ function toggleDarkMode() {
   isDarkMode = !isDarkMode;
   if (isDarkMode) {
     document.body.classList.add('dark-mode');
-    document.getElementById('darkModeBtn').textContent = 'Mode Clair';
     localStorage.setItem('eventpass_darkmode', 'true');
   } else {
     document.body.classList.remove('dark-mode');
-    document.getElementById('darkModeBtn').textContent = 'Mode Sombre';
     localStorage.setItem('eventpass_darkmode', 'false');
   }
+  updateDarkModeButton();
+  showToast(isDarkMode ? 'Mode sombre activé' : 'Mode clair activé', 'info');
 }
 
 // --- Toast Notifications ---
