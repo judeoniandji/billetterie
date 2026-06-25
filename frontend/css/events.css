@@ -1,268 +1,116 @@
 /* ========================================
-   STYLES PAGE ÉVÉNEMENTS - DARK IMMERSIVE
+   STYLES ÉVÉNEMENTS & RÉSERVATION - FOCUS CTA
    ======================================== */
 
-.events-page { padding: 3rem 0; }
+.event-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 3rem;
+  padding: 4rem 0;
+}
 
-.filters-sidebar {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 2rem;
+/* LA CARTE DE RÉSERVATION (Celle de la capture d'écran) */
+.booking-card {
+  background: white;
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  height: fit-content;
+  padding: 2.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--primary-light);
   position: sticky;
   top: 6rem;
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  text-align: center;
 }
 
-.filters-sidebar:hover {
-  border-color: rgba(124, 58, 237, 0.3);
-  background: rgba(255, 255, 255, 0.08);
+.dark-mode .booking-card {
+  background: var(--bg-white);
+  border-color: var(--border);
 }
 
-.filter-section { margin-bottom: 2rem; }
-
-.filter-title {
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.filter-checkbox {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 0.75rem;
-  cursor: pointer;
-  padding: 0.5rem;
-  border-radius: var(--radius-md);
-  transition: all 0.3s ease;
-}
-
-.filter-checkbox:hover {
-  background: rgba(124, 58, 237, 0.1);
-}
-
-.filter-checkbox input[type="checkbox"] {
-  width: 1.25rem;
-  height: 1.25rem;
-  cursor: pointer;
-  accent-color: var(--primary);
-}
-
-.filter-checkbox label {
-  cursor: pointer;
-  font-weight: 500;
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
-}
-
-.filter-checkbox:hover label {
-  color: var(--primary);
-}
-
-.range-input {
-  width: 100%;
-  margin-top: 0.75rem;
-  height: 0.5rem;
-  border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.1);
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-}
-
-.range-input::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  cursor: pointer;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
-}
-
-.range-input::-webkit-slider-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
-}
-
-.range-input::-moz-range-thumb {
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  cursor: pointer;
-  border: none;
-  box-shadow: var(--shadow-md);
-  transition: all 0.3s ease;
-}
-
-.range-input::-moz-range-thumb:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
-}
-
-.price-display {
-  text-align: right;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-size: 0.95rem;
-  font-weight: 700;
-  margin-top: 0.75rem;
-}
-
-/* ---------- PAGE DÉTAIL ÉVÉNEMENT ---------- */
-.event-detail-hero {
-  position: relative;
-  height: 400px;
-  background-size: cover;
-  background-position: center;
-  overflow: hidden;
-  border-radius: var(--radius-xl);
-}
-
-.event-detail-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-}
-
-.event-detail-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  z-index: 10;
-  color: white;
-}
-
-.event-detail-title {
+.booking-price {
   font-size: 2.5rem;
   font-weight: 800;
-  margin-bottom: 1rem;
-}
-
-.event-detail-meta {
-  display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.event-detail-meta-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: 600;
-}
-
-/* ---------- BOOKING CARD ---------- */
-.booking-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-xl);
-  padding: 2rem;
-  backdrop-filter: blur(20px);
-  position: sticky;
-  top: 6rem;
-  height: fit-content;
-}
-
-.booking-card:hover {
-  border-color: rgba(124, 58, 237, 0.3);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.booking-card-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.booking-card-price {
-  font-size: 2rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.booking-card-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.booking-card-label {
-  color: var(--text-secondary);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.booking-card-value {
   color: var(--text-primary);
-  font-weight: 700;
-  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
 }
 
-/* ---------- TIMER TTL ---------- */
-.ttl-timer {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  border-radius: var(--radius-lg);
-  padding: 1rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.booking-stock {
   color: var(--accent-error);
   font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  display: block;
 }
 
-/* ---------- RESPONSIVE ---------- */
-@media (max-width: 1024px) {
-  .filters-sidebar {
-    position: static;
-    margin-bottom: 2rem;
-  }
-
-  .booking-card {
-    position: static;
-  }
+/* LE BOUTON DE RÉSERVATION - DOIT ÊTRE TRÈS VISIBLE */
+.btn-reserve-now {
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, var(--accent-cta) 0%, var(--accent-cta-dark) 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 10px 25px -5px rgba(249, 115, 22, 0.5);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 1.5rem;
 }
 
-@media (max-width: 640px) {
-  .event-detail-title {
-    font-size: 1.75rem;
-  }
+.btn-reserve-now:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 15px 30px -8px rgba(249, 115, 22, 0.6);
+  filter: brightness(1.1);
+}
 
-  .booking-card {
-    margin-top: 2rem;
-  }
+/* SÉLECTEUR DE PLACES */
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.quantity-btn {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quantity-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--primary-light);
+}
+
+.quantity-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  min-width: 3rem;
+}
+
+/* TIMER TTL */
+.ttl-timer {
+  background: #fff1f2;
+  color: #e11d48;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  border: 1px solid #fecdd3;
+}
+
+.dark-mode .ttl-timer {
+  background: rgba(225, 29, 72, 0.1);
+  border-color: rgba(225, 29, 72, 0.2);
 }

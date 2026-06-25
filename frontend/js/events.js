@@ -224,7 +224,7 @@ function loadEventDetailPage(event) {
                   </div>
                 </div>
                 
-                <button class="btn btn-primary btn-full btn-lg" onclick="startReservation('${event._id}')">
+                <button class="btn btn-primary btn-full btn-lg btn-reserve-now" onclick="startReservation('${event._id}')">
                   Réserver maintenant
                 </button>
               </div>
@@ -357,7 +357,7 @@ function loadReservationPage(event, ticketCount) {
                 </div>
                 
                 <!-- Pay button -->
-                <button class="btn btn-primary btn-full btn-lg text-lg py-5 flex items-center justify-center gap-2" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
+                <button class="btn btn-primary btn-full btn-lg text-lg py-5 flex items-center justify-center gap-2 btn-reserve-now" onclick="confirmPayment('${event._id}', ${ticketCount}, ${totalPrice})">
                   Confirmer et payer
                 </button>
               </div>
