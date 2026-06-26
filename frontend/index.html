@@ -4,32 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EventPass - Réservez vos événements en quelques clics</title>
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/home.css">
-  <link rel="stylesheet" href="css/events.css">
-  <link rel="stylesheet" href="css/ticket.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/client-premium.css">
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <!-- Header -->
-  <header class="header">
-    <div class="container">
-      <div class="header-content">
-        <a href="#" class="logo" onclick="navigateTo('home')">
-          EventPass
-        </a>
-        <nav class="nav">
-          <a href="#" class="nav-link active" onclick="navigateTo('home')">Accueil</a>
-          <a href="#" class="nav-link" onclick="navigateTo('events')">Événements</a>
-          <a href="#" class="nav-link hidden" id="adminNavLink" onclick="navigateTo('admin')">Admin</a>
-        </nav>
-        <div class="flex gap-4 items-center">
-          <button class="btn btn-primary btn-sm hidden" id="publishEventBtn" onclick="navigateTo('admin')">Publier un événement</button>
-          <button class="btn btn-outline btn-sm" onclick="toggleDarkMode()" id="darkModeBtn">Mode Sombre</button>
-          <div id="authSection"></div>
-        </div>
+  <header class="client-header">
+    <div class="client-header-content">
+      <a href="#" class="client-logo" onclick="navigateTo('home')">
+        EventPass
+      </a>
+      <nav class="client-nav">
+        <a href="#" class="client-nav-link active" onclick="navigateTo('home')">Accueil</a>
+        <a href="#" class="client-nav-link" onclick="navigateTo('events')">Événements</a>
+        <a href="admin.html" class="client-nav-link hidden" id="adminNavLink">Admin</a>
+      </nav>
+      <div class="client-header-actions">
+        <div id="authSection"></div>
       </div>
     </div>
   </header>
@@ -37,96 +28,94 @@
   <!-- Main Content -->
   <main id="mainContent">
     <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="hero-content text-center">
-          <h1 class="hero-title text-5xl font-semibold">Découvrez et réservez les meilleurs événements</h1>
-          <p class="hero-subtitle text-xl text-secondary mt-4 mb-8">Concerts, spectacles, conférences et événements sportifs près de chez vous</p>
-          
-          <!-- Search Bar -->
-          <div class="search-bar">
-            <div class="input-group mb-0">
-              <label>Événement</label>
-              <input type="text" id="searchEvent" class="input" placeholder="Rechercher un événement...">
-            </div>
-            <div class="input-group mb-0">
-              <label>Ville</label>
-              <select id="searchCity" class="select">
-                <option value="">Toutes les villes</option>
-                <option value="Libreville">Libreville</option>
-                <option value="Port-Gentil">Port-Gentil</option>
-                <option value="Franceville">Franceville</option>
-                <option value="Owendo">Owendo</option>
-                <option value="Akanda">Akanda</option>
-              </select>
-            </div>
-            <div class="input-group mb-0">
-              <label>Date</label>
-              <input type="date" id="searchDate" class="input">
-            </div>
-            <div class="flex items-end">
-              <button class="btn btn-primary btn-full" onclick="searchEvents()">Rechercher</button>
-            </div>
+    <section class="client-hero">
+      <div class="client-hero-content">
+        <h1 class="client-hero-title">Découvrez et réservez les meilleurs événements</h1>
+        <p class="client-hero-subtitle">Concerts, spectacles, conférences et événements sportifs près de chez vous</p>
+        
+        <!-- Search Bar -->
+        <div class="client-search-bar">
+          <div class="client-search-group">
+            <label class="client-search-label">Événement</label>
+            <input type="text" id="searchEvent" class="client-search-input" placeholder="Rechercher un événement...">
           </div>
+          <div class="client-search-group">
+            <label class="client-search-label">Ville</label>
+            <select id="searchCity" class="client-search-select">
+              <option value="">Toutes les villes</option>
+              <option value="Libreville">Libreville</option>
+              <option value="Port-Gentil">Port-Gentil</option>
+              <option value="Franceville">Franceville</option>
+              <option value="Owendo">Owendo</option>
+              <option value="Akanda">Akanda</option>
+            </select>
+          </div>
+          <div class="client-search-group">
+            <label class="client-search-label">Date</label>
+            <input type="date" id="searchDate" class="client-search-input">
+          </div>
+          <button class="client-btn client-btn-primary" onclick="searchEvents()">Rechercher</button>
         </div>
       </div>
     </section>
 
     <!-- Popular Events -->
-    <section class="py-20 bg-white">
-      <div class="container">
+    <section class="client-events-section">
+      <div class="client-filters-section">
         <!-- Country Selector -->
-        <div class="country-selector mb-4">
-          <span class="country-label">Pays :</span>
-          <div class="country-pills">
-            <button class="country-pill active" data-country="gabon">Gabon</button>
-            <button class="country-pill" data-country="cote-ivoire">Côte d'Ivoire</button>
-            <button class="country-pill" data-country="cameroun">Cameroun</button>
-            <button class="country-pill" data-country="senegal">Sénégal</button>
-            <button class="country-pill" data-country="guinee">Guinée</button>
+        <div class="client-country-selector">
+          <span class="client-country-label">Pays :</span>
+          <div class="client-country-pills">
+            <button class="client-pill active" data-country="gabon">Gabon</button>
+            <button class="client-pill" data-country="cote-ivoire">Côte d'Ivoire</button>
+            <button class="client-pill" data-country="cameroun">Cameroun</button>
+            <button class="client-pill" data-country="senegal">Sénégal</button>
+            <button class="client-pill" data-country="guinee">Guinée</button>
           </div>
         </div>
 
         <!-- Categories -->
-        <div class="categories mb-8">
-          <button class="category-pill active" data-category="all">Tous</button>
-          <button class="category-pill" data-category="Concert">Concert</button>
-          <button class="category-pill" data-category="Culture">Culture</button>
-          <button class="category-pill" data-category="Sport">Sport</button>
-          <button class="category-pill" data-category="Festival">Festival</button>
-          <button class="category-pill" data-category="Formation">Formation</button>
-          <button class="category-pill" data-category="Soirée">Soirée</button>
-          <button class="category-pill" data-category="Business">Business</button>
+        <div class="client-categories">
+          <button class="client-pill active" data-category="all">Tous</button>
+          <button class="client-pill" data-category="Concert">Concert</button>
+          <button class="client-pill" data-category="Culture">Culture</button>
+          <button class="client-pill" data-category="Sport">Sport</button>
+          <button class="client-pill" data-category="Festival">Festival</button>
+          <button class="client-pill" data-category="Formation">Formation</button>
+          <button class="client-pill" data-category="Soirée">Soirée</button>
+          <button class="client-pill" data-category="Business">Business</button>
         </div>
-
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-3xl font-semibold">Événements disponibles</h2>
-          <span id="eventsCount" class="events-count">0 événements trouvés</span>
-        </div>
-        <div id="eventsGrid" class="grid grid-cols-3 gap-8 mb-12"></div>
       </div>
+
+      <div class="client-events-header">
+        <h2 class="client-events-title">Événements disponibles</h2>
+        <span id="eventsCount" class="client-events-count">0 événements trouvés</span>
+      </div>
+      <div id="eventsGrid" class="client-events-grid"></div>
     </section>
 
     <!-- Features -->
-    <section class="py-20 bg-light">
-      <div class="container">
-        <h2 class="text-3xl font-semibold text-center mb-4">Pourquoi choisir EventPass ?</h2>
-        <p class="text-secondary text-center mb-12 text-lg">Une expérience simple, rapide et sécurisée</p>
-        <div class="grid grid-cols-3 gap-8">
-          <div class="feature-card">
-            <span class="feature-icon"></span>
-            <h3>Réservation ultra-rapide</h3>
-            <p>En quelques clics, vous obtenez vos billets électroniques</p>
+    <section class="client-features">
+      <div class="client-features-container">
+        <div class="client-features-header">
+          <h2 class="client-features-title">Pourquoi choisir EventPass ?</h2>
+          <p class="client-features-subtitle">Une expérience simple, rapide et sécurisée</p>
+        </div>
+        <div class="client-features-grid">
+          <div class="client-feature-card">
+            <div class="client-feature-icon">⚡</div>
+            <h3 class="client-feature-title">Réservation ultra-rapide</h3>
+            <p class="client-feature-text">En quelques clics, vous obtenez vos billets électroniques</p>
           </div>
-          <div class="feature-card">
-            <span class="feature-icon"></span>
-            <h3>100% sécurisé</h3>
-            <p>Vos données et vos paiements sont protégés</p>
+          <div class="client-feature-card">
+            <div class="client-feature-icon">🔒</div>
+            <h3 class="client-feature-title">100% sécurisé</h3>
+            <p class="client-feature-text">Vos données et vos paiements sont protégés</p>
           </div>
-          <div class="feature-card">
-            <span class="feature-icon"></span>
-            <h3>Billets digitaux</h3>
-            <p>QR code directement sur votre téléphone, rien à imprimer</p>
+          <div class="client-feature-card">
+            <div class="client-feature-icon">📱</div>
+            <h3 class="client-feature-title">Billets digitaux</h3>
+            <p class="client-feature-text">QR code directement sur votre téléphone, rien à imprimer</p>
           </div>
         </div>
       </div>
@@ -134,11 +123,10 @@
   </main>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-gray-100 py-12">
-    <div class="container text-center">
-      <div class="text-2xl font-bold mb-4" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">EventPass</div>
-      <p class="text-secondary mb-6">© 2026 EventPass. Tous droits réservés.</p>
-      <button class="btn btn-outline btn-sm" onclick="navigateTo('admin')">Administration</button>
+  <footer class="client-footer">
+    <div class="client-footer-container">
+      <div class="client-footer-logo">EventPass</div>
+      <p class="client-footer-text">© 2026 EventPass. Tous droits réservés.</p>
     </div>
   </footer>
 
@@ -146,46 +134,46 @@
   <div id="toastContainer" class="toast-container"></div>
 
   <!-- Auth Modal -->
-  <div id="authModal" class="modal-overlay hidden">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="authModalTitle">Connexion</h3>
-        <button class="modal-close" onclick="closeModal('authModal')">×</button>
+  <div id="authModal" class="client-modal-overlay hidden">
+    <div class="client-modal">
+      <div class="client-modal-header">
+        <h3 class="client-modal-title" id="authModalTitle">Connexion</h3>
+        <button class="client-modal-close" onclick="closeModal('authModal')">×</button>
       </div>
-      <div class="modal-body">
+      <div class="client-modal-body">
         <div class="flex gap-2 mb-4">
-          <button class="btn btn-sm flex-1" id="loginTab" onclick="switchAuthTab('login')">Se connecter</button>
-          <button class="btn btn-outline btn-sm flex-1" id="registerTab" onclick="switchAuthTab('register')">S'inscrire</button>
+          <button class="client-btn client-btn-sm flex-1" id="loginTab" onclick="switchAuthTab('login')">Se connecter</button>
+          <button class="client-btn client-btn-outline client-btn-sm flex-1" id="registerTab" onclick="switchAuthTab('register')">S'inscrire</button>
         </div>
         
         <!-- Login Form -->
         <div id="loginForm">
-          <div class="input-group">
-            <label>Téléphone</label>
-            <input type="tel" id="loginPhone" class="input" placeholder="+33 6 12 34 56 78">
+          <div class="client-form-group">
+            <label class="client-form-label">Téléphone</label>
+            <input type="tel" id="loginPhone" class="client-form-input" placeholder="+241 6 12 34 56 78">
           </div>
-          <button class="btn btn-primary btn-full mt-4" onclick="handleLogin()">Se connecter</button>
+          <button class="client-btn client-btn-primary client-btn-full mt-4" onclick="handleLogin()">Se connecter</button>
         </div>
         
         <!-- Register Form -->
         <div id="registerForm" class="hidden">
-          <div class="input-group">
-            <label>Prénom</label>
-            <input type="text" id="registerFirstname" class="input" placeholder="John">
+          <div class="client-form-group">
+            <label class="client-form-label">Prénom</label>
+            <input type="text" id="registerFirstname" class="client-form-input" placeholder="John">
           </div>
-          <div class="input-group">
-            <label>Nom</label>
-            <input type="text" id="registerLastname" class="input" placeholder="Doe">
+          <div class="client-form-group">
+            <label class="client-form-label">Nom</label>
+            <input type="text" id="registerLastname" class="client-form-input" placeholder="Doe">
           </div>
-          <div class="input-group">
-            <label>Téléphone</label>
-            <input type="tel" id="registerPhone" class="input" placeholder="+33 6 12 34 56 78">
+          <div class="client-form-group">
+            <label class="client-form-label">Téléphone</label>
+            <input type="tel" id="registerPhone" class="client-form-input" placeholder="+241 6 12 34 56 78">
           </div>
-          <div class="input-group">
-            <label>Ville (optionnel)</label>
-            <input type="text" id="registerCity" class="input" placeholder="Paris">
+          <div class="client-form-group">
+            <label class="client-form-label">Ville (optionnel)</label>
+            <input type="text" id="registerCity" class="client-form-input" placeholder="Libreville">
           </div>
-          <button class="btn btn-primary btn-full mt-4" onclick="handleRegister()">Créer un compte</button>
+          <button class="client-btn client-btn-primary client-btn-full mt-4" onclick="handleRegister()">Créer un compte</button>
         </div>
       </div>
     </div>

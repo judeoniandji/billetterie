@@ -48,7 +48,7 @@ function updateEventsCount(events) {
 }
 
 function setupCountrySelector() {
-  const countryPills = document.querySelectorAll('.country-pill');
+  const countryPills = document.querySelectorAll('.client-pill');
   countryPills.forEach(pill => {
     pill.addEventListener('click', () => {
       countryPills.forEach(p => p.classList.remove('active'));
@@ -60,7 +60,7 @@ function setupCountrySelector() {
 }
 
 function setupCategoryPills() {
-  const categoryPills = document.querySelectorAll('.category-pill');
+  const categoryPills = document.querySelectorAll('.client-pill');
   categoryPills.forEach(pill => {
     pill.addEventListener('click', () => {
       categoryPills.forEach(p => p.classList.remove('active'));
@@ -92,11 +92,12 @@ function createEventCard(event) {
   const imgUrl = event.image || 'https://images.unsplash.com/photo-1506157786151-b8491531f565?auto=format&fit=crop&w=800&q=80';
   const placesDisponibles = event.places_disponibles || 0;
   const capaciteTotale = event.capacite_totale || 0;
-  const placesText = capaciteTotale > 0 ? `${placesDisponibles} restantes sur ${capaciteTotale}` : 'Indisponible';
+  const placesText = capaciteTotale > 0 ? `${placesDisponibles} / ${capaciteTotale}` : 'Indisponible';
+  const isAdmin = currentUser && currentUser.role === 'admin';
   
   return `
-    <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer" onclick="navigateToEvent('${event._id}')">
-      <div class="w-full h-48 bg-cover bg-center relative" style="background-image: url('${imgUrl}')">
+    <div class="client-event-card" onclick="navigateToEvent('${event._id}')">
+      <div class="client-event-image" style="background-image: url('${imgUrl}')">
         <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-gray-700">
           ${event.categorie || 'Événement'}
         </div>
@@ -105,25 +106,29 @@ function createEventCard(event) {
         </div>
       </div>
       
-      <div class="p-5">
-        <h3 class="font-bold text-lg text-gray-800 mb-2 line-clamp-1">${event.titre}</h3>
+      <div class="client-event-content">
+        <h3 class="client-event-title">${event.titre}</h3>
         
-        <div class="flex items-center gap-2 text-gray-600 text-sm mb-2">
-          <span class="text-primary font-semibold">${formatDate(event.date)}</span>
-          <span>•</span>
-          <span>${event.lieu}</span>
-        </div>
-        
-        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-          <div>
-            <span class="text-xs text-gray-500">À partir de</span>
-            <div class="font-extrabold text-xl text-primary">${formatPrice(event.prix)}</div>
+        <div class="client-event-meta">
+          <div class="client-event-meta-item">
+            <span>📅</span>
+            <span>${formatDate(event.date)}</span>
           </div>
-          
-          <button class="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-all" onclick="event.stopPropagation(); navigateToEvent('${event._id}')">
-            Réserver
-          </button>
+          <div class="client-event-meta-item">
+            <span>📍</span>
+            <span>${event.lieu}</span>
+          </div>
         </div>
+        
+        <div class="client-event-price">${formatPrice(event.prix)}</div>
+        
+        ${!isAdmin ? `
+        <button class="client-event-btn" onclick="event.stopPropagation(); navigateToEvent('${event._id}')">
+          Réserver
+        </button>
+        ` : `
+        <span class="text-xs text-gray-400">Admin - Accès restreint</span>
+        `}
       </div>
     </div>
   `;

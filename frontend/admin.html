@@ -4,98 +4,176 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administration | EventPass</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        .admin-layout { padding: 2rem; }
-        .table-container { margin-top: 2rem; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; background: var(--glass-bg); border-radius: 12px; overflow: hidden; }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid var(--glass-border); color: var(--text-primary); }
-        th { background: rgba(255,255,255,0.05); font-weight: 600; }
-        .action-btns { display: flex; gap: 0.5rem; }
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; }
-        .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-        input, textarea { padding: 0.8rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; font-family: inherit; }
-    </style>
+    <link rel="stylesheet" href="css/admin-premium.css">
 </head>
 <body>
     <div class="admin-layout">
-        <a href="index.html" style="color: var(--accent-color); text-decoration: none; margin-bottom: 2rem; display: inline-block;">Retour à l'accueil</a>
-        
-        <header class="section-header">
-            <h1>Panneau d'Administration (CRUD)</h1>
-            <p>Ajoutez, modifiez ou supprimez des événements directement dans la base de données MongoDB.</p>
-        </header>
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-logo">EventPass</div>
+            <nav class="admin-sidebar-nav">
+                <a href="#" class="admin-nav-item active">
+                    <span class="admin-nav-icon">📊</span>
+                    <span>Tableau de bord</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-icon">🎫</span>
+                    <span>Événements</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-icon">👥</span>
+                    <span>Utilisateurs</span>
+                </a>
+                <a href="#" class="admin-nav-item">
+                    <span class="admin-nav-icon">💰</span>
+                    <span>Statistiques</span>
+                </a>
+                <a href="index.html" class="admin-nav-item">
+                    <span class="admin-nav-icon">🏠</span>
+                    <span>Retour au site</span>
+                </a>
+            </nav>
+        </aside>
 
-        <div class="glass" style="padding: 2rem; margin-bottom: 2rem;">
-            <h2 id="formTitle">Ajouter un Événement</h2>
-            <form id="eventForm" onsubmit="handleFormSubmit(event)">
-                <input type="hidden" id="eventId">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label>Titre de l'événement *</label>
-                        <input type="text" id="titre" required placeholder="Ex: Concert X">
-                    </div>
-                    <div class="form-group">
-                        <label>Lieu *</label>
-                        <input type="text" id="lieu" required placeholder="Ex: Stade de l'Amitié">
-                    </div>
-                    <div class="form-group">
-                        <label>Date et Heure *</label>
-                        <input type="datetime-local" id="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Prix (FCFA) *</label>
-                        <input type="number" id="prix" required min="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Capacité totale *</label>
-                        <input type="number" id="capacite" required min="1">
-                    </div>
-                    <div class="form-group">
-                        <label>URL de l'image</label>
-                        <input type="url" id="image" placeholder="https://images.unsplash.com/...">
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <div>
+                    <h1 class="admin-title">Tableau de bord</h1>
+                    <p class="admin-subtitle">Gestion complète de EventPass</p>
+                </div>
+                <div class="admin-user-profile">
+                    <div class="admin-avatar" id="adminAvatar">A</div>
+                    <div>
+                        <div class="admin-user-name" id="adminName">Admin</div>
+                        <div class="admin-user-role">Administrateur</div>
                     </div>
                 </div>
-                <div class="form-group" style="margin-top: 1rem;">
-                    <label>Description</label>
-                    <textarea id="description" rows="3"></textarea>
-                </div>
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                    <button type="submit" class="btn btn-primary" id="submitBtn">Ajouter l'événement</button>
-                    <button type="button" class="btn btn-secondary" style="background: rgba(255,255,255,0.1); color: white;" onclick="resetForm()">Annuler / Vider</button>
-                </div>
-            </form>
-        </div>
+            </header>
 
-        <h2>Liste des Événements Existants</h2>
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Titre</th>
-                        <th>Date</th>
-                        <th>Lieu</th>
-                        <th>Prix (FCFA)</th>
-                        <th>Disponibilité</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="eventsTableBody">
-                    <!-- Events will be loaded here -->
-                </tbody>
-            </table>
+            <!-- Stats Grid -->
+            <div class="admin-stats-grid">
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">🎫</div>
+                    <div class="admin-stat-value" id="statTickets">0</div>
+                    <div class="admin-stat-label">Billets vendus</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">🎪</div>
+                    <div class="admin-stat-value" id="statEvents">0</div>
+                    <div class="admin-stat-label">Événements</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">📋</div>
+                    <div class="admin-stat-value" id="statReservations">0</div>
+                    <div class="admin-stat-label">Réservations</div>
+                </div>
+                <div class="admin-stat-card">
+                    <div class="admin-stat-icon">💎</div>
+                    <div class="admin-stat-value" id="statRevenue">0 FCFA</div>
+                    <div class="admin-stat-label">Chiffre d'affaires</div>
+                </div>
+            </div>
+
+            <!-- Events Table -->
+            <div class="admin-table-container">
+                <div class="admin-table-header">
+                    <h2 class="admin-table-title">Gestion des événements</h2>
+                    <div class="admin-table-actions">
+                        <button class="admin-btn admin-btn-primary" onclick="openAddEventModal()">+ Nouvel événement</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Événement</th>
+                                <th>Lieu</th>
+                                <th>Date</th>
+                                <th>Places</th>
+                                <th>Prix</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eventsTableBody">
+                            <!-- Events will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Add/Edit Event -->
+    <div id="eventModalOverlay" class="admin-modal-overlay hidden">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h3 class="admin-modal-title" id="modalTitle">Ajouter un événement</h3>
+                <button class="admin-modal-close" onclick="closeEventModal()">×</button>
+            </div>
+            <div class="admin-modal-body">
+                <form id="eventForm">
+                    <input type="hidden" id="eventId">
+                    <div class="admin-form-grid">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Titre *</label>
+                            <input type="text" id="titre" class="admin-form-input" required placeholder="Ex: Concert X">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Lieu *</label>
+                            <input type="text" id="lieu" class="admin-form-input" required placeholder="Ex: Stade de l'Amitié">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Date et Heure *</label>
+                            <input type="datetime-local" id="date" class="admin-form-input" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Prix (FCFA) *</label>
+                            <input type="number" id="prix" class="admin-form-input" required min="0">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Capacité totale *</label>
+                            <input type="number" id="capacite" class="admin-form-input" required min="1">
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">URL de l'image</label>
+                            <input type="url" id="image" class="admin-form-input" placeholder="https://images.unsplash.com/...">
+                        </div>
+                        <div class="admin-form-group full-width">
+                            <label class="admin-form-label">Description</label>
+                            <textarea id="description" class="admin-form-textarea" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="admin-btn admin-btn-primary" id="submitBtn">Ajouter l'événement</button>
+                        <button type="button" class="admin-btn admin-btn-outline" onclick="resetForm()">Annuler</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
         const API_URL = `${window.location.protocol}//${window.location.host}/api`;
         let isEditing = false;
+        let allEvents = [];
+        let adminStats = {
+            totalTickets: 0,
+            totalEvents: 0,
+            totalReservations: 0,
+            totalRevenue: 0
+        };
 
         const currentUser = JSON.parse(localStorage.getItem('eventpass_user') || localStorage.getItem('billetterieUser') || 'null');
         if (!currentUser || currentUser.role !== 'admin') {
             window.location.href = 'index.html';
         }
+
+        // Update admin profile
+        document.getElementById('adminName').textContent = currentUser.prenom || 'Admin';
+        document.getElementById('adminAvatar').textContent = (currentUser.prenom || 'A')[0].toUpperCase();
 
         document.addEventListener('DOMContentLoaded', loadEvents);
 
@@ -103,25 +181,60 @@
             try {
                 const response = await fetch(`${API_URL}/evenements`);
                 const events = await response.json();
+                allEvents = events;
                 const tbody = document.getElementById('eventsTableBody');
                 tbody.innerHTML = '';
+
+                // Update stats
+                adminStats.totalEvents = events.length;
+                document.getElementById('statEvents').textContent = adminStats.totalEvents;
 
                 events.forEach(ev => {
                     const tr = document.createElement('tr');
                     const d = new Date(ev.date);
+                    const isPast = new Date(ev.date) < new Date();
+                    
                     tr.innerHTML = `
-                        <td>${ev.titre}</td>
-                        <td>${d.toLocaleDateString('fr-FR')} à ${d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</td>
+                        <td>
+                            <div class="flex items-center gap-4">
+                                <img src="${ev.image || 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=100&q=80'}" alt="${ev.titre}" class="admin-event-thumbnail">
+                                <span class="font-semibold">${ev.titre}</span>
+                            </div>
+                        </td>
                         <td>${ev.lieu}</td>
-                        <td>${ev.prix.toLocaleString('fr-FR')}</td>
-                        <td>${ev.places_disponibles} / ${ev.capacite_totale}</td>
-                        <td class="action-btns">
-                            <button class="btn" style="background: var(--warning); padding: 0.4rem 0.8rem; font-size: 0.9rem;" onclick='editEvent(${JSON.stringify(ev).replace(/'/g, "&#39;")})'>Modifier</button>
-                            <button class="btn" style="background: var(--danger); padding: 0.4rem 0.8rem; font-size: 0.9rem;" onclick="deleteEvent('${ev._id}')">Supprimer</button>
+                        <td>${d.toLocaleDateString('fr-FR')} à ${d.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</td>
+                        <td>
+                            <span class="${ev.places_disponibles < 10 ? 'text-gold' : ''}">
+                                ${ev.places_disponibles} / ${ev.capacite_totale}
+                            </span>
+                        </td>
+                        <td class="font-semibold">${ev.prix.toLocaleString('fr-FR')} FCFA</td>
+                        <td>
+                            <span class="admin-status-badge ${isPast ? 'admin-status-ended' : 'admin-status-active'}">
+                                ${isPast ? 'Terminé' : 'À venir'}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="flex gap-2">
+                                <button class="admin-btn admin-btn-sm admin-btn-edit" onclick='editEvent(${JSON.stringify(ev).replace(/'/g, "&#39;")})'>Modifier</button>
+                                <button class="admin-btn admin-btn-sm admin-btn-delete" onclick="deleteEvent('${ev._id}')">Supprimer</button>
+                            </div>
                         </td>
                     `;
                     tbody.appendChild(tr);
                 });
+
+                // Load additional stats
+                try {
+                    const recettes = await fetch(`${API_URL}/evenements/stats/recettes`).then(r => r.json());
+                    adminStats.totalRevenue = recettes.reduce((sum, r) => sum + r.recettes_FCFA, 0);
+                    adminStats.totalTickets = recettes.reduce((sum, r) => sum + r.billets_vendus, 0);
+                    document.getElementById('statRevenue').textContent = adminStats.totalRevenue.toLocaleString('fr-FR') + ' FCFA';
+                    document.getElementById('statTickets').textContent = adminStats.totalTickets;
+                } catch(e) {
+                    console.log('Erreur stats', e);
+                }
+
             } catch (error) {
                 console.error("Erreur de chargement", error);
             }
@@ -136,8 +249,8 @@
                 date: document.getElementById('date').value,
                 prix: Number(document.getElementById('prix').value),
                 capacite_totale: Number(document.getElementById('capacite').value),
-                places_disponibles: Number(document.getElementById('capacite').value), // Initialement égal à la capacité totale
-                image: document.getElementById('image').value || undefined,
+                places_disponibles: Number(document.getElementById('capacite').value),
+                image: document.getElementById('image').value || "https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80",
                 description: document.getElementById('description').value
             };
 
@@ -145,7 +258,6 @@
             const method = isEditing ? 'PUT' : 'POST';
             const url = isEditing ? `${API_URL}/evenements/${eventId}` : `${API_URL}/evenements`;
 
-            // Si on modifie, on ne veut pas écraser les places_disponibles brutalement (simplification pour l'admin)
             if (isEditing) {
                 delete eventData.places_disponibles; 
             }
@@ -158,7 +270,7 @@
                 });
 
                 if (response.ok) {
-                    alert(`Événement ${isEditing ? 'modifié' : 'ajouté'} avec succès !`);
+                    closeEventModal();
                     resetForm();
                     loadEvents();
                 } else {
@@ -170,10 +282,19 @@
             }
         }
 
+        function openAddEventModal() {
+            isEditing = false;
+            document.getElementById('modalTitle').textContent = 'Ajouter un événement';
+            document.getElementById('submitBtn').textContent = 'Ajouter l\'événement';
+            document.getElementById('eventForm').reset();
+            document.getElementById('eventId').value = '';
+            document.getElementById('eventModalOverlay').classList.remove('hidden');
+        }
+
         function editEvent(ev) {
             isEditing = true;
-            document.getElementById('formTitle').innerText = 'Modifier l\'Événement';
-            document.getElementById('submitBtn').innerText = 'Enregistrer les modifications';
+            document.getElementById('modalTitle').textContent = 'Modifier l\'événement';
+            document.getElementById('submitBtn').textContent = 'Enregistrer les modifications';
             
             document.getElementById('eventId').value = ev._id;
             document.getElementById('titre').value = ev.titre;
@@ -183,29 +304,30 @@
             document.getElementById('description').value = ev.description || '';
             document.getElementById('image').value = ev.image || '';
 
-            // Format date for datetime-local input
             const d = new Date(ev.date);
             d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
             document.getElementById('date').value = d.toISOString().slice(0, 16);
             
-            window.scrollTo(0, 0);
+            document.getElementById('eventModalOverlay').classList.remove('hidden');
+        }
+
+        function closeEventModal() {
+            document.getElementById('eventModalOverlay').classList.add('hidden');
+            resetForm();
         }
 
         function resetForm() {
             isEditing = false;
-            document.getElementById('formTitle').innerText = 'Ajouter un Événement';
-            document.getElementById('submitBtn').innerText = 'Ajouter l\'événement';
             document.getElementById('eventForm').reset();
             document.getElementById('eventId').value = '';
         }
 
         async function deleteEvent(id) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement définitivement de MongoDB ?')) return;
+            if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement définitivement ?')) return;
 
             try {
                 const response = await fetch(`${API_URL}/evenements/${id}`, { method: 'DELETE' });
                 if (response.ok) {
-                    alert('Événement supprimé !');
                     loadEvents();
                 } else {
                     alert('Erreur lors de la suppression');
@@ -214,6 +336,9 @@
                 alert('Erreur réseau');
             }
         }
+
+        // Form submit handler
+        document.getElementById('eventForm').addEventListener('submit', handleFormSubmit);
     </script>
 </body>
 </html>

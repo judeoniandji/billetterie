@@ -240,33 +240,13 @@ img {
     gap: var(--space-1);
     padding: var(--space-2) var(--space-4);
     border: none;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-family: var(--font);
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
-    transition: all var(--transition-fast);
+    transition: background-color var(--transition-fast);
     white-space: nowrap;
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:active::after {
-    width: 300px;
-    height: 300px;
 }
 
 .btn--primary {
@@ -276,8 +256,7 @@ img {
 }
 
 .btn--primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.4);
+    opacity: 0.9;
 }
 
 .btn--secondary {
@@ -299,8 +278,7 @@ img {
 }
 
 .btn--success:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    opacity: 0.9;
 }
 
 .btn--ghost {
@@ -630,17 +608,15 @@ input:focus, select:focus, textarea:focus {
 
 .event-card {
     background: var(--white);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-md);
     overflow: hidden;
     border: 1px solid var(--gray-200);
-    transition: all var(--transition);
+    transition: border-color var(--transition-fast);
     cursor: pointer;
 }
 
 .event-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: var(--shadow-xl);
-    border-color: transparent;
+    border-color: var(--blue-300);
 }
 
 .event-card__image-wrap {

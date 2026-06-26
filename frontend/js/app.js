@@ -101,28 +101,25 @@ function checkAuth() {
 }
 
 function renderAuthSection() {
-  // Show/hide admin link and publish button
+  // Show/hide admin link
   const adminNav = document.getElementById('adminNavLink');
-  const publishEventBtn = document.getElementById('publishEventBtn');
   if (currentUser && currentUser.role === 'admin') {
     adminNav.classList.remove('hidden');
-    publishEventBtn.classList.remove('hidden');
   } else {
     adminNav.classList.add('hidden');
-    publishEventBtn.classList.add('hidden');
   }
 
   const section = document.getElementById('authSection');
   if (currentUser) {
     section.innerHTML = `
       <span class="text-secondary text-sm">Bonjour, <strong class="text-primary">${currentUser.prenom}</strong></span>
-      <button class="btn btn-sm btn-outline" onclick="navigateTo('myTickets')">Mes billets</button>
-      <button class="btn btn-sm" onclick="handleLogout()">Se déconnecter</button>
+      <button class="client-btn client-btn-outline client-btn-sm" onclick="navigateTo('myTickets')">Mes billets</button>
+      <button class="client-btn client-btn-sm" onclick="handleLogout()">Se déconnecter</button>
     `;
   } else {
     section.innerHTML = `
-      <button class="btn btn-outline btn-sm" onclick="switchAuthTab('login'); openModal('authModal')">Se connecter</button>
-      <button class="btn btn-primary btn-sm" onclick="switchAuthTab('register'); openModal('authModal')">S'inscrire</button>
+      <button class="client-btn client-btn-outline client-btn-sm" onclick="switchAuthTab('login'); openModal('authModal')">Se connecter</button>
+      <button class="client-btn client-btn-primary client-btn-sm" onclick="switchAuthTab('register'); openModal('authModal')">S'inscrire</button>
     `;
   }
 }

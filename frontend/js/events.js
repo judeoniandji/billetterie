@@ -377,6 +377,12 @@ function loadReservationPage(event, ticketCount) {
 }
 
 async function confirmPayment(eventId, ticketCount, total) {
+  // Empêcher les admins de réserver
+  if (currentUser && currentUser.role === 'admin') {
+    showToast('Les administrateurs ne peuvent pas réserver de billets', 'error');
+    return;
+  }
+
   const btn = document.querySelector('.btn-reserve-now');
   if (btn) btn.classList.add('btn-loading');
 
