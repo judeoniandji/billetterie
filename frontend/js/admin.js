@@ -35,64 +35,111 @@ async function loadAdminPage() {
     return;
   }
   
+  // Charger les événements si pas encore chargés
+  if (!allEvents || allEvents.length === 0) {
+    try {
+      const data = await window.api.getEvents();
+      if (data.evenements) { allEvents = data.evenements; } 
+      else if (Array.isArray(data)) { allEvents = data; }
+      window.allEvents = allEvents;
+    } catch(e) {
+      console.log('Erreur chargement événements', e);
+      allEvents = [];
+    }
+  }
+  
   // Charger les stats depuis l'API
   try {
-    const recettes = await apiRequest('/api/evenements/stats/recettes');
+    const recettes = await apiRequest('/evenements/stats/recettes');
     adminStats.totalRevenue = recettes.reduce((sum, r) => sum + r.recettes_FCFA, 0);
     adminStats.totalEvents = allEvents.length;
     adminStats.totalTickets = recettes.reduce((sum, r) => sum + r.billets_vendus, 0);
   } catch(e) {
     console.log('Erreur stats', e);
+    adminStats.totalEvents = allEvents.length;
   }
 
   main.innerHTML = `
     <div class="min-h-screen bg-gray-50 py-8">
       <div class="container">
+        <!-- Header -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 class="text-3xl font-bold text-gray-800">Tableau de bord</h1>
             <p class="text-gray-500 mt-1">Gestion complète de EventPass</p>
           </div>
           <div class="flex gap-3">
-            <button class="btn btn-primary" onclick="openAddEventModal()">Nouvel événement</button>
+            <button class="btn btn-primary" onclick="openAddEventModal()">+ Nouvel événement</button>
             <button class="btn btn-outline" onclick="navigateTo('home')">Retour au site</button>
           </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-4 gap-6 mb-12">
-          <div class="stats-card">
-            <div class="stats-icon"></div>
-            <div class="stats-value">${adminStats.totalTickets}</div>
-            <div class="stats-label">Billets vendus</div>
-          </div>
-          <div class="stats-card">
-            <div class="stats-icon"></div>
-            <div class="stats-value">${adminStats.totalEvents}</div>
-            <div class="stats-label">Événements</div>
-          </div>
-          <div class="stats-card">
-            <div class="stats-icon"></div>
-            <div class="stats-value">${adminStats.totalReservations}</div>
-            <div class="stats-label">Réservations</div>
-          </div>
-          <div class="stats-card">
-            <div class="stats-icon"></div>
-            <div class="stats-value">${formatPrice(adminStats.totalRevenue)}</div>
-            <div class="stats-label">Chiffre d'affaires</div>
+        <!-- Stats Section -->
+        <div class="mb-10">
+          <h2 class="text-lg font-semibold text-gray-700 mb-4">Statistiques</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Billets vendus</p>
+                  <p class="text-2xl font-bold text-gray-800">${adminStats.totalTickets}</p>
+                </div>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                  <span class="text-blue-600 font-semibold">B</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Événements</p>
+                  <p class="text-2xl font-bold text-gray-800">${adminStats.totalEvents}</p>
+                </div>
+                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                  <span class="text-green-600 font-semibold">E</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Réservations</p>
+                  <p class="text-2xl font-bold text-gray-800">${adminStats.totalReservations}</p>
+                </div>
+                <div class="w-10 h-10 bg-violet-100 rounded-full flex items-center justify-center">
+                  <span class="text-violet-600 font-semibold">R</span>
+                </div>
+              </div>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-gray-500 mb-1">Chiffre d'affaires</p>
+                  <p class="text-2xl font-bold text-gray-800">${formatPrice(adminStats.totalRevenue)}</p>
+                </div>
+                <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                  <span class="text-amber-600 font-semibold">FCFA</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Events Table -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-          <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h2 class="text-xl font-semibold">Gestion des événements</h2>
+        <!-- Events Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+          <div class="p-6 border-b border-gray-100">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 class="text-xl font-semibold text-gray-800">Gestion des événements</h2>
+                <p class="text-sm text-gray-500 mt-1">${allEvents.length} événement${allEvents.length > 1 ? 's' : ''}</p>
+              </div>
+              <button class="btn btn-primary btn-sm" onclick="openAddEventModal()">+ Ajouter</button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table class="admin-table">
               <thead>
                 <tr>
-                  <th>Image</th>
                   <th>Événement</th>
                   <th>Lieu</th>
                   <th>Date</th>
@@ -106,26 +153,28 @@ async function loadAdminPage() {
                 ${allEvents.map(ev => `
                   <tr>
                     <td>
-                      <img src="${ev.image}" alt="${ev.titre}" class="admin-event-thumbnail">
+                      <div class="flex items-center gap-3">
+                        <img src="${ev.image}" alt="${ev.titre}" class="admin-event-thumbnail">
+                        <span class="font-semibold">${ev.titre}</span>
+                      </div>
                     </td>
-                    <td class="font-semibold">${ev.titre}</td>
                     <td>${ev.lieu}</td>
                     <td>${formatDate(ev.date)}</td>
                     <td>
-                      <span class="${ev.places_disponibles < 10 ? 'text-error font-semibold' : ''}">
+                      <span class="${ev.places_disponibles < 10 ? 'text-red-600 font-semibold' : 'text-gray-600'}">
                         ${ev.places_disponibles} / ${ev.capacite_totale}
                       </span>
                     </td>
                     <td class="font-semibold">${formatPrice(ev.prix)}</td>
                     <td>
-                      <span class="badge-${isEventPast(ev.date) ? 'limited' : 'popular'}" style="padding:0.375rem 0.75rem;border-radius:999px;font-size:0.75rem;color:white;">
+                      <span class="px-3 py-1 rounded-full text-xs font-semibold ${isEventPast(ev.date) ? 'bg-gray-100 text-gray-600' : 'bg-green-100 text-green-600'}">
                         ${isEventPast(ev.date) ? 'Terminé' : 'À venir'}
                       </span>
                     </td>
                     <td>
                       <div class="flex gap-2">
                         <button class="btn btn-outline btn-sm" onclick="openEditEventModal('${ev._id}')">Modifier</button>
-                        <button class="btn" onclick="deleteEvent('${ev._id}')">Supprimer</button>
+                        <button class="btn btn-sm" style="background: var(--red-100); color: var(--red-500);" onclick="deleteEvent('${ev._id}')">Supprimer</button>
                       </div>
                     </td>
                   </tr>
@@ -239,14 +288,14 @@ async function handleSaveEvent(e) {
   try {
     if (editingEventId) {
       // Mise à jour
-      await apiRequest(`/api/evenements/${editingEventId}`, {
+      await apiRequest(`/evenements/${editingEventId}`, {
         method: 'PUT',
         body: JSON.stringify(eventData)
       });
       showToast('Événement mis à jour avec succès !', 'success');
     } else {
       // Création
-      await apiRequest('/api/evenements', {
+      await apiRequest('/evenements', {
         method: 'POST',
         body: JSON.stringify(eventData)
       });
@@ -270,7 +319,7 @@ async function deleteEvent(eventId) {
   if (!confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) return;
   
   try {
-    await apiRequest(`/api/evenements/${eventId}`, { method: 'DELETE' });
+    await apiRequest(`/evenements/${eventId}`, { method: 'DELETE' });
     showToast('Événement supprimé avec succès !', 'success');
     
     // Recharger la liste

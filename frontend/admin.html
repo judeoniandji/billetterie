@@ -89,10 +89,10 @@
     </div>
 
     <script>
-        const API_URL = 'http://localhost:5000/api';
+        const API_URL = `${window.location.protocol}//${window.location.host}/api`;
         let isEditing = false;
 
-        const currentUser = JSON.parse(localStorage.getItem('billetterieUser') || 'null');
+        const currentUser = JSON.parse(localStorage.getItem('eventpass_user') || localStorage.getItem('billetterieUser') || 'null');
         if (!currentUser || currentUser.role !== 'admin') {
             window.location.href = 'index.html';
         }
