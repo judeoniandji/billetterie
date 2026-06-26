@@ -1,6 +1,7 @@
 const Reservation = require("../models/Reservation");
 const Evenement = require("../models/Evenement");
 const Billet = require("../models/Billet");
+const Utilisateur = require("../models/Utilisateur");
 const mongoose = require("mongoose");
 const crypto = require("crypto");
 
@@ -37,10 +38,22 @@ exports.getBilletsByReservation = async (req, res) => {
 exports.creerReservation = async (req, res) => {
   const { utilisateur_id, evenement_id, nombre_places } = req.body;
 
-  const session = await mongoose.startSession();
-  session.startTransaction();
+  if (!mongoose.Types.ObjectId.isValid(utilisateur_id)) {
+    return res.status(400).json({ message: "ID utilisateur invalide." });
+  }
 
+  let session;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
+
+    const user = await Utilisateur.findById(utilisateur_id).session(session);
+    if (!user) {
+      await session.abortTransaction();
+      session.endSession();
+      return res.status(404).json({ message: "Utilisateur non trouvé" });
+    }
+
     const event = await Evenement.findById(evenement_id).session(session);
     if (!event) {
       await session.abortTransaction();
@@ -67,8 +80,9 @@ exports.creerReservation = async (req, res) => {
       },
       { 
         $inc: { places_disponibles: -nombre_places } 
-      }
-    ).session(session);
+      },
+      { session }
+    );
 
     // Si pas de modification, cela signifie que les places disponibles sont insuffisantes
     if (updateResult.modifiedCount === 0) {
@@ -98,8 +112,10 @@ exports.creerReservation = async (req, res) => {
 
   } catch (error) {
     // Annulation en bloc des opérations (notamment la décrémentation des places)
-    await session.abortTransaction();
-    session.endSession();
+    if (session) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     res.status(500).json({ message: "Erreur serveur lors de la réservation", error: error.message });
   }
 };
@@ -107,10 +123,11 @@ exports.creerReservation = async (req, res) => {
 // @desc    Confirmer le paiement et générer les billets (Sécurisé par transaction ACID)
 // @route   POST /api/reservations/:id/payer
 exports.payerReservation = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
-
+  let session;
   try {
+    session = await mongoose.startSession();
+    session.startTransaction();
+
     const reservation = await Reservation.findById(req.params.id).session(session);
     
     if (!reservation) {
@@ -154,8 +171,10 @@ exports.payerReservation = async (req, res) => {
     });
 
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
+    if (session) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     res.status(500).json({ message: "Erreur serveur lors de la confirmation du paiement", error: error.message });
   }
 };

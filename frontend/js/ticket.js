@@ -11,8 +11,8 @@ async function loadMyTicketsPage() {
     const reservations = await window.api.getReservationsByUser(currentUser._id);
     renderMyTickets(reservations);
   } catch (e) {
-    console.log(e);
-    showToast('Erreur de chargement', 'error');
+    console.error("Erreur de chargement des billets :", e);
+    showToast('Erreur de chargement de vos billets', 'error');
     renderMyTickets([]);
   }
 }
@@ -53,11 +53,19 @@ function renderMyTicket(reservation) {
   let event;
   if (reservation.evenement_id && typeof reservation.evenement_id === 'object') {
     event = reservation.evenement_id;
-  } else {
+  } else if (window.allEvents && Array.isArray(window.allEvents)) {
     event = window.allEvents.find(e => e._id === reservation.evenement_id);
   }
   
-  if (!event) return '';
+  // Fallback si l'événement n'est pas encore chargé ou introuvable
+  if (!event) {
+    event = {
+      titre: "Événement " + (reservation.evenement_id || "en cours..."),
+      lieu: "Lieu non disponible",
+      date: reservation.date_creation || new Date(),
+      prix: reservation.montant_total / (reservation.nombre_places || 1)
+    };
+  }
   
   const code = `EP-${reservation._id.substring(0, 8).toUpperCase()}`;
   
@@ -112,6 +120,10 @@ function renderMyTicket(reservation) {
 
 // Après avoir rendu les billets, générer les QR codes
 function generateMyTicketsQRCodes(reservations) {
+  if (typeof QRCode === 'undefined') {
+    console.warn("La bibliothèque QRCode.js n'est pas disponible.");
+    return;
+  }
   setTimeout(() => {
     reservations.forEach(r => {
       if (r.statut === 'PAYEE' || r.statut === 'CONFIRMEE') {
@@ -119,9 +131,13 @@ function generateMyTicketsQRCodes(reservations) {
         if (container) {
           container.innerHTML = '';
           const code = `EP-${r._id.substring(0, 8).toUpperCase()}`;
-          new QRCode(container, {
-            text: code, width: 100, height: 100, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
-          });
+          try {
+            new QRCode(container, {
+              text: code, width: 100, height: 100, colorDark:'#1e3a8a', colorLight:'#ffffff', correctLevel:QRCode.CorrectLevel.H
+            });
+          } catch (err) {
+            console.error("Erreur lors de la génération du QR code :", err);
+          }
         }
       }
     });
@@ -130,5 +146,5 @@ function generateMyTicketsQRCodes(reservations) {
 
 function downloadTicket(code) {
   showToast('Téléchargement du PDF en cours...', 'info');
-  setTimeout(() => { showToast('PDF téléchargé !', 'success'); },1500);
+  setTimeout(() => { showToast('PDF téléchargé !', 'success'); }, 1500);
 }

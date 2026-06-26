@@ -638,7 +638,37 @@ const Pages = {
             if (reservationId) {
                 await Reservations.fetch();
                 const existing = state.reservations.find(r => r._id === reservationId);
-                state.booking.reservation = existing || null;
+                if (!existing) {
+                    return `
+                        <div class="container empty-state page-enter">
+                            <div class="empty-state__icon">⚠️</div>
+                            <h3>Réservation expirée ou introuvable</h3>
+                            <p>Le délai de réservation de 10 minutes a expiré ou la réservation n'existe pas.</p>
+                            <a href="#/events" class="btn btn--primary" data-nav style="margin-top:16px">Retour aux événements</a>
+                        </div>
+                    `;
+                }
+                if (existing.statut === 'CONFIRMEE') {
+                    setTimeout(() => Router.navigate(`#/ticket/${reservationId}`), 500);
+                    return `
+                        <div class="container empty-state page-enter">
+                            <div class="empty-state__icon">✓</div>
+                            <h3>Réservation déjà payée !</h3>
+                            <p>Paiement confirmé. Redirection vers vos billets...</p>
+                        </div>
+                    `;
+                }
+                if (existing.statut === 'EXPIREE') {
+                    return `
+                        <div class="container empty-state page-enter">
+                            <div class="empty-state__icon">⚠️</div>
+                            <h3>Réservation expirée</h3>
+                            <p>Cette réservation a expiré.</p>
+                            <a href="#/events" class="btn btn--primary" data-nav style="margin-top:16px">Retour aux événements</a>
+                        </div>
+                    `;
+                }
+                state.booking.reservation = existing;
             } else {
                 state.booking.reservation = null;
             }
